@@ -1,39 +1,96 @@
-Crawler
-=======
+Page Crawler
+==============
 
-render view beispiel `crawler/default/index`:
+An easy to use page crawler to make an internal search field on your page. The crawlermodule gather all informations about the sides on the configured domain.
+
+### Install
+
+Add to composer json:
+
+```
+"zephir/luya-module-crawler" : "1.0.0-beta5"
+```
+
+Add the module to your configuration
 
 ```php
-<h1>Suchen</h1>
-<p>Sie haben nach <b><?php echo $query; ?></b> gesucht.</p>
+'crawler' => [
+    'class' => 'crawler\Module',
+    'baseUrl' => 'http://luya.io',
+],
+'crawleradmin' => 'crawleradmin\Module',
+```
 
-<h2><?php echo count($results); ?> Resultate</h2>
+Where `baseUr` is the domain you want to crawler all informations.
+
+### Execute
+
+To execute the command (and run the crawler proccess) use the crawler command `crawl`, you should put this command in cronjob to make sure your index is up-to-date:
+
+```sh
+./vendor/bin/luya command crawler crawl
+```
+
+Create search form
+------------------
+
+Make a post request with `query` to the `crawler/default/index` route and render the view as follows
+
+```php
+<h1>Search</h1>
+<p>You where looking for <b><?= $query; ?></b>.</p>
+
+<h2><?= count($results); ?> results</h2>
 <ul>
-<?php foreach($results as $item): ?>
-    <li><a href="<?php echo $item->url; ?>"><?php echo $item->title; ?></a>
-    
-        <p style="background-color:red;"><?php echo $item->preview($query); ?></p>
+<? foreach($results as $item): ?>
+    <li>
+    	<a href="<?= $item->url; ?>"><?= $item->title; ?></a>
+        <p style="background-color:red;"><?= $item->preview($query); ?></p>
     </li>
-<?php endforeach; ?>
+<? endforeach; ?>
 </ul>
 ```
 
 
-ASYNC
------
+### ASYNC Request
 
-Für Async Searchs kann der Restcontroller verwendet werden, hier ein Jquery beispiel:
+To make async search queries use the restcontroller route (jquery example):
 
-> Achtung die Url Composition prefix muss gegen sein für mehrsprachige Urls.
 
-```
+```php
 
-var url = '<?php echo \luya\helpers\Url::toInternal(['crawler/rest/index']); ?>';
+var url = '<?= Url::toInternal(['crawler/rest/index']);?>;
 
 $.ajax({
 	url : url 
 }).done(function(response) {
 	console.log(response);
 });
+```
+
+Crawler Settings
+------------------
+
+Set the language in your html markup
 
 ```
+<html lang="<?= $composition->getKey('langShortCode'); ?>">
+```
+
+Partial ignore a content from the crawler:
+
+```
+<div>
+	<!-- [CRAWL_IGNORE] -->
+	<p>The crawler will never see and store this information</p>
+	<!-- [/CRAWL IGNORE] -->
+</div>
+```
+
+Ignore a page complet:
+
+```
+<div>
+	<!-- [CRAWL_FULL_IGNORE] --> 
+	<p>Diese gesamte Seite wird ignoriert.</p>
+</div>
