@@ -2,12 +2,11 @@
 
 namespace luya\crawler\frontend\classes;
 
-use Goutte\Client;
-use yii\base\InvalidConfigException;
-
 use luya\helpers\StringHelper;
-use Symfony\Component\DomCrawler\Crawler;
+use yii\base\InvalidConfigException;
 use yii\base\BaseObject;
+use Symfony\Component\DomCrawler\Crawler;
+use Goutte\Client;
 
 /**
  * Crawl Page.

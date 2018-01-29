@@ -2,15 +2,19 @@
 
 namespace crawlerests;
 
-use luyatests\data\MessageFileComperatorTrait;
-use PHPUnit\Framework\TestCase;
+use luya\testsuite\traits\MessageFileCompareTrait;
 
-class MessageFileTest extends TestCase
+/**
+ * Message File Compare Trait.
+ * @author nadar
+ *
+ */
+class MessageFileTest extends CrawlerTestCase
 {
-    use MessageFileComperatorTrait;
+    use MessageFileCompareTrait;
     
     public function testFiles()
     {
-        $this->compare(__DIR__ . '/../src/admin/messages', 'en');
+        $this->compareMessages(__DIR__ . '/../src/admin/messages', 'en');
     }
 }

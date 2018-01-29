@@ -2,28 +2,19 @@
 
 namespace crawlerests;
 
-use luya\Boot;
+use luya\testsuite\cases\WebApplicationTestCase;
 
-define('YII_DEBUG', true);
-$_SERVER['HTTP_HOST'] = 'localhost';
-$_SERVER['SERVER_NAME'] = 'localhost';
-$_SERVER['DOCUMENT_ROOT'] = '/var/www';
-$_SERVER['REQUEST_URI'] = '/luya/envs/dev/public_html/';
-$_SERVER['SCRIPT_NAME'] = '/luya/envs/dev/public_html/index.php';
-$_SERVER['PHP_SELF'] = '/luya/envs/dev/public_html/index.php';
-$_SERVER['SCRIPT_FILENAME'] = '/var/www/luya/envs/dev/public_html/index.php';
-
-
-class CrawlerTestCase extends \PHPUnit_Framework_TestCase
+/**
+ * Crawler TestCase
+ * @author Basil Suter <basil@nadar.io>
+ */
+class CrawlerTestCase extends WebApplicationTestCase
 {
-    protected function setUp()
+    public function getConfigArray()
     {
-        $boot = new Boot();
-        $boot->setConfigArray([
-            'id' => 'testenv',
-            'siteTitle' => 'Luya Tests',
-            'remoteToken' => 'testtoken',
-            'basePath' => dirname(__DIR__),
+        return [
+           'id' => 'mytestapp',
+           'basePath' => dirname(__DIR__),
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
@@ -39,9 +30,6 @@ class CrawlerTestCase extends \PHPUnit_Framework_TestCase
             'modules' => [
                 'crawleradmin' => 'luya\crawler\admin\Module',
             ]
-        ]);
-        $boot->mockOnly = true;
-        $boot->setBaseYiiFile(__DIR__.'/../vendor/yiisoft/yii2/Yii.php');
-        $boot->applicationWeb();
+        ];
     }
 }

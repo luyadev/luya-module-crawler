@@ -16,6 +16,15 @@ use luya\crawler\models\Index;
  */
 class ClickController extends Controller
 {
+    /**
+     * Generate a click for a given search.
+     * 
+     * @param integer $searchId
+     * @param integer $indexId
+     * @param integer $position
+     * @throws \Exception
+     * @return \yii\web\Response
+     */
     public function actionIndex($searchId, $indexId, $position)
     {
         $model = new Click();

@@ -37,14 +37,7 @@ class CrawlContainer extends BaseObject
     
     private $_crawlers = [];
     
-    public $log = [
-        'new' => [],
-        'update' => [],
-        'delete' => [],
-        'delete_issue' => [],
-        'unchanged' => [],
-        'filtered' => [],
-    ];
+    private $_log = [];
     
     private $_proccessed = [];
     
@@ -60,8 +53,17 @@ class CrawlContainer extends BaseObject
     
     public function addLog($cat, $message, $title = null)
     {
-        $message = (empty($title)) ? $message : $message . " ({$title})";
-        $this->log[$cat][] = $message;
+        /**
+         * public $log = [
+         *    'new' => [],
+         *    'update' => [],
+         *    'delete' => [],
+         *    'delete_issue' => [],
+         *    'unchanged' => [],
+         *    'filtered' => [],
+         * ];
+         */
+        $this->_log[] = [$cat, $message, $title];
     }
     
     public function verbosePrint($key, $value = null)
@@ -69,7 +71,7 @@ class CrawlContainer extends BaseObject
         if ($this->verbose) {
             $value = is_array($value) ? print_r($value, true) : $value;
             
-            echo $key . ': ' . $value . PHP_EOL;
+            echo '+ ' . $key . ' =========> ' . $value . PHP_EOL;
         }
     }
 
@@ -131,7 +133,7 @@ class CrawlContainer extends BaseObject
 
     public function getReport()
     {
-        return $this->log;
+        return $this->_log;
     }
 
     public function finish()

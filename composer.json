@@ -21,9 +21,7 @@
 		"nadar/stemming" : "~1.0.0"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "~5.0",
-		"luyadev/luya" : "^1.0@dev",
-        "luyadev/luya-module-admin" : "^1.0@dev",
+		"luyadev/luya-testsuite" : "~1.0.0",
 		"php-coveralls/php-coveralls": "^1.0"
 	},
 	"autoload" : {

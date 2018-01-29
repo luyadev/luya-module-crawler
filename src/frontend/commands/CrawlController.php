@@ -4,6 +4,7 @@ namespace luya\crawler\frontend\commands;
 
 use luya\crawler\frontend\classes\CrawlContainer;
 use luya\helpers\FileHelper;
+use yii\console\widgets\Table;
 
 /**
  * Crawler console Command.
@@ -28,10 +29,6 @@ class CrawlController extends \luya\console\Command
         try {
             // sart time measuremnt
             $start = microtime(true);
-    
-            if ($this->verbose) {
-                $this->output('[==================== VERBOSE ====================]');
-            }
             
             $container = new CrawlContainer([
                 'baseUrl' => $this->module->baseUrl,
@@ -40,28 +37,17 @@ class CrawlController extends \luya\console\Command
                 'doNotFollowExtensions' => $this->module->doNotFollowExtensions,
                 'useH1' => $this->module->useH1,
             ]);
-    
-            if ($this->verbose) {
-                $this->output('[================== VERBOSE END ==================]');
-            }
             
             $timeElapsed = round((microtime(true) - $start) / 60, 2);
             
-            $this->outputInfo('CRAWLER REPORT:');
-            
-            foreach ($container->getReport() as $type => $items) {
-                if (count($items) > 0) {
-                    $this->outputInfo(PHP_EOL . ' ' . $type . ':');
-                    foreach ($items as $message) {
-                        $this->output(' - ' . $message);
-                    }
-                }
-            }
-            
-            $this->outputInfo(PHP_EOL . 'memory usage: ' . FileHelper::humanReadableFilesize(memory_get_usage()));
+            $table = new Table();
+            $table->setHeaders(['status', 'url', 'message']);
+            $table->setRows($container->getReport());
+            $this->output($table->run());
+            $this->outputInfo('memory usage: ' . FileHelper::humanReadableFilesize(memory_get_usage()));
             $this->outputInfo('memory peak usage: ' . FileHelper::humanReadableFilesize(memory_get_peak_usage()));
             
-            return $this->outputSuccess(PHP_EOL . 'Crawler finished in ' . $timeElapsed . ' min.');
+            return $this->outputSuccess('Crawler finished in ' . $timeElapsed . ' min.');
         } catch (\Exception $e) {
             return $this->outputError('Exception in file "'.$e->getFile() . '" on line #' . $e->getLine() . ': ' . $e->getMessage());
         }

@@ -2,9 +2,8 @@
 
 namespace luya\crawler\models;
 
+use luya\admin\ngrest\base\NgRestModel;
 use luya\crawler\admin\Module;
-
-
 use Nadar\Stemming\Stemm;
 use yii\db\Expression;
 
@@ -28,7 +27,7 @@ use yii\db\Expression;
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
-class Index extends \luya\admin\ngrest\base\NgRestModel
+class Index extends NgRestModel
 {
     public static $counter = 0;
     
@@ -76,11 +75,11 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     }
     
     /**
-     * Search by general Like statement.
+     * Search by general Like statement returning ActiveRecords.
      *
      * @param string $query
      * @param string $languageInfo
-     * @return \yii\db\ActiveRecord[]
+     * @return \yii\db\ActiveRecord
      */
     public static function flatSearchByQuery($query, $languageInfo)
     {
@@ -114,9 +113,10 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     }
     
     /**
-     * Intelligent searc
-     * @param unknown $query
-     * @param unknown $languageInfo
+     * Smart search Returning all ActiveRecords.
+     * 
+     * @param string $query
+     * @param string $languageInfo
      * @param string $returnQuery
      * @return \yii\db\ActiveRecord
      */
@@ -144,10 +144,10 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     }
     
     /**
-     * Smart search by a query.
+     * Smart search by a query returnin the ActiveQuery instance.
      *
-     * @param unknown $query
-     * @param unknown $languageInfo
+     * @param string $query
+     * @param string $languageInfo
      * @param string $returnQuery
      * @return \yii\db\ActiveQuery
      */
@@ -257,7 +257,7 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     /**
      * Encode the input query.
      *
-     * @param unknown $query
+     * @param string $query
      * @return string
      */
     public static function encodeQuery($query)
@@ -279,9 +279,10 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     }
 
     /**
-     *
-     * @param unknown $word
-     * @param unknown $context
+     * Cut the string around the given word.
+     * 
+     * @param string $word
+     * @param string $context
      * @param number $truncateAmount
      * @return string
      */
@@ -302,9 +303,10 @@ class Index extends \luya\admin\ngrest\base\NgRestModel
     }
 
     /**
-     *
-     * @param unknown $word
-     * @param unknown $text
+     * Highlight the given word.
+     * 
+     * @param string $word
+     * @param string $text
      * @param string $sheme
      * @return mixed
      */

@@ -4,24 +4,14 @@ namespace crawlerests\frontend\classes;
 
 use luya\crawler\frontend\classes\CrawlPage;
 use Symfony\Component\DomCrawler\Crawler;
+use crawlerests\CrawlerTestCase;
 
-class CrawlPageTest extends \PHPUnit_Framework_TestCase
+class CrawlPageTest extends CrawlerTestCase
 {
     public $object;
     
-    protected function setUp()
-    {
-        $this->app = new \luya\Boot();
-        $this->app->setConfigArray([
-            'id' => 'testenv',
-            'siteTitle' => 'Luya Tests',
-            'remoteToken' => 'testtoken',
-            'basePath' => dirname(__DIR__),
-        ]);
-        $this->app->mockOnly = true;
-        $this->app->setBaseYiiFile(__DIR__.'/../../../vendor/yiisoft/yii2/Yii.php');
-        $this->app->applicationWeb();
-        
+    public function afterSetup()
+    {   
         $this->object = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
         $this->object->setCrawler(new Crawler(file_get_contents('tests/data/luyaio.html')));
     }

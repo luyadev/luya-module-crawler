@@ -4,6 +4,7 @@ namespace luya\crawler\models;
 
 use luya\crawler\admin\Module;
 use luya\helpers\StringHelper;
+use luya\admin\ngrest\base\NgRestModel;
 
 /**
  * Temporary Builder Index Model.
@@ -11,10 +12,24 @@ use luya\helpers\StringHelper;
  * The Builder Index is used while the crawl process. After a success crawl for the given website, the whole BuilderIndex
  * will be synced into the {{luya\crawler\models\Index}} model.
  *
+ * @property int $id
+ * @property string $url
+ * @property string $title
+ * @property string $content
+ * @property string $description
+ * @property string $language_info
+ * @property string $url_found_on_page
+ * @property string $group
+ * @property int $last_indexed
+ * @property int $crawled
+ * @property int $status_code
+ * @property string $content_hash
+ * @property int $is_dublication
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
-class Builderindex extends \luya\admin\ngrest\base\NgRestModel
+class Builderindex extends NgRestModel
 {
     public function init()
     {
@@ -83,17 +98,15 @@ class Builderindex extends \luya\admin\ngrest\base\NgRestModel
 
     /* custom functions */
 
+    /**
+     * Whether an url is inexed or not (false = not in database or not yet crawler).
+     * 
+     * @param string $url
+     * @return boolean
+     */
     public static function isIndexed($url)
     {
-        $model = self::findOne(['url' => $url]);
-
-        if ($model) {
-            if ($model->crawled) {
-                return true;
-            }
-        }
-
-        return false;
+        return self::find()->where(['url' => $url])->select(['crawled'])->scalar();
     }
 
     public static function findUrl($url)
@@ -121,11 +134,7 @@ class Builderindex extends \luya\admin\ngrest\base\NgRestModel
     public function hashContent($event)
     {
         $this->content_hash = md5($this->content);
-        $count = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->count();
-        if ($count > 0) {
-            $this->is_dublication = true;
-        } else {
-            $this->is_dublication = false;
-        }
+        
+        $this->is_dublication = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->exists();
     }
 }
