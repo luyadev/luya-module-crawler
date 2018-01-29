@@ -124,7 +124,7 @@ class CrawlContainer extends BaseObject
             }
         }
 
-        if (Builderindex::find()->where(['crawled' => false])->count() > 0) {
+        if (Builderindex::find()->where(['crawled' => false])->exists()) {
             $this->find();
         } else {
             $this->finish();
@@ -248,6 +248,15 @@ class CrawlContainer extends BaseObject
         return preg_replace("/(a-z0-9\-\#\?\=\/\.\:)/i", '', $url);
     }
 
+    /**
+     * Saves or Updates the status for a given URL.
+     * 
+     * If the Url does not exists as model, the model will be generated
+     * Otherwise the url will be added to the crawl queue.
+     * 
+     * @param string $url
+     * @return boolean
+     */
     public function urlStatus($url)
     {
         $this->verbosePrint('Inspect URL Status', $url);

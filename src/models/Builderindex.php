@@ -34,11 +34,18 @@ class Builderindex extends NgRestModel
     public function init()
     {
         parent::init();
-        $this->on(self::EVENT_BEFORE_INSERT, [$this, 'hashContent']);
-        $this->on(self::EVENT_BEFORE_UPDATE, [$this, 'hashContent']);
+        $this->on(self::EVENT_BEFORE_INSERT, [$this, 'preparePageVariables']);
+        $this->on(self::EVENT_BEFORE_UPDATE, [$this, 'preparePageVariables']);
     }
     
-    /* yii model properties */
+    /**
+     * Prepare the page variables like contant hash and if its dulication by content.
+     */
+    public function preparePageVariables()
+    {
+        $this->content_hash = md5($this->content);
+        $this->is_dublication = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->exists();
+    }
 
     public static function tableName()
     {
@@ -114,9 +121,19 @@ class Builderindex extends NgRestModel
         return self::findOne(['url' => $url]);
     }
 
+    /**
+     * Add a given page to the index with status: uncrawled.
+     * 
+     * If there url exists already in the index, false is returned.
+     * 
+     * @param string $url
+     * @param string $title
+     * @param string $urlFoundOnPage
+     * @return boolean
+     */
     public static function addToIndex($url, $title = null, $urlFoundOnPage = null)
     {
-        $model = self::findOne(['url' => $url]);
+        $model = self::find()->where(['url' => $url])->exists();
 
         if ($model) {
             return false;
@@ -129,12 +146,5 @@ class Builderindex extends NgRestModel
         $model->crawled = false;
 
         return $model->save(false);
-    }
-
-    public function hashContent($event)
-    {
-        $this->content_hash = md5($this->content);
-        
-        $this->is_dublication = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->exists();
     }
 }
