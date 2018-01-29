@@ -7,6 +7,7 @@ use yii\base\InvalidConfigException;
 use yii\base\BaseObject;
 use Symfony\Component\DomCrawler\Crawler;
 use Goutte\Client;
+use yii\helpers\VarDumper;
 
 /**
  * Crawl Page.
@@ -77,6 +78,7 @@ class CrawlPage extends BaseObject
             try {
                 $this->client = new Client();
                 $this->_crawler = $this->client->request('GET', $this->pageUrl);
+                $this->verbosePrint("[GENERATE REQUEST TO]", $this->pageUrl);
                 if ($this->client->getInternalResponse()->getStatus() !== 200) {
                     $this->verbosePrint("[!] " .$this->pageUrl, "Response Status is not 200");
                     $this->_crawler = false;
@@ -135,6 +137,7 @@ class CrawlPage extends BaseObject
             });
             
             foreach ($links as $key => $item) {
+                $this->verbosePrint("find new link from page extraction", VarDumper::dumpAsString($item));
                 if (StringHelper::contains(['@'], $item[1])) {
                     unset($links[$key]);
                     continue;

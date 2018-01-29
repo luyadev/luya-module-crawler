@@ -116,9 +116,15 @@ class Builderindex extends NgRestModel
         return self::find()->where(['url' => $url])->select(['crawled'])->scalar();
     }
 
+    /**
+     * Find a crawler index entry based on the url.
+     * 
+     * @param string $url
+     * @return \luya\crawler\models\Builderindex|boolean
+     */
     public static function findUrl($url)
     {
-        return self::findOne(['url' => $url]);
+        return self::find()->where(['url' => $url])->limit(1)->one();
     }
 
     /**

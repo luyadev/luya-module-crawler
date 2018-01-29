@@ -116,17 +116,21 @@ class CrawlContainer extends BaseObject
 
     public function find()
     {
-        foreach (Builderindex::find()->where(['crawled' => false])->asArray()->all() as $item) {
+        foreach (Builderindex::find()->where(['crawled' => false])->select(['url'])->asArray()->all() as $item) {
             if (!$this->isProcessed($item['url'])) {
                 if ($this->urlStatus($item['url'])) {
                     $this->addProcessed($item['url']);
                 }
+            } else {
+                $this->verbosePrint('url is in processed array, and will therfore skipped.', $item['url']);
             }
         }
 
         if (Builderindex::find()->where(['crawled' => false])->exists()) {
+            $this->verbosePrint("run another find process");
             $this->find();
         } else {
+            $this->verbosePrint("no not crawled page has been found, proceed with finish function.");
             $this->finish();
         }
     }
@@ -288,6 +292,7 @@ class CrawlContainer extends BaseObject
     
                 // add the pages links to the index
                 foreach ($this->getCrawler($url)->getLinks() as $link) {
+                    $this->verbosePrint('link iteration for new page' , $link);
                     if ($this->isProcessed($link[1])) {
                         continue;
                     }
@@ -314,8 +319,11 @@ class CrawlContainer extends BaseObject
                     $model->language_info = $this->getCrawler($url)->getLanguageInfo();
                     $model->save(false);
     
+                    
                     foreach ($this->getCrawler($url)->getLinks() as $link) {
+                        $this->verbosePrint('link iteration for existing page', $link[1]);
                         if ($this->isProcessed($link[1])) {
+                            $this->verbosePrint('link is already processed.', $link[1]);
                             continue;
                         }
                         if ($this->matchBaseUrl($link[1])) {
@@ -326,6 +334,11 @@ class CrawlContainer extends BaseObject
                     }
                 }
             }
+        }
+        
+        if (empty($model->content)) {
+            $this->verbosePrint("Remove empty content model after crawling all links.");
+            $model->delete();
         }
         
         unset($model);
