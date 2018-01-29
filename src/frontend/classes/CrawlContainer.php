@@ -51,7 +51,7 @@ class CrawlContainer extends BaseObject
         return in_array($link, $this->_proccessed);
     }
     
-    public function addLog($cat, $message, $title = null)
+    public function addLog($cat, $url, $message = null)
     {
         /**
          * public $log = [
@@ -63,7 +63,7 @@ class CrawlContainer extends BaseObject
          *    'filtered' => [],
          * ];
          */
-        $this->_log[] = [$cat, $message, $title];
+        $this->_log[] = [$cat, $url, $message];
     }
     
     public function verbosePrint($key, $value = null)
@@ -216,7 +216,7 @@ class CrawlContainer extends BaseObject
             $r = preg_match($rgx, $url, $results);
             if ($r === 1) {
                 $this->verbosePrint("'" . $url . "' matches regex and will be skipped", $rgx);
-                $this->addLog('filtered', $url);
+                $this->addLog('filtered', $url, 'url does not match regex');
                 return false;
             }
         }
@@ -230,13 +230,13 @@ class CrawlContainer extends BaseObject
         
         if ($url !== $this->encodeUrl($url)) {
             $this->verbosePrint("filtered url '$url' cause of unallowed chars", $this->encodeUrl($url));
-            $this->addLog('invalid_encode', $url . ' contains invalid chars');
+            $this->addLog('invalid_encode', $url, 'contains invalid chars');
             return false;
         }
         
         if (strpos($type, 'text/html') === false) {
             $this->verbosePrint('link "'.$url.'" is not type of content "text/html"', $type);
-            $this->addLog('invalid_header', $url . ' invalid header ' . $type);
+            $this->addLog('invalid_header', $url, 'invalid header response ' . $type);
             return false;
         }
         
