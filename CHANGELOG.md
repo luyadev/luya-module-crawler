@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.1 (in progress)
 
+ + [#2](https://github.com/luyadev/luya-module-crawler/issues/2) Add database index keys for builder and index table.
 + Use LUYA Testsuite
 + Added PHPDocs
 + Added Table output
