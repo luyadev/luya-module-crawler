@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
  * @property int $position
  * @property int $index_id
  * @property int $timestamp
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.1
  */

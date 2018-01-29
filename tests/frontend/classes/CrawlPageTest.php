@@ -11,7 +11,7 @@ class CrawlPageTest extends CrawlerTestCase
     public $object;
     
     public function afterSetup()
-    {   
+    {
         $this->object = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
         $this->object->setCrawler(new Crawler(file_get_contents('tests/data/luyaio.html')));
     }

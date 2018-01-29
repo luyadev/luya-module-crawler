@@ -18,7 +18,7 @@ class ClickController extends Controller
 {
     /**
      * Generate a click for a given search.
-     * 
+     *
      * @param integer $searchId
      * @param integer $indexId
      * @param integer $position

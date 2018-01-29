@@ -114,7 +114,7 @@ class Index extends NgRestModel
     
     /**
      * Smart search Returning all ActiveRecords.
-     * 
+     *
      * @param string $query
      * @param string $languageInfo
      * @param string $returnQuery
@@ -280,7 +280,7 @@ class Index extends NgRestModel
 
     /**
      * Cut the string around the given word.
-     * 
+     *
      * @param string $word
      * @param string $context
      * @param number $truncateAmount
@@ -304,7 +304,7 @@ class Index extends NgRestModel
 
     /**
      * Highlight the given word.
-     * 
+     *
      * @param string $word
      * @param string $text
      * @param string $sheme

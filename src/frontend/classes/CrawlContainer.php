@@ -250,10 +250,10 @@ class CrawlContainer extends BaseObject
 
     /**
      * Saves or Updates the status for a given URL.
-     * 
+     *
      * If the Url does not exists as model, the model will be generated
      * Otherwise the url will be added to the crawl queue.
-     * 
+     *
      * @param string $url
      * @return boolean
      */

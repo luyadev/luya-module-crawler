@@ -107,7 +107,7 @@ class Builderindex extends NgRestModel
 
     /**
      * Whether an url is inexed or not (false = not in database or not yet crawler).
-     * 
+     *
      * @param string $url
      * @return boolean
      */
@@ -123,9 +123,9 @@ class Builderindex extends NgRestModel
 
     /**
      * Add a given page to the index with status: uncrawled.
-     * 
+     *
      * If there url exists already in the index, false is returned.
-     * 
+     *
      * @param string $url
      * @param string $title
      * @param string $urlFoundOnPage
