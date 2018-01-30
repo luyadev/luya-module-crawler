@@ -9,6 +9,7 @@ use luya\crawler\models\Builderindex;
 use luya\crawler\models\Index;
 use luya\helpers\Url;
 use yii\base\BaseObject;
+use luya\helpers\Html;
 
 /**
  * Crawler Container.
@@ -249,7 +250,7 @@ class CrawlContainer extends BaseObject
 
     protected function encodeUrl($url)
     {
-        return preg_replace("/(a-z0-9\-\#\?\=\/\.\:)/i", '', $url);
+        return preg_replace("/(a-z0-9\-\#\?\=\/\.\:)/i", '', Html::encode($url));
     }
 
     /**
@@ -318,7 +319,6 @@ class CrawlContainer extends BaseObject
                     $model->description = $this->getCrawler($url)->getMetaDescription();
                     $model->language_info = $this->getCrawler($url)->getLanguageInfo();
                     $model->save(false);
-    
                     
                     foreach ($this->getCrawler($url)->getLinks() as $link) {
                         $this->verbosePrint('link iteration for existing page', $link[1]);
