@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.2 (in progress)
 
++ [#5](https://github.com/luyadev/luya-module-crawler/issues/5) Add option to provide group search in default controller.
+
 ## 1.0.1 (28. March 2018)
 
 + [#2](https://github.com/luyadev/luya-module-crawler/issues/2) Add database index keys for builder and index table.

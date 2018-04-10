@@ -32,7 +32,7 @@ class DefaultController extends \luya\web\Controller
      *
      * @return string
      */
-    public function actionIndex($query = null, $page = null)
+    public function actionIndex($query = null, $page = null, $group = null)
     {
         $language = Yii::$app->composition->getKey('langShortCode');
         
@@ -40,6 +40,10 @@ class DefaultController extends \luya\web\Controller
             $provider = new ArrayDataProvider();
         } else {
             $activeQuery = Index::activeQuerySearch($query, $language);
+            
+            if ($group) {
+                $activeQuery->andWhere(['group' => $group]);
+            }
             
             $provider = new ActiveDataProvider([
                 'query' => $activeQuery,
