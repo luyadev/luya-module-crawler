@@ -10,6 +10,7 @@ use luya\crawler\models\Index;
 use luya\helpers\Url;
 use yii\base\BaseObject;
 use luya\helpers\Html;
+use GuzzleHttp\Client;
 
 /**
  * Crawler Container.
@@ -22,18 +23,60 @@ use luya\helpers\Html;
  */
 class CrawlContainer extends BaseObject
 {
+    /**
+     * @var string The based Url where the crawler should start to lookup for pages, the crawler only allowes
+     * links which matches the base url. It doenst matter if you have a trailing slash or not, the module is taking
+     * care of this.
+     *
+     * So on a localhost your base url could look like this:
+     *
+     * ```php
+     * 'baseUrl' => 'http://localhost/luya-kickstarter/public_html/',
+     * ```
+     *
+     * If you are on a production/preproduction server the url in your config could look like this:
+     *
+     * ```php
+     * 'baseUrl' => 'https://luya.io',
+     * ```
+     */
     public $baseUrl;
 
+    /**
+     * @var string The base host extracted from baseUrl
+     */
     public $baseHost;
 
-    public $pageCrawler;
-
+    /**
+     * @var array An array with regular expression (including delimiters) which will be applied to found links so you can
+     * filter several urls which should not be followed by the crawler.
+     *
+     * Examples:
+     *
+     * ```php
+     * 'filterRegex' => [
+     *     '/\.\//i',           // filter all links with a dot inside
+     *     '/agenda\//i',       // filter all pages who contains "agenda/"
+     * ],
+     * ```
+     */
     public $filterRegex = [];
     
+    /**
+     * @var boolean Whether verbositiy is enabled or not.
+     */
     public $verbose = false;
-    
+
+    /**
+     * @var array|boolean Define an array of extension where the links should automatically not follow in order to save memory.
+     * If you like to disable this feature (small pages) you can set `false`.
+     */
     public $doNotFollowExtensions = false;
     
+    /**
+     * @var boolean By default the title tag will be used for the page name, if `$useH1` is enabled the title for the page will be replaced by the h1 tag if found, oterwise
+     * only the title tag is used for titles.
+     */
     public $useH1 = false;
     
     private $_crawlers = [];
@@ -92,6 +135,9 @@ class CrawlContainer extends BaseObject
         return $this->_crawlers[$url];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if ($this->baseUrl === null) {
@@ -100,6 +146,10 @@ class CrawlContainer extends BaseObject
         
         $this->baseUrl = Url::trailing($this->baseUrl);
         $this->baseHost = parse_url($this->baseUrl, PHP_URL_HOST);
+        
+        if (!$this->isBaseUrlExists()) {
+            return $this->addLog(null, "The given baseUrl '{$this->baseUrl}' is wrong or offline. Status code must be 200.");
+        }
         
         $this->verbosePrint('baseUrl', $this->baseUrl);
         $this->verbosePrint('baseHost', $this->baseHost);
@@ -113,6 +163,21 @@ class CrawlContainer extends BaseObject
         // init base url
         $this->urlStatus($this->baseUrl);
         $this->find();
+    }
+    
+    /**
+     * Checks whether the base url response a status 200 code.
+     * 
+     * @return boolean
+     * @since 1.0.2
+     */
+    public function isBaseUrlExists()
+    {
+        $client = new Client();
+        // create request but disabled guzzle exception by passing http_errors false
+        $result = $client->request('GET', $this->baseUrl, ['http_errors' => false]);
+        // see if status code is 200
+        return $result->getStatusCode() === 200;
     }
 
     public function find()
