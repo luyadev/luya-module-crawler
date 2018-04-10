@@ -41,7 +41,7 @@ class DefaultController extends \luya\web\Controller
         } else {
             $activeQuery = Index::activeQuerySearch($query, $language);
             
-            if ($group) {
+            if (!empty($group)) {
                 $activeQuery->andWhere(['group' => $group]);
             }
             
