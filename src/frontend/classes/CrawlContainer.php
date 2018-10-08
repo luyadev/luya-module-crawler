@@ -173,11 +173,15 @@ class CrawlContainer extends BaseObject
      */
     public function isBaseUrlExists()
     {
-        $client = new Client();
-        // create request but disabled guzzle exception by passing http_errors false
-        $result = $client->request('GET', $this->baseUrl, ['http_errors' => false]);
-        // see if status code is 200
-        return $result->getStatusCode() === 200;
+        try {
+            $client = new Client();
+            // create request but disabled guzzle exception by passing http_errors false
+            $result = $client->request('GET', $this->baseUrl, ['http_errors' => false]);
+            // see if status code is 200
+            return $result->getStatusCode() === 200;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public function find()
