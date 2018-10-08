@@ -6,6 +6,7 @@ use luya\admin\ngrest\base\NgRestModel;
 use luya\crawler\admin\Module;
 use Nadar\Stemming\Stemm;
 use yii\db\Expression;
+use luya\helpers\StringHelper;
 
 /**
  * The Crawler Index Model.
@@ -275,7 +276,9 @@ class Index extends NgRestModel
      */
     public function preview($word, $cutAmount = 150)
     {
-        return $this->highlight($word, $this->cut($word, html_entity_decode($this->content), $cutAmount));
+        $cut = StringHelper::truncateMiddle($this->content, $word, $cutAmount);
+
+        return StringHelper::highlightWord($cut, $word, '<span style="background-color:#FFEBD1; color:black;">%s</span>');
     }
 
     /**
@@ -288,18 +291,7 @@ class Index extends NgRestModel
      */
     public function cut($word, $context, $truncateAmount = 150)
     {
-        $pos = strpos($context, $word);
-        $originalContext = $context;
-        // cut lef
-        if ($pos > $truncateAmount) {
-            $context = '...'.substr($context, (($pos - 1) - $truncateAmount));
-        }
-        // cut right
-        if ((strlen($originalContext) - $pos) > $truncateAmount) {
-            $context = substr($context, 0, -(strlen($originalContext) - ($pos + strlen($word) + 1) - $truncateAmount)).'...';
-        }
-
-        return $context;
+        return StringHelper::truncateMiddle($context, $word, $truncateAmount);
     }
 
     /**
@@ -310,9 +302,9 @@ class Index extends NgRestModel
      * @param string $sheme
      * @return mixed
      */
-    public function highlight($word, $text, $sheme = "<span style='background-color:#FFEBD1; color:black;'>%s</span>")
+    public function highlight($word, $text, $sheme = '<span style="background-color:#FFEBD1; color:black;">%s</span>')
     {
-        return preg_replace("/".preg_quote(htmlentities($word, ENT_QUOTES), '/')."/i", sprintf($sheme, $word), $text);
+        return StringHelper::highlightWord($text, $word, $sheme);
     }
     
     /**
