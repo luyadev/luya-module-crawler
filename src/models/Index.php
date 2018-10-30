@@ -277,7 +277,7 @@ class Index extends NgRestModel
     public function preview($word, $cutAmount = 150)
     {
         $cut = StringHelper::truncateMiddle($this->content, $word, $cutAmount);
-
+        
         return StringHelper::highlightWord($cut, $word, '<span style="background-color:#FFEBD1; color:black;">%s</span>');
     }
 
@@ -333,7 +333,7 @@ class Index extends NgRestModel
             'title' => 'text',
             'language_info' => 'text',
             'url_found_on_page' => 'text',
-            'content' => 'textarea',
+            'content' => ['textarea', 'encoding' => false],
             'last_update' => 'datetime',
             'added_to_index' => 'datetime',
         ];
