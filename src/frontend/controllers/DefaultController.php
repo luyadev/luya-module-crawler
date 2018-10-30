@@ -52,6 +52,7 @@ class DefaultController extends \luya\web\Controller
                     'route' => '/crawler/default',
                     'params' => ['query' => $query, 'page' => $page]
                 ],
+                'sort' => false,
             ]);
             
             $searchData = new Searchdata();

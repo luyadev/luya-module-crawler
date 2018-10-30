@@ -7,6 +7,7 @@ use luya\crawler\admin\Module;
 use Nadar\Stemming\Stemm;
 use yii\db\Expression;
 use luya\helpers\StringHelper;
+use luya\helpers\ArrayHelper;
 
 /**
  * The Crawler Index Model.
@@ -165,10 +166,13 @@ class Index extends NgRestModel
             }
             
             $word = Stemm::stem($word, $languageInfo);
-            $q = self::find()->select(['id', 'url', 'title']);
-            $q->where(['like', 'content', $word]);
-            $q->orWhere(['like', 'description', $query]);
-            $q->orWhere(['like', 'title', $query]);
+            $q = self::find()->select(['id', 'url', 'title', 'content']);
+            $q->where([
+                'or',
+                ['like', 'content', $word],
+                ['like', 'description', $word],
+                ['like', 'title', $word],
+            ]);
             if (!empty($languageInfo)) {
                 $q->andWhere(['language_info' => $languageInfo]);
             }
@@ -177,20 +181,13 @@ class Index extends NgRestModel
             static::indexer($word, $data, $index);
         }
         
-        
+        ArrayHelper::multisort($index, ['urlwordpos', 'title'], [SORT_DESC, SORT_ASC]);
+
         $ids = [];
-        $foundOld = 1;
-        foreach ($index as $item) {
-            if (isset($ids[$item['urlwordpos']])) {
-                $foundOld++;
-                $ids[$item['urlwordpos'] + $foundOld] = $item['id'];
-            } else {
-                $ids[$item['urlwordpos']] = $item['id'];
-            }
+        foreach ($index as $row) {
+            $ids[] = $row['id'];
         }
-        
-        arsort($ids);
-        
+
         $activeQuery = self::find()->where(['in', 'id', $ids]);
         if (!empty($ids)) {
             $activeQuery->orderBy(new Expression('FIELD (id, ' . implode(', ', $ids) . ')'));
@@ -198,61 +195,92 @@ class Index extends NgRestModel
         
         return $activeQuery;
     }
-    
-    /**
-     *
-     * @param unknown $item
-     * @param unknown $index
-     */
-    private static function indexer($keyword, $item, &$index)
-    {
-        if (empty($index)) {
-            $index = $item;
-            foreach ($index as $k => $v) {
-                $index[$k]['urlwordpos'] = static::evalPosition($v, $keyword);
-            }
-        } else {
-            foreach ($index as $k => $v) {
-                if (!array_key_exists($k, $item)) {
-                    unset($index[$k]);
-                } else {
-                    $index[$k]['urlwordpos'] = static::evalPosition($v, $keyword);
-                }
-            }
-        }
-    }
+
     
     private static $_midImportant = 500;
     
     private static $_unImportant = 1000;
-    
-    private static function evalPosition(array $item, $keyword)
+
+    /**
+     * Find a position for a given index item and keyword.
+     * 
+     * 1. Generate the index
+     * 2. If multiple words, ensure the word also existing on the current index otherwise unset.
+     * 
+     * @param array $results
+     * @param array $index The index
+     */
+    private static function indexer($keyword, array $results, &$index)
     {
-        $newpos = strpos($item['url'], $keyword);
-        
-        if ($newpos === false) {
-            $posInTitle = strpos($item['title'], $keyword);
-            
-            if ($posInTitle !== false) {
-                $newpos = $posInTitle + self::$_midImportant;
-                self::$_midImportant++;
-            } else {
-                $newpos = self::$_unImportant;
-                self::$_unImportant++;
+        // its only empty when the indexer runs for the first word
+        if (empty($index)) {
+            foreach ($results as $id => $v) {
+                $item = $v;
+                $item['urlwordpos'] = static::evalPosition($v, $keyword);
+                $index[$id] = $item;
+            }
+        } else {
+            // now the indexer is running for the next word for the whole index
+            foreach ($index as $id => $v) {
+                // If the current results array does not provide the same page id, remove as its not found on the same page
+                if (!array_key_exists($id, $results)) {
+                    unset($index[$id]);
+                } else {
+                    // if there is already an index, check if the the new position for this word is better:
+                    $newPos = static::evalPosition($v, $keyword);
+
+                    if ($newPos > $index[$id]['urlwordpos']) {
+                        $index[$id]['urlwordpos'] = $newPos;
+                    }
+                }
             }
         }
-        
-        $after = substr($item['url'], $newpos + 1);
-        
-        if ($after) {
-            $newpos = $newpos + strlen($after);
+    }
+
+    /**
+     * Get best word distance.
+     *
+     * @param array $words
+     * @param string $keyword
+     * @return integer
+     */
+    private static function getBestWordDistance(array $words, $keyword)
+    {
+        $i = 0;
+        foreach ($words as $word) {
+            $v = 0;
+            similar_text($word, $keyword, $v);
+            if ($v > $i) {
+                $i = $v;
+            }
         }
-        
-        if (isset($item['urlwordpos']) && $item['urlwordpos'] < $newpos) {
-            return $item['urlwordpos'];
-        }
-        
-        return $newpos;
+
+        return $i;
+    }
+    
+    /**
+     * Find a position index for a given key word inside an item.
+     * 
+     * NEW: Bigger is better!
+     *
+     * @param array $item
+     * @param [type] $keyword
+     * @return void
+     */
+    private static function evalPosition(array $item, $keyword)
+    {
+        $keyword = strtolower($keyword);
+        $url = strtolower(parse_url($item['url'], PHP_URL_PATH));
+        $posInUrl = self::getBestWordDistance(explode("/", $url), $keyword);
+        $posInTitle = self::getBestWordDistance(explode(" " , strtolower($item['title'])), $keyword);
+        $partialWordCount = substr_count(strtolower($item['content']), $keyword);
+        $exactWordCount = preg_match_all('/\b'. preg_quote($keyword) .'\b/', strtolower($item['content']));
+
+
+        $partialWordCount = $partialWordCount / 5;
+        $exactWordCount = $exactWordCount / 5;
+
+        return $posInUrl + $posInTitle + $partialWordCount + $exactWordCount;
     }
     
     /**

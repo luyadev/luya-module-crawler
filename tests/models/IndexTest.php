@@ -127,9 +127,9 @@ class IndexTest extends CrawlerTestCase
     
         $this->assertSame(6, count($test1));
     
-        $this->assertSame('index5/item', $test1[0]->url);
-        $this->assertSame('index6/else/item', $test1[1]->url);
-        $this->assertSame('index7.php', $test1[2]->url);
+        $this->assertSame('index2.php', $test1[0]->url);
+        $this->assertSame('index3.php', $test1[1]->url);
+        $this->assertSame('index4.php', $test1[2]->url);
     }
 
     public function testHtmlEncodingQuery()
