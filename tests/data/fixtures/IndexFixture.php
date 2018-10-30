@@ -3,8 +3,9 @@
 namespace crawlerests\data\fixtures;
 
 use yii\test\ActiveFixture;
+use luya\testsuite\fixtures\NgRestModelFixture;
 
-class IndexFixture extends ActiveFixture
+class IndexFixture extends NgRestModelFixture
 {
     public $modelClass = 'luya\crawler\models\Index';
 

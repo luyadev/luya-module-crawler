@@ -3,6 +3,9 @@
 namespace crawlerests;
 
 use luya\testsuite\cases\WebApplicationTestCase;
+use luya\testsuite\fixtures\NgRestModelFixture;
+use luya\crawler\models\Searchdata;
+use crawlerests\data\fixtures\IndexFixture;
 
 /**
  * Crawler TestCase
@@ -18,9 +21,7 @@ class CrawlerTestCase extends WebApplicationTestCase
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
-                    'dsn' => DB_DSN,
-                    'username' => DB_USER,
-                    'password' => DB_PASS,
+                    'dsn' => 'sqlite::memory:',
                     'charset' => 'utf8',
                 ],
                 'request' => [
@@ -31,5 +32,16 @@ class CrawlerTestCase extends WebApplicationTestCase
                 'crawleradmin' => 'luya\crawler\admin\Module',
             ]
         ];
+    }
+
+    public function afterSetup()
+    {
+        parent::afterSetup();
+
+        $searchData = new NgRestModelFixture([
+            'modelClass' => Searchdata::class,
+        ]);
+
+        $indexFixture = new IndexFixture();
     }
 }

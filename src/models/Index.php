@@ -31,10 +31,6 @@ use luya\helpers\ArrayHelper;
  */
 class Index extends NgRestModel
 {
-    public static $counter = 0;
-    
-    public static $searchDataId = 0;
-    
     /**
      * @inheritdoc
      */
@@ -74,6 +70,50 @@ class Index extends NgRestModel
             'added_to_index' => ' add to index on',
             'last_update' => 'last update'
         ];
+    }
+
+
+    
+    /**
+     * @inheritdoc
+     */
+    public function genericSearchFields()
+    {
+        return ['url', 'content', 'title'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function ngRestApiEndpoint()
+    {
+        return 'api-crawler-index';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ngRestAttributeTypes()
+    {
+        return [
+            'url' => 'text',
+            'title' => 'text',
+            'language_info' => 'text',
+            'url_found_on_page' => 'text',
+            'content' => ['textarea', 'encoding' => false],
+            'last_update' => 'datetime',
+            'added_to_index' => 'datetime',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ngRestConfig($config)
+    {
+        $this->ngRestConfigDefine($config, 'list', ['title', 'url', 'language_info', 'last_update', 'added_to_index']);
+        $this->ngRestConfigDefine($config, ['create', 'update'], ['url', 'title', 'language_info', 'url_found_on_page', 'content', 'last_update', 'added_to_index']);
+        return $config;
     }
     
     /**
@@ -157,22 +197,49 @@ class Index extends NgRestModel
     {
         $query = static::encodeQuery($query);
         
-        $parts = explode(" ", $query);
+        $index = self::generateRelevanceArray($query, $languageInfo);
+
+        $ids = [];
+        $order = [];
+        foreach ($index as $row) {
+            $ids[] = $row['id'];
+            $order[] = new Expression("id={$row['id']} DESC");
+        }
+
+        $activeQuery = self::find()->where(['in', 'id', $ids]);
+        if (!empty($ids)) {
+            // sqlite wont work with FIELD()
+            // alternative? https://stackoverflow.com/a/47368819/4611030
+            $activeQuery->orderBy($order);
+            // instead of:
+            // $activeQuery->orderBy(new Expression('FIELD (id, ' . implode(', ', $ids) . ')'));
+        }
+        
+        return $activeQuery;
+    }
+    
+    /**
+     * Generate relevance array for given querty and langauge info.
+     *
+     * @param [type] $query
+     * @param [type] $languageInfo
+     * @return void
+     */
+    public static function generateRelevanceArray($query, $languageInfo)
+    {
+        $parts = array_filter(explode(" ", $query));
         
         $index = [];
         foreach ($parts as $word) {
-            if (empty($word)) {
-                continue;
-            }
-            
             $word = Stemm::stem($word, $languageInfo);
-            $q = self::find()->select(['id', 'url', 'title', 'content']);
-            $q->where([
-                'or',
-                ['like', 'content', $word],
-                ['like', 'description', $word],
-                ['like', 'title', $word],
-            ]);
+            $q = self::find()
+                ->select(['id', 'url', 'title', 'content'])
+                ->where([
+                    'or',
+                    ['like', 'content', $word],
+                    ['like', 'description', $word],
+                    ['like', 'title', $word],
+                ]);
             if (!empty($languageInfo)) {
                 $q->andWhere(['language_info' => $languageInfo]);
             }
@@ -181,25 +248,10 @@ class Index extends NgRestModel
             static::indexer($word, $data, $index);
         }
         
-        ArrayHelper::multisort($index, ['urlwordpos', 'title'], [SORT_DESC, SORT_ASC]);
+        ArrayHelper::multisort($index, ['relevance', 'title'], [SORT_DESC, SORT_ASC]);
 
-        $ids = [];
-        foreach ($index as $row) {
-            $ids[] = $row['id'];
-        }
-
-        $activeQuery = self::find()->where(['in', 'id', $ids]);
-        if (!empty($ids)) {
-            $activeQuery->orderBy(new Expression('FIELD (id, ' . implode(', ', $ids) . ')'));
-        }
-        
-        return $activeQuery;
+        return $index;
     }
-
-    
-    private static $_midImportant = 500;
-    
-    private static $_unImportant = 1000;
 
     /**
      * Find a position for a given index item and keyword.
@@ -216,7 +268,7 @@ class Index extends NgRestModel
         if (empty($index)) {
             foreach ($results as $id => $v) {
                 $item = $v;
-                $item['urlwordpos'] = static::evalPosition($v, $keyword);
+                $item['relevance'] = static::calculatePageRelevanceValue($v, $keyword);
                 $index[$id] = $item;
             }
         } else {
@@ -227,10 +279,10 @@ class Index extends NgRestModel
                     unset($index[$id]);
                 } else {
                     // if there is already an index, check if the the new position for this word is better:
-                    $newPos = static::evalPosition($v, $keyword);
+                    $newPos = static::calculatePageRelevanceValue($v, $keyword);
 
-                    if ($newPos > $index[$id]['urlwordpos']) {
-                        $index[$id]['urlwordpos'] = $newPos;
+                    if ($newPos > $index[$id]['relevance']) {
+                        $index[$id]['relevance'] = $newPos;
                     }
                 }
             }
@@ -238,7 +290,7 @@ class Index extends NgRestModel
     }
 
     /**
-     * Get best word distance.
+     * Get best word distance for a given words array.
      *
      * @param array $words
      * @param string $keyword
@@ -259,15 +311,15 @@ class Index extends NgRestModel
     }
     
     /**
-     * Find a position index for a given key word inside an item.
+     * Get the page importance value for a given item and keyword.
      * 
-     * NEW: Bigger is better!
-     *
+     * The bigger the value, the more relevante is this page for the given keyword.
+     * 
      * @param array $item
      * @param [type] $keyword
      * @return void
      */
-    private static function evalPosition(array $item, $keyword)
+    private static function calculatePageRelevanceValue(array $item, $keyword)
     {
         $keyword = strtolower($keyword);
         $url = strtolower(parse_url($item['url'], PHP_URL_PATH));
@@ -333,47 +385,5 @@ class Index extends NgRestModel
     public function highlight($word, $text, $sheme = '<span style="background-color:#FFEBD1; color:black;">%s</span>')
     {
         return StringHelper::highlightWord($text, $word, $sheme);
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function genericSearchFields()
-    {
-        return ['url', 'content', 'title'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function ngRestApiEndpoint()
-    {
-        return 'api-crawler-index';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function ngRestAttributeTypes()
-    {
-        return [
-            'url' => 'text',
-            'title' => 'text',
-            'language_info' => 'text',
-            'url_found_on_page' => 'text',
-            'content' => ['textarea', 'encoding' => false],
-            'last_update' => 'datetime',
-            'added_to_index' => 'datetime',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function ngRestConfig($config)
-    {
-        $this->ngRestConfigDefine($config, 'list', ['title', 'url', 'language_info', 'last_update', 'added_to_index']);
-        $this->ngRestConfigDefine($config, ['create', 'update'], ['url', 'title', 'language_info', 'url_found_on_page', 'content', 'last_update', 'added_to_index']);
-        return $config;
     }
 }
