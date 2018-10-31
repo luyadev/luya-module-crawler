@@ -18,6 +18,8 @@ class IndexTest extends CrawlerTestCase
         $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">foobar</span> Hello', $model->highlight('foobar', 'Hello foobar Hello'));
         $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">foobar</span> Hello', $model->highlight('foobar', 'Hello FOOBAR Hello'));
         $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">FOOBar</span> Hello', $model->highlight('FOOBar', 'Hello foobar Hello'));
+    
+        $this->assertSame('Wohn- und B&uuml;rozentrum f&uuml;r K&ouml;rperbehinderte Die F&auml;higkeit z&auml;hlt, nicht die Behinderung Unterst&uuml;tzen Sie uns Geldspenden,..', $model->preview('notexisting'));
     }
     
     public function testFlatSearchByQuery()
@@ -101,6 +103,12 @@ class IndexTest extends CrawlerTestCase
         $this->assertSame('index6/else/item', $test1[0]->url);
         $this->assertSame('index5/item', $test1[1]->url);
         $this->assertSame('index2.php', $test1[2]->url);
+    }
+
+    public function testWithMultipleWordsAndPreview()
+    {
+        $test1 = Index::searchByQuery('barfoo drink', 'en');
+        $this->assertSame(2, count($test1));
     }
 
     public function testHtmlEncodingQuery()

@@ -356,8 +356,17 @@ class Index extends NgRestModel
      */
     public function preview($word, $cutAmount = 150)
     {
-        $cut = StringHelper::truncateMiddle($this->content, $word, $cutAmount);
+        $content = $this->content;
+        // check if the word even exists in the content, as when stemming has taken place words may be cut.
+        $exists = substr_count(strtolower($content), $word);
+        if ($exists == 0) {
+            if (!empty($this->description)) {
+                $content = $this->description;
+            }
+            return StringHelper::truncate($content, $cutAmount, '..');
+        }
         
+        $cut = StringHelper::truncateMiddle($content, $word, $cutAmount);
         return StringHelper::highlightWord($cut, $word, '<span style="background-color:#FFEBD1; color:black;">%s</span>');
     }
 
