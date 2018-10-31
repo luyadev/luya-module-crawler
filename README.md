@@ -70,8 +70,9 @@ Make a post request with `query` to the `crawler/default/index` route and render
 <?php
 use luya\helpers\Url;
 use yii\widgets\LinkPager;
-
+use luya\crawler\widgets\DidYouMeanWidget;
 /* @var $query string The lookup query encoded */
+/* @var $language string */
 /* @var $this \luya\web\View */
 /* @var $provider \yii\data\ActiveDataProvider */
 ?>
@@ -82,6 +83,7 @@ use yii\widgets\LinkPager;
 </form>
 
 <h2><?= $provider->totalCount; ?> Results</h2>
+<?= DidYouMeanWidget::widget(['query' => $query, 'language' => $language, 'dataProvider' => $provider]); ?>
 <?php foreach($provider->models as $item): /* @var $item \luya\crawler\models\Index */ ?>
     <h3><?= $item->title; ?></h3>
     <p><?= $item->preview($query); ?></p>

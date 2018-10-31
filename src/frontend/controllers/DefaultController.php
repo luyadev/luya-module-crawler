@@ -69,6 +69,7 @@ class DefaultController extends \luya\web\Controller
         return $this->render('index', [
             'query' => Html::encode($query),
             'provider' => $provider,
+            'language' => $language,
         ]);
     }
 }

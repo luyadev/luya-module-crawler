@@ -89,4 +89,16 @@ final class Module extends \luya\base\Module
     public $urlRules = [
         ['pattern' => 'crawler', 'route' => 'crawler/default'],
     ];
+
+    public static function onLoad()
+    {
+        self::registerTranslation('crawler', static::staticBasePath() . '/messages', [
+            'crawler' => 'crawler.php',
+        ]);
+    }
+
+    public static function t($message, array $params = [])
+    {
+        return parent::baseT('crawler', $message, $params);
+    }
 }

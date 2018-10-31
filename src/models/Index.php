@@ -245,6 +245,13 @@ class Index extends NgRestModel
             }
             $data = $q->asArray()->indexBy('id')->all();
         
+            // if there are no results one of the words does not exists, therefore return an empty array.
+            // its better to tell people nothing is found instead of display a large amount of data for a
+            // a single word (maybe the previous word had results)
+            if (empty($data)) {
+                return [];
+            }
+
             static::indexer($word, $data, $index);
         }
         
@@ -321,12 +328,12 @@ class Index extends NgRestModel
      */
     private static function calculatePageRelevanceValue(array $item, $keyword)
     {
-        $keyword = strtolower($keyword);
-        $url = strtolower(parse_url($item['url'], PHP_URL_PATH));
+        $keyword = mb_strtolower($keyword);
+        $url = mb_strtolower(parse_url($item['url'], PHP_URL_PATH));
         $posInUrl = self::getBestWordDistance(explode("/", $url), $keyword);
-        $posInTitle = self::getBestWordDistance(explode(" " , strtolower($item['title'])), $keyword);
-        $partialWordCount = substr_count(strtolower($item['content']), $keyword);
-        $exactWordCount = preg_match_all('/\b'. preg_quote($keyword) .'\b/', strtolower($item['content']));
+        $posInTitle = self::getBestWordDistance(explode(" " , mb_strtolower($item['title'])), $keyword);
+        $partialWordCount = substr_count(mb_strtolower($item['content']), $keyword);
+        $exactWordCount = preg_match_all('/\b'. preg_quote($keyword) .'\b/', mb_strtolower($item['content']));
 
 
         $partialWordCount = $partialWordCount / 5;
@@ -345,6 +352,28 @@ class Index extends NgRestModel
     {
         return trim(htmlentities($query, ENT_QUOTES));
     }
+
+    public static function didYouMean($query, $languageInfo)
+    {
+        $index = Searchdata::find()->select(['query'])->where([
+            'and',
+            ['=', 'language', $languageInfo],
+            ['>', 'results', 0]
+        ])->distinct()->column();
+
+        $shortest = -1;
+        
+        $closest = false;
+        foreach ($index as $word) {
+            $lev = levenshtein($query, $word);
+            if ($lev <= $shortest || $shortest < 0) {
+                $closest = $word;
+                $shortest = $lev;
+            }
+        }
+
+        return $closest;
+    }
     
 
     /**
@@ -354,20 +383,22 @@ class Index extends NgRestModel
      * @param number $cutAmount The amount of words on the left and right side of the word.
      * @return mixed
      */
-    public function preview($word, $cutAmount = 150)
+    public function preview($word, $cutAmount = 150, $highlight = '<span style="background-color:#FFEBD1; color:black;">%s</span>')
     {
         $content = $this->content;
         // check if the word even exists in the content, as when stemming has taken place words may be cut.
-        $exists = substr_count(strtolower($content), $word);
+        $exists = substr_count(mb_strtolower($content), $word);
         if ($exists == 0) {
             if (!empty($this->description)) {
                 $content = $this->description;
             }
-            return StringHelper::truncate($content, $cutAmount, '..');
+            $content = StringHelper::truncate($content, ($cutAmount*2), '..');
+
+            return StringHelper::highlightWord($content, explode(" ", $word), $highlight);
         }
         
         $cut = StringHelper::truncateMiddle($content, $word, $cutAmount);
-        return StringHelper::highlightWord($cut, $word, '<span style="background-color:#FFEBD1; color:black;">%s</span>');
+        return StringHelper::highlightWord($cut, $word, $highlight);
     }
 
     /**
