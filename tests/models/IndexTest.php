@@ -16,10 +16,10 @@ class IndexTest extends CrawlerTestCase
         $this->assertContains('z&auml;<span style="background-color:#FFEBD1; color:black;">hlt</span>', $model->preview('hlt', 150));
         $this->assertSame('..lo foobar He..', $model->cut("foobar", "Hello foobar Hello", 3));
         $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">foobar</span> Hello', $model->highlight('foobar', 'Hello foobar Hello'));
-        $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">foobar</span> Hello', $model->highlight('foobar', 'Hello FOOBAR Hello'));
-        $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">FOOBar</span> Hello', $model->highlight('FOOBar', 'Hello foobar Hello'));
+        $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">FOOBAR</span> Hello', $model->highlight('foobar', 'Hello FOOBAR Hello'));
+        $this->assertSame('Hello <span style="background-color:#FFEBD1; color:black;">foobar</span> Hello', $model->highlight('FOOBar', 'Hello foobar Hello'));
     
-        $this->assertSame('Wohn- und B&uuml;rozentrum f&uuml;r K&ouml;rperbehinderte Die F&auml;higkeit z&auml;hlt, nicht die Behinderung Unterst&uuml;tzen Sie uns Geldspenden,..', $model->preview('notexisting'));
+        $this->assertSame('Wohn- und B&uuml;rozentrum f&uuml;r K&ouml;rperbehinderte Die F&auml;higkeit z&auml;hlt, nicht die Behinderung Unterst&uuml;tzen Sie uns Geldspenden, Freiwilligenarbeit oder Partnerschaften &ndash; jegliche Form von Unterst&uuml;tzung ist herzlich willkommen.             Kunst aus dem kreativAtelier..', $model->preview('notexisting'));
     }
     
     public function testFlatSearchByQuery()
