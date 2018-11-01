@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md). In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.5 (in progress)
+
++ [#10](https://github.com/luyadev/luya-module-crawler/issues/10) Improved the order of pages with a new relevance to query score.
++ [#3](https://github.com/luyadev/luya-module-crawler/issues/3) Added new did you mean widget which returns suggestions based on search history.
+
 ## 1.0.4 (30. October 2018)
 
 + [#9](https://github.com/luyadev/luya-module-crawler/issues/9) Fix bug with double encoding of preview content.
