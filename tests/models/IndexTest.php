@@ -113,12 +113,20 @@ class IndexTest extends CrawlerTestCase
 
     public function testHtmlEncodingQuery()
     {
-        $this->assertSame('&Ouml;ff', Index::encodeQuery('Öff'));
+        $this->assertSame('Öff', Index::encodeQuery('Öff'));
         
         $this->assertSame(1, (int) Index::activeQuerySearch('öff', 'de')->count());
         $this->assertSame(1, (int) Index::activeQuerySearch('Öff', 'de')->count());
         
         $this->assertSame('offnungszeiten', Index::searchByQuery('öff', 'de')[0]->title);
         $this->assertSame('offnungszeiten', Index::searchByQuery('Öff', 'de')[0]->title);
+    }
+
+    public function testSpecialCharsHighlightBug()
+    {
+        $index = new Index();
+        $index->content = 'Team Gare du Nord K&uuml;nstlerische Leitung: D&eacute;sir&eacute;e MeiserGesch&auml;ftsf&uuml;hrung: Ursula FreiburghausK&uuml;nstlerische Betriebsleitung, Vermittlung: Johanna SchweizerTechnik: Mario Henkel, Jean-Marc DesbonnetsPresse- und &Ouml;ffentlichkeitsarbeit: Ph&ouml;be HeydtKontaktstelle Publikumsvermittlung/Administration: Francesca Dunkel, Johanna K&ouml;hler (Mutterschaftsvertretung Spielzeit 2018/19)Privatvermietung: Maya ZimmermannPraktikum: Jenny LehmannGrafik: Alexa Fr&uuml;h Konzert- und Projektanfragen Vorschl&auml;ge f&uuml;r k&uuml;nstlerische Arbeiten k&ouml;nnen an die k&uuml;nstlerische Leitung eingereicht werden. Wir bitten jedoch um Verst&auml;ndnis, dass nicht jede Anfrage beantwortet und dass unaufgefordert eingesandtes Material nicht zur&uuml;ckgeschickt werden kann. Bar du Nord Gesch&auml;ftsf&uuml;hrung: Bruno ZihlmannT +41 61 683 71 70     Der Programmrat des Gare du Nord Der Programmrat des Tr&auml;gervereins Gare du Nord hat k&uuml;nstlerische Beratungsfunktion und besteht aus wichtigen Vertretern der zeitgen&ouml;ssischen Musikszene: Aktive Mitglieder:  J&uuml;rg Hennenberger, Dirigent, Pianist und Dozent an der Hochschule f&uuml;r Musik FHNW Michael Kunkel, Leiter der Abteilung Forschung und Entwicklung der Hochschule f&uuml;r Musik FHNW Marcus Weiss, Saxophonist und Musiker. Professor an der Hochschule f&uuml;r Musik FHNW, Leitung Master f&uuml;r Zeitgen&ouml;ssische Musik (Performance) D&eacute;sir&eacute;e Meiser, K&uuml;nstlerische Leiterin Gare du Nord  Passive Mitglieder:  Wolfgang Heiniger, Professor f&uuml;r Intermediale Komposition an die Hochschule f&uuml;r Musik Hanns Eisler Berlin Ute Haferburg, Leiterin des Theater Chur, ehemalige K&uuml;nstlerische Co-Leiterin und Gesch&auml;ftsf&uuml;hrerin Gare du Nord        Event SitemapTeam | Gare du Nord';
+
+        $this->assertContains('<span style="background-color:#FFEBD1; color:black;">Ph&ouml;be</span>', $index->preview('ph&ouml;be'));
     }
 }

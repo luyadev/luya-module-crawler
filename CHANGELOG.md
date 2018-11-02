@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.5 (in progress)
 
++ [#11](https://github.com/luyadev/luya-module-crawler/issues/11) Switched to from htmlentities to htmlspecialchars for content crawling.
 + [#10](https://github.com/luyadev/luya-module-crawler/issues/10) Improved the order of pages with a new relevance to query score.
 + [#3](https://github.com/luyadev/luya-module-crawler/issues/3) Added new did you mean widget which returns suggestions based on search history.
 

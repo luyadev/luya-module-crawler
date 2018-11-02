@@ -53,7 +53,7 @@ class CrawlPageTest extends CrawlerTestCase
         
         $this->assertSame('Heading 1', CrawlPage::cleanupString($this->object->getCrawlerHtml()));
 
-        $this->assertSame('Heading 1  Title', $this->object->getContent());
+        $this->assertSame('Heading 1 Title', $this->object->getContent());
     }
 
     public function testRemoveScriptTagsInContent()
@@ -88,6 +88,6 @@ class CrawlPageTest extends CrawlerTestCase
     {
         $this->object->setCrawler(new Crawler(file_get_contents('tests/data/htmlencode.html')));
         
-        $this->assertSame('&Ouml;ffnungszeiten &ouml;ffnungszeiten &Ouml;ffnungszeiten &ouml;ffnungszeiten', $this->object->getContent());
+        $this->assertSame('Öffnungszeiten öffnungszeiten Öffnungszeiten öffnungszeiten', $this->object->getContent());
     }
 }

@@ -8,6 +8,7 @@ use yii\base\BaseObject;
 use Symfony\Component\DomCrawler\Crawler;
 use Goutte\Client;
 use yii\helpers\VarDumper;
+use luya\helpers\Html;
 
 /**
  * Crawl Page.
@@ -370,8 +371,8 @@ class CrawlPage extends BaseObject
         $content = strip_tags($string);
         
         // remove whitespaces and stuff
-        $content = trim(str_replace(array("\n", "\r", "\t", "\n\r", "\r\n"), ' ', $content));
+        $content = trim(StringHelper::minify($content));
         
-        return htmlentities($content, ENT_QUOTES | ENT_IGNORE, 'UTF-8');
+        return Html::encode($content);
     }
 }

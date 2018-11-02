@@ -8,6 +8,7 @@ use Nadar\Stemming\Stemm;
 use yii\db\Expression;
 use luya\helpers\StringHelper;
 use luya\helpers\ArrayHelper;
+use luya\helpers\Html;
 
 /**
  * The Crawler Index Model.
@@ -350,7 +351,7 @@ class Index extends NgRestModel
      */
     public static function encodeQuery($query)
     {
-        return trim(htmlentities($query, ENT_QUOTES));
+        return Html::encode($query);
     }
 
     public static function didYouMean($query, $languageInfo)

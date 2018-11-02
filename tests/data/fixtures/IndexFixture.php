@@ -65,7 +65,7 @@ class IndexFixture extends NgRestModelFixture
             'index8' => [
                 'url' => 'offnungszeiten.php',
                 'title' => 'offnungszeiten',
-                'content' => '&Ouml;ffnungszeiten &ouml;ffnungszeiten &Ouml;ffnungszeiten &ouml;ffnungszeiten',
+                'content' => '&Ouml;ffnungszeiten &ouml;ffnungszeiten Öffnungszeiten öffnungszeiten',
                 'language_info' => 'de',
             ]
         ];

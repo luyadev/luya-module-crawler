@@ -28,12 +28,24 @@ class DidYouMeanWidget extends Widget
 
     public $language;
 
+    /**
+     * @var mixed The route which is used for the href tag.
+     */
     public $route = '/crawler/default';
 
+    /**
+     * @var array Optional arguments for the wrapper pragraph (p).
+     */
     public $tagOptions = [];
 
+    /**
+     * @var array Optional arguments for the link (a) html tag.
+     */
     public $linkOptions = [];
 
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         parent::init();
@@ -45,11 +57,19 @@ class DidYouMeanWidget extends Widget
 
     private $_dataProvider;
 
+    /**
+     * Setter method for data provider
+     *
+     * @param ActiveDataProvider $provider
+     */
     public function setDataProvider(ActiveDataProvider $provider)
     {
         $this->_dataProvider = $provider;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function run()
     {
         if ($this->_dataProvider->totalCount > 0) {
