@@ -3,11 +3,11 @@
 namespace luya\crawler\widgets;
 
 use luya\base\Widget;
-use yii\data\ActiveDataProvider;
 use luya\crawler\models\Index;
 use luya\helpers\Html;
 use yii\base\InvalidConfigException;
 use luya\crawler\frontend\Module;
+use yii\data\DataProviderInterface;
 
 /**
  * Returns a did you mean klickable link based on search input data.
@@ -60,9 +60,9 @@ class DidYouMeanWidget extends Widget
     /**
      * Setter method for data provider
      *
-     * @param ActiveDataProvider $provider
+     * @param DataProviderInterface $provider
      */
-    public function setDataProvider(ActiveDataProvider $provider)
+    public function setDataProvider(DataProviderInterface $provider)
     {
         $this->_dataProvider = $provider;
     }
