@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'did_you_mean' => 'Meinten Sie <b>{word}</b>?',
+    'Did you mean <b>{word}</b>?' => 'Meinten Sie <b>{word}</b>?',
 ];

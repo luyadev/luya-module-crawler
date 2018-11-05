@@ -10,13 +10,15 @@ use luya\crawler\frontend\Module;
 use yii\data\DataProviderInterface;
 
 /**
+ * Did you mean?
+ * 
  * Returns a did you mean klickable link based on search input data.
  * 
  * ```php
  * DidYouMeanWidget::widget([
- *  'query' => $query,
- *  'language' => $language,
- *  'dataProvider' => $provider,
+ *     'query' => $query,
+ *     'language' => $language,
+ *     'dataProvider' => $provider,
  * ]);
  * ```
  * 
@@ -24,8 +26,14 @@ use yii\data\DataProviderInterface;
  */
 class DidYouMeanWidget extends Widget
 {
+    /**
+     * @var string The query from the search request.
+     */
     public $query;
 
+    /**
+     * @var string The language determines on what index the did you mean suggestion should be made.
+     */
     public $language;
 
     /**
@@ -79,7 +87,7 @@ class DidYouMeanWidget extends Widget
         $didYouMean = Index::didYouMean($this->query, $this->language);
 
         if ($didYouMean) {
-            $content = Html::a(Module::t("did_you_mean", ['word' => $didYouMean]), [$this->route, 'query' => $didYouMean], $this->linkOptions);
+            $content = Html::a(Module::t("Did you mean <b>{word}</b>?", ['word' => $didYouMean]), [$this->route, 'query' => $didYouMean], $this->linkOptions);
             return Html::tag('p', $content, $this->tagOptions);
         }
     }

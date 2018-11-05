@@ -40,6 +40,15 @@ class CrawlerTestCase extends WebApplicationTestCase
 
         $searchData = new NgRestModelFixture([
             'modelClass' => Searchdata::class,
+            'fixtureData' => [
+                'model1' => [
+                    'id' => 2,
+                    'query' => 'john doe',
+                    'results' => 1,
+                    'language' => 'en',
+                    'timestamp' => time(),
+                ]
+            ]
         ]);
 
         $indexFixture = new IndexFixture();
