@@ -58,7 +58,7 @@ class DidYouMeanWidget extends Widget
     {
         parent::init();
 
-        if (!$this->query || !$this->language || !$this->_dataProvider) {
+        if (!$this->language || !$this->_dataProvider) {
             throw new InvalidConfigException("The query, language and dataProvider properties can not be null.");
         }
     }
@@ -80,7 +80,7 @@ class DidYouMeanWidget extends Widget
      */
     public function run()
     {
-        if ($this->_dataProvider->totalCount > 0) {
+        if (empty($this->query) || $this->_dataProvider->totalCount > 0) {
             return;
         }
 
