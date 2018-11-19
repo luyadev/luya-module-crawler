@@ -122,6 +122,13 @@ class IndexTest extends CrawlerTestCase
         $this->assertSame('offnungszeiten', Index::searchByQuery('Öff', 'de')[0]->title);
     }
 
+    public function testPreviewWithEndingWhitespace()
+    {
+        $model = new Index();
+        $model->content = 'Test test test';
+        $this->assertSame('<span style="background-color:#FFEBD1; color:black;">Test</span> <span style="background-color:#FFEBD1; color:black;">test</span> <span style="background-color:#FFEBD1; color:black;">test</span>', $model->preview('Test '));
+    }
+
     public function testSpecialCharsHighlightBug()
     {
         $index = new Index();

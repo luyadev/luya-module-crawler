@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md). In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.5.1 (19. November 2018)
+
++ [#12](https://github.com/luyadev/luya-module-crawler/issues/12) Fixed bug with ending whitespace.
+
 ## 1.0.5 (17. November 2018)
 
 + [#11](https://github.com/luyadev/luya-module-crawler/issues/11) Switched to from htmlentities to htmlspecialchars for content crawling.

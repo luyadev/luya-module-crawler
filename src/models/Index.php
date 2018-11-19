@@ -332,7 +332,7 @@ class Index extends NgRestModel
         $keyword = mb_strtolower($keyword);
         $url = mb_strtolower(parse_url($item['url'], PHP_URL_PATH));
         $posInUrl = self::getBestWordDistance(explode("/", $url), $keyword);
-        $posInTitle = self::getBestWordDistance(explode(" " , mb_strtolower($item['title'])), $keyword);
+        $posInTitle = self::getBestWordDistance(explode(" ", mb_strtolower($item['title'])), $keyword);
         $partialWordCount = substr_count(mb_strtolower($item['content']), $keyword);
         $exactWordCount = preg_match_all('/\b'. preg_quote($keyword) .'\b/', mb_strtolower($item['content']));
 
@@ -395,7 +395,7 @@ class Index extends NgRestModel
             }
             $content = StringHelper::truncate($content, ($cutAmount*2), '..');
 
-            return StringHelper::highlightWord($content, explode(" ", $word), $highlight);
+            return StringHelper::highlightWord($content, StringHelper::explode($word, " ", true, true), $highlight);
         }
         
         $cut = StringHelper::truncateMiddle($content, $word, $cutAmount);
