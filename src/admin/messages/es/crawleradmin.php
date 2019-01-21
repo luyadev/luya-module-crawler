@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Información del idioma',
     'index_content' => 'Contenido',
     'index_url_found' => 'Url encontrado en la página',
+    
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];

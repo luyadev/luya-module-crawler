@@ -2,10 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md). In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 1.0.6 (in progress)
+## 1.0.6 (21. January 2019)
 
 + [#15](https://github.com/luyadev/luya-module-crawler/issues/15) Added dashboard object with latest keywords without results.
-+ Fixed translations.
++ Added some missing translation keys.
 
 ## 1.0.5.1 (19. November 2018)
 

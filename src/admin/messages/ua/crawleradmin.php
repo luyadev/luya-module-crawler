@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Інформація про мову',
     'index_content' => 'Контент',
     'index_url_found' => 'Такий Url знайдений на іншій сторінці',
+
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];

@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Dil bilgisi',
     'index_content' => 'İçerik',
     'index_url_found' => 'Sayfada bulunan URL',
+
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];

@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Πληροφορίες Γλώσσας',
     'index_content' => 'Περιεχόμενο',
     'index_url_found' => 'Το Url Βρέθηκε στη σελίδα',
+    
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];

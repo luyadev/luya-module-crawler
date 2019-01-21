@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Chi tiết ngôn ngữ',
     'index_content' => 'Nội dung',
     'index_url_found' => 'Url tìm thấy trên trang',
+
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];
