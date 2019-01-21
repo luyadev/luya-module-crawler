@@ -94,7 +94,7 @@ class Searchdata extends NgRestModel
     {
         return [
             ['list', ['query', 'results', 'timestamp', 'language']],
-            ['delete', false],
+            ['delete', true],
         ];
     }
     

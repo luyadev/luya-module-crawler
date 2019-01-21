@@ -68,13 +68,11 @@ class Index extends NgRestModel
             'language_info' => Module::t('index_language_info'),
             'content' => Module::t('index_content'),
             'url_found_on_page' => Module::t('index_url_found'),
-            'added_to_index' => ' add to index on',
-            'last_update' => 'last update'
+            'added_to_index' => Module::t('added_to_index'),
+            'last_update' => Module::t('last_update'),
         ];
     }
 
-
-    
     /**
      * @inheritdoc
      */
@@ -107,14 +105,13 @@ class Index extends NgRestModel
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function ngRestConfig($config)
+    public function ngRestScopes()
     {
-        $this->ngRestConfigDefine($config, 'list', ['title', 'url', 'language_info', 'last_update', 'added_to_index']);
-        $this->ngRestConfigDefine($config, ['create', 'update'], ['url', 'title', 'language_info', 'url_found_on_page', 'content', 'last_update', 'added_to_index']);
-        return $config;
+        return [
+            ['list',  ['title', 'url', 'last_update', 'added_to_index']],
+            [['create', 'update'],  ['url', 'title', 'language_info', 'url_found_on_page', 'content', 'last_update', 'added_to_index']],
+            ['delete', true],
+        ];
     }
     
     /**

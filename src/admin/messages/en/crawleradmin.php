@@ -6,7 +6,7 @@ return [
     'crawler_analytics_queries' => 'Search Queries',
 
     //builderindex
-    'crawler_index' => 'Page index',
+    'crawler_index' => 'Index',
     'builderindex_url' => 'URL',
     'builderindex_title' => 'Title',
     'builderindex_language_info' => 'Language info',
@@ -20,4 +20,10 @@ return [
     'index_language_info' => 'Language info',
     'index_content' => 'Content',
     'index_url_found' => 'URL found on page',
+
+    // 1.0.6
+
+    'added_to_index' => 'Added to Index',
+    'last_update' => 'Last Update',
+    'dashboard_title' => 'Latest queries without results',
 ];

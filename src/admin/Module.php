@@ -21,6 +21,15 @@ final class Module extends \luya\admin\base\Module
         'api-crawler-searchdata' => 'luya\crawler\admin\apis\SearchdataController',
     ];
     
+    public $dashboardObjects = [
+        [
+            'class' => 'luya\admin\dashboard\ListDashboardObject',
+            'template' => '<li class="list-group-item" ng-repeat="item in data">{{item.query}} <small>({{item.language}})</small><span class="badge badge-info float-right">{{item.timestamp * 1000 | date:\'short\'}}</span></li>',
+            'dataApiUrl' => 'admin/api-crawler-searchdata/latest',
+            'title' => ['crawleradmin', 'dashboard_title'],
+        ],
+    ];
+
     /**
      * @inheritdoc
      */
