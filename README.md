@@ -96,4 +96,4 @@ You can use crawler tags to trigger certains events or store informations:
 |CRAWL_IGNORE|`<!-- [CRAWL_IGNORE] -->Ignore this<!-- [/CRAWL_IGNORE] -->`|Ignores a certain content from indexing.
 |CRAWL_FULL_IGNORE|`<!-- [CRAWL_FULL_IGNORE] --> `|Ignore a full page for the crawler, keep in mind that links will be added to index inside the ignore page.
 |CRAWL_GROUP|`<!-- [CRAWL_GROUP]api[/CRAWL_GROUP] -->`|Sometimes you want to group your results by a section of a page, in order to let crawler know about the group/section of your current page. Now you can group your results by the `group` field.
-|CRAWL_TITLE|<!-- [CRAWL_TITLE]My Title[/CRAWL_TITLE] -->|If you want to make sure to always use your customized title you can use the CRAWL_TITLE tag to ensure your title for the page:
+|CRAWL_TITLE|`<!-- [CRAWL_TITLE]My Title[/CRAWL_TITLE] -->`|If you want to make sure to always use your customized title you can use the CRAWL_TITLE tag to ensure your title for the page:
