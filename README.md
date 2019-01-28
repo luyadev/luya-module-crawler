@@ -13,29 +13,24 @@ An easy to use full-website page crawler to make provide search results on your 
 
 ## Installation
 
-For the installation of modules Composer is required.
-
-### Composer
+Install the module via composer:
 
 ```sh
 composer require luyadev/luya-module-crawler:~1.0.0
 ```
-
-### Configuration
 
 After installation via Composer include the module to your configuration file within the modules section.
 
 ```php
 'crawler' => [
     'class' => 'luya\crawler\frontend\Module',
-    'baseUrl' => 'http://luya.io',
+    'baseUrl' => 'https://luya.io',
 ],
 'crawleradmin' => 'luya\crawler\admin\Module',
 ```
 
-Where `baseUrl` is the domain you want to crawler all information.
+> Where `baseUrl` is the domain you want to crawler all information.
 
-### Initialization
 After setup the module in your config you have to run the migrations and import command (to setup permissions):
 
 ```sh
@@ -47,7 +42,7 @@ After setup the module in your config you have to run the migrations and import 
 
 To execute the command (and run the crawler proccess) use the crawler command `crawl`, you should put this command in cronjob to make sure your index is up-to-date:
 
-> Make sure your page is in utf8 mode (`<meta charset="utf-8"/>`).
+> Make sure your page is in utf8 mode (`<meta charset="utf-8"/>`) and make sure to set the language `<html lang="<?= Yii::$app->composition->language; ?>">`.
 
 ```sh
 ./vendor/bin/luya crawler/crawl
@@ -92,58 +87,13 @@ use luya\crawler\widgets\DidYouMeanWidget;
 <?= LinkPager::widget(['pagination' => $provider->pagination]); ?>
 ```
 
-### ASYNC Request
+### Crawler Settings
 
-To make async search queries use the rest controller route (jquery example):
+You can use crawler tags to trigger certains events or store informations:
 
-
-```php
-var url = '<?= Url::toInternal(['crawler/rest/index']); ?>';
-
-$.ajax({
-    url : url 
-}).done(function(response) {
-    console.log(response);
-});
-```
-
-## Crawler Settings
-
-Set the language in your html markup.
-
-```html
-<html lang="<?= Yii::$app->composition->language; ?>">
-```
-
-Partially ignore a content from the crawler:
-
-```html
-<div>
-    <!-- [CRAWL_IGNORE] -->
-    <p>The crawler will never see and store this information</p>
-    <!-- [/CRAWL_IGNORE] -->
-</div>
-```
-
-Ignore a page complete:
-
-```html
-<div>
-    <!-- [CRAWL_FULL_IGNORE] --> 
-    <p>The full page will be ignored by the crawler.</p>
-</div>
-```
-
-Sometimes you want to group your results by a section of a page, in order to let crawler know about the group/section of your current page just use the `CRAWL_GROUP` tag:
-
-```html
-<!-- [CRAWL_GROUP]api[/CRAWL_GROUP] -->
-```
-
-Where the above example `api` could be anything you want to let the crawler know for this section. Now you can group your results by the `group` field.
-
-If you want to make sure to always use your customized title you can use the CRAWL_TITLE tag to ensure your title for the page:
-
-```html
-<!-- [CRAWL_TITLE]My Title[/CRAWL_TITLE] -->
-```
+|tag|example|description
+|---|-------|-----------
+|CRAWL_IGNORE|`<!-- [CRAWL_IGNORE] -->Ignore this<!-- [/CRAWL_IGNORE] -->`|Ignores a certain content from indexing.
+|CRAWL_FULL_IGNORE|`<!-- [CRAWL_FULL_IGNORE] --> `|Ignore a full page for the crawler, keep in mind that links will be added to index inside the ignore page.
+|CRAWL_GROUP|`<!-- [CRAWL_GROUP]api[/CRAWL_GROUP] -->`|Sometimes you want to group your results by a section of a page, in order to let crawler know about the group/section of your current page. Now you can group your results by the `group` field.
+|CRAWL_TITLE|<!-- [CRAWL_TITLE]My Title[/CRAWL_TITLE] -->|If you want to make sure to always use your customized title you can use the CRAWL_TITLE tag to ensure your title for the page:
