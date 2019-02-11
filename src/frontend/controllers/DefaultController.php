@@ -37,7 +37,9 @@ class DefaultController extends \luya\web\Controller
         $language = Yii::$app->composition->getKey('langShortCode');
         
         if (empty($query)) {
-            $provider = new ArrayDataProvider();
+            $provider = new ArrayDataProvider([
+                'allModels' => [],
+            ]);
         } else {
             $activeQuery = Index::activeQuerySearch($query, $language);
             

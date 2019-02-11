@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md). In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.6.1 (11. February 2019)
+
++ [#17](https://github.com/luyadev/luya-module-crawler/issues/17) PHP warning is thrown in PHP 7.2 envs when using empty search.
+
 ## 1.0.6 (21. January 2019)
 
 + [#15](https://github.com/luyadev/luya-module-crawler/issues/15) Added dashboard object with latest keywords without results.
