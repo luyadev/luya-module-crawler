@@ -331,7 +331,7 @@ class Index extends NgRestModel
         $posInUrl = self::getBestWordDistance(explode("/", $url), $keyword);
         $posInTitle = self::getBestWordDistance(explode(" ", mb_strtolower($item['title'])), $keyword);
         $partialWordCount = substr_count(mb_strtolower($item['content']), $keyword);
-        $exactWordCount = preg_match_all('/\b'. preg_quote($keyword) .'\b/', mb_strtolower($item['content']));
+        $exactWordCount = preg_match_all('/\b'. preg_quote($keyword, '/') .'\b/', mb_strtolower($item['content']));
 
 
         $partialWordCount = $partialWordCount / 5;
