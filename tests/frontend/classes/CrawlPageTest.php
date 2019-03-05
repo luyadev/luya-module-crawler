@@ -20,6 +20,15 @@ class CrawlPageTest extends CrawlerTestCase
     {
         $this->assertSame(149, count($this->object->getLinks()));
     }
+
+    public function testCrawlerAllLinks()
+    {
+        $page = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
+        $page->setCrawler(new Crawler(file_get_contents('tests/data/links.html')));
+        $l = $page->getLinks(true);
+
+        var_dump($l);
+    }
     
     public function testLanguage()
     {

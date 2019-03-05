@@ -124,6 +124,13 @@ class CrawlPage extends BaseObject
         return $this->client->getResponse()->getHeader('Content-Type');
     }
     
+    /**
+     * Get all Links for the current crawler page object.
+     *
+     * @return array An array with two elements
+     * 0 = Value inside the href tag
+     * 1 = The Url 
+     */
     public function getLinks()
     {
         try {
@@ -145,6 +152,7 @@ class CrawlPage extends BaseObject
                 }
                 
                 $url = parse_url($item[1]);
+
     
                 if (!isset($url['host']) || !isset($url['scheme'])) {
                     $base = $this->baseHost;
@@ -158,12 +166,11 @@ class CrawlPage extends BaseObject
                     $path = $url['path'];
                 }
                 
-                $url = rtrim($base, "/") . "/" . ltrim($path, "/");
+                $newBaseUrl = rtrim($base, "/") . "/" . ltrim($path, "/");
                 
-    
                 $links[$key][0] = self::cleanupString($links[$key][0]);
-                $links[$key][1] = http_build_url($url, [
-                    'query' => (isset($host['query'])) ? $host['query'] : [],
+                $links[$key][1] = http_build_url($newBaseUrl, [
+                    'query' => isset($url['query']) ? $url['query'] : null,
                 ], HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT);
             }
             
