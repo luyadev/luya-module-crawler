@@ -9,6 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Goutte\Client;
 use yii\helpers\VarDumper;
 use luya\helpers\Html;
+use luya\crawler\frontend\Module;
 
 /**
  * Crawl Page.
@@ -78,6 +79,7 @@ class CrawlPage extends BaseObject
         if ($this->_crawler === null) {
             try {
                 $this->client = new Client();
+                $this->client->setServerParameters(['HTTP_USER_AGENT' => Module::CRAWLER_USER_AGENT]);
                 $this->_crawler = $this->client->request('GET', $this->pageUrl);
                 $this->verbosePrint("[GENERATE REQUEST TO]", $this->pageUrl);
                 if ($this->client->getInternalResponse()->getStatus() !== 200) {

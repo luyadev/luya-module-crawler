@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 2.0 (in progress)
 
+- [#20](https://github.com/luyadev/luya-module-crawler/issues/20) Added new link status list.
+
 ## 1.0.6.2 (4. March 2019)
 
 + [#19](https://github.com/luyadev/luya-module-crawler/issues/19) Fixed bug when regex delimiter is used in search keyword.

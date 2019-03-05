@@ -22,6 +22,8 @@ namespace luya\crawler\frontend;
  */
 final class Module extends \luya\base\Module
 {
+    const CRAWLER_USER_AGENT = 'LUYA Crawler Module (+https://luya.io)';
+    
     /**
      * @var boolean This module enables by default to lookup for view files in the apps/views folder.
      */

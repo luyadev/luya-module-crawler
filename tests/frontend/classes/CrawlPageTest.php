@@ -6,6 +6,7 @@ use luya\crawler\frontend\classes\CrawlPage;
 use Symfony\Component\DomCrawler\Crawler;
 use crawlerests\CrawlerTestCase;
 use luya\crawler\models\Link;
+use luya\testsuite\fixtures\NgRestModelFixture;
 
 class CrawlPageTest extends CrawlerTestCase
 {
@@ -24,6 +25,10 @@ class CrawlPageTest extends CrawlerTestCase
 
     public function testCrawlerAllLinks()
     {
+        $fixture = new NgRestModelFixture([
+            'modelClass' => Link::class,
+        ]);
+        
         $page = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
         $page->setCrawler(new Crawler(file_get_contents('tests/data/links.html')));
 

@@ -256,6 +256,8 @@ class CrawlContainer extends BaseObject
             $this->addLog('delete_issue', $page->url, $page->title);
             $page->delete(false);
         }
+
+        Link::updateLinkStatus();
     }
 
     public function matchBaseUrl($url)
@@ -342,7 +344,7 @@ class CrawlContainer extends BaseObject
         $this->verbosePrint('memory usage peak', memory_get_peak_usage());
         
         $model = Builderindex::findUrl($this->encodeUrl($url));
-
+        $time = time();
         if (!$model) {
             $this->verbosePrint('found in builder index', 'no');
             // add the url to the index
@@ -414,7 +416,8 @@ class CrawlContainer extends BaseObject
             $this->verbosePrint("Remove empty content model after crawling all links.");
             $model->delete();
         }
-        
+
+        Link::cleanup($url, $time);
         unset($model);
         
         return true;

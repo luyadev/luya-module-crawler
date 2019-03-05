@@ -19,7 +19,7 @@ class m190305_144611_outgoing_link_check extends Migration
             'title' => $this->string(),
             'response_status' => $this->integer(),
             'created_at' => $this->integer(),
-            'update_at' => $this->integer(),
+            'updated_at' => $this->integer(),
             'is_ignored' => $this->boolean(),
         ]);
     }
@@ -29,6 +29,6 @@ class m190305_144611_outgoing_link_check extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('crawler_links');
+        $this->dropTable('crawler_link');
     }
 }

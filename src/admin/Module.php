@@ -19,6 +19,8 @@ final class Module extends \luya\admin\base\Module
         'api-crawler-builderindex' => 'luya\crawler\admin\apis\BuilderindexController',
         'api-crawler-index' => 'luya\crawler\admin\apis\IndexController',
         'api-crawler-searchdata' => 'luya\crawler\admin\apis\SearchdataController',
+        'api-crawler-link' => 'luya\crawler\admin\apis\LinkController',
+
     ];
     
     public $dashboardObjects = [
@@ -39,6 +41,7 @@ final class Module extends \luya\admin\base\Module
         ->group('crawler_index')
             ->itemApi('crawler_index', 'crawleradmin/index/index', 'list', 'api-crawler-index')
         ->group('crawler_analytics')
+            ->itemApi('Link', 'crawleradmin/link/index', 'label', 'api-crawler-link')
             ->itemApi('crawler_analytics_queries', 'crawleradmin/searchdata/index', 'label', 'api-crawler-searchdata');
     }
     
