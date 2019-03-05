@@ -105,7 +105,10 @@ class Link extends NgRestModel
     }
 
     /**
-     * Update the response status for the given link.
+     * Get the response status for the given link.
+     * 
+     * @param string $link
+     * @return integer 
      */
     public static function responseStatus($url)
     {
@@ -146,12 +149,11 @@ class Link extends NgRestModel
     /**
      * Short hand method to cleanup all links which are old then the given time
      */
-    public static function cleanup($urlOnPage, $time)
+    public static function cleanup($time)
     {
         return self::deleteAll([
             'and',
             ['<', 'updated_at', $time],
-            ['=', 'url_found_on_page', $urlOnPage]
         ]);
     }
 

@@ -79,6 +79,11 @@ class CrawlContainer extends BaseObject
      * only the title tag is used for titles.
      */
     public $useH1 = false;
+
+    /**
+     * @var integer The time when the crawler starts
+     */
+    public $startTime;
     
     private $_crawlers = [];
     
@@ -145,6 +150,7 @@ class CrawlContainer extends BaseObject
             throw new InvalidConfigException("argument 'baseUrl' can not be null.");
         }
         
+        $this->startTime = time();
         $this->baseUrl = Url::trailing($this->baseUrl);
         $this->baseHost = parse_url($this->baseUrl, PHP_URL_HOST);
         
@@ -257,6 +263,7 @@ class CrawlContainer extends BaseObject
             $page->delete(false);
         }
 
+        Link::cleanup($this->startTime);
         Link::updateLinkStatus();
     }
 
@@ -416,8 +423,6 @@ class CrawlContainer extends BaseObject
             $this->verbosePrint("Remove empty content model after crawling all links.");
             $model->delete();
         }
-
-        Link::cleanup($url, $time);
         unset($model);
         
         return true;
