@@ -11,6 +11,7 @@ use luya\helpers\Url;
 use yii\base\BaseObject;
 use luya\helpers\Html;
 use GuzzleHttp\Client;
+use luya\crawler\models\Link;
 
 /**
  * Crawler Container.
@@ -362,6 +363,9 @@ class CrawlContainer extends BaseObject
     
                 // add the pages links to the index
                 foreach ($this->getCrawler($url)->getLinks() as $link) {
+
+                    Link::add($link[1], $link[0], $url);
+
                     $this->verbosePrint('link iteration for new page' , $link);
                     if ($this->isProcessed($link[1])) {
                         continue;
@@ -390,6 +394,7 @@ class CrawlContainer extends BaseObject
                     $model->save(false);
                     
                     foreach ($this->getCrawler($url)->getLinks() as $link) {
+                        Link::add($link[1], $link[0], $url);
                         $this->verbosePrint('link iteration for existing page', $link[1]);
                         if ($this->isProcessed($link[1])) {
                             $this->verbosePrint('link is already processed.', $link[1]);

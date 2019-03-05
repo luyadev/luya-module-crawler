@@ -5,6 +5,7 @@ namespace crawlerests\frontend\classes;
 use luya\crawler\frontend\classes\CrawlPage;
 use Symfony\Component\DomCrawler\Crawler;
 use crawlerests\CrawlerTestCase;
+use luya\crawler\models\Link;
 
 class CrawlPageTest extends CrawlerTestCase
 {
@@ -25,9 +26,14 @@ class CrawlPageTest extends CrawlerTestCase
     {
         $page = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
         $page->setCrawler(new Crawler(file_get_contents('tests/data/links.html')));
-        $l = $page->getLinks(true);
 
-        var_dump($l);
+        foreach ($page->getLinks() as $link) {
+            list($title, $url) = $link;
+
+            Link::add($url, $title, 'localhost');
+        }
+
+        
     }
     
     public function testLanguage()
