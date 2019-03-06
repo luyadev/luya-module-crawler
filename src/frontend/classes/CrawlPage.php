@@ -148,7 +148,7 @@ class CrawlPage extends BaseObject
             
             foreach ($links as $key => $item) {
                 $this->verbosePrint("find new link from page extraction", VarDumper::dumpAsString($item));
-                if (StringHelper::contains(['@'], $item[1])) {
+                if (StringHelper::contains(['@', 'tel:'], $item[1])) {
                     unset($links[$key]);
                     continue;
                 }
