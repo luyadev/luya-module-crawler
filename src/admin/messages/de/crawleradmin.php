@@ -26,4 +26,16 @@ return [
     'added_to_index' => 'Hinzugefügt',
     'last_update' => 'Zuletzt aktualisiert',
     'dashboard_title' => 'Neuste Suchanfragen ohne Resultat',
+
+    // 2.0
+
+    'link_url' => 'Link-Ziel',
+    'link_url_found_on_page' => 'Quelle',
+    'link_title' => 'Link-Text',
+    'link_is_ignored' => 'Ist ignoriert',
+    'link_response_status' => 'Response Status',
+    'link_created_at' => 'Created at',
+    'link_updated_at' => 'Updated at',
+    'done_button_label' => 'Gelöst',
+    'done_button_success' => 'Link has been removed from the List.',
 ];

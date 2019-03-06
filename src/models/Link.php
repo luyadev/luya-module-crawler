@@ -6,7 +6,9 @@ use Yii;
 use luya\admin\ngrest\base\NgRestModel;
 use yii\behaviors\TimestampBehavior;
 use Curl\Curl;
-use luya\crawler\frontend\Module;
+use luya\crawler\frontend\Module as FrontendModule;
+use luya\crawler\admin\buttons\DoneButton;
+use luya\crawler\admin\Module;
 
 /**
  * Link.
@@ -53,15 +55,15 @@ class Link extends NgRestModel
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'url' => Yii::t('app', 'Link-Ziel'),
-            'url_found_on_page' => Yii::t('app', 'Url Found On Page'),
-            'title' => Yii::t('app', 'Link-Text'),
-            'response_status' => Yii::t('app', 'Response Status'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'is_ignored' => Yii::t('app', 'Is Ignored'),
-            'cleanFoundUrl' => 'Quelle',
+            'id' => Module::t('ID'),
+            'url' => Module::t('link_url'),
+            'url_found_on_page' => Module::t('link_url_found_on_page'),
+            'title' => Module::t('link_title'),
+            'response_status' => Module::t('link_response_status'),
+            'created_at' => Module::t('link_created_at'),
+            'updated_at' => Module::t('link_updated_at'),
+            'is_ignored' => Module::t('link_is_ignored'),
+            'cleanFoundUrl' => Module::t('link_url_found_on_page'),
         ];
     }
 
@@ -116,6 +118,13 @@ class Link extends NgRestModel
         ];
     }
 
+    public function ngRestActiveButtons()
+    {
+        return [
+            ['class' => DoneButton::class],
+        ];
+    }
+
     public function getCleanFoundUrl()
     {
         $parse = parse_url($this->url_found_on_page);
@@ -143,7 +152,7 @@ class Link extends NgRestModel
     {
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, 3);
-        $curl->setUserAgent(Module::CRAWLER_USER_AGENT);
+        $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
         $curl->get($url);
         $status =  $curl->http_status_code;
         $curl->close();
