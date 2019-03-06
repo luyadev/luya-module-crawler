@@ -54,13 +54,14 @@ class Link extends NgRestModel
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'url' => Yii::t('app', 'Url'),
+            'url' => Yii::t('app', 'Link-Ziel'),
             'url_found_on_page' => Yii::t('app', 'Url Found On Page'),
-            'title' => Yii::t('app', 'Title'),
+            'title' => Yii::t('app', 'Link-Text'),
             'response_status' => Yii::t('app', 'Response Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'is_ignored' => Yii::t('app', 'Is Ignored'),
+            'cleanFoundUrl' => 'Quelle',
         ];
     }
 
@@ -76,19 +77,31 @@ class Link extends NgRestModel
         ];
     }
 
+    public function ngRestGroupByField()
+    {
+        return 'cleanFoundUrl';
+    }
+
     /**
      * @inheritdoc
      */
     public function ngRestAttributeTypes()
     {
         return [
-            'url' => 'text',
-            'url_found_on_page' => 'text',
+            'url' => 'url',
             'title' => 'text',
+            'url_found_on_page' => ['text', 'hideInList' => true],
             'response_status' => 'number',
-            'created_at' => 'number',
-            'updated_at' => 'number',
-            'is_ignored' => 'number',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'is_ignored' => 'toggleStatus',
+        ];
+    }
+
+    public function ngRestExtraAttributeTypes()
+    {
+        return [
+            'cleanFoundUrl' => ['url', 'sortField' => 'url_found_on_page', 'linkAttribute' => 'url_found_on_page'],
         ];
     }
 
@@ -98,10 +111,26 @@ class Link extends NgRestModel
     public function ngRestScopes()
     {
         return [
-            ['list', ['url', 'url_found_on_page', 'title', 'response_status', 'created_at', 'updated_at', 'is_ignored']],
-            [['create', 'update'], ['url', 'url_found_on_page', 'title', 'response_status', 'created_at', 'updated_at', 'is_ignored']],
+            ['list', [ 'cleanFoundUrl', 'url_found_on_page', 'url', 'title', 'response_status']],
             ['delete', false],
         ];
+    }
+
+    public function getCleanFoundUrl()
+    {
+        $parse = parse_url($this->url_found_on_page);
+
+        $query = isset($parse['query']) ? $parse['query'] : null;
+
+        return $parse['path'] . $query;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function ngRestFind()
+    {
+        return parent::ngRestFind()->andWhere(['>=', 'response_status', 400]);
     }
 
     /**
