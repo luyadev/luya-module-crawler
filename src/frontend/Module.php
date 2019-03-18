@@ -22,7 +22,7 @@ namespace luya\crawler\frontend;
  */
 final class Module extends \luya\base\Module
 {
-    const CRAWLER_USER_AGENT = 'LUYA Crawler Module (+https://luya.io)';
+    const CRAWLER_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30'; // Chrome 12 in Mac OS X 10.6.8
     
     /**
      * @var boolean This module enables by default to lookup for view files in the apps/views folder.
