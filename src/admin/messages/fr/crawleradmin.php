@@ -26,4 +26,16 @@ return [
     'added_to_index' => 'Added to Index',
     'last_update' => 'Last Update',
     'dashboard_title' => 'Latest queries without results',
+
+    // 2.0
+
+    'link_url' => 'Link-Tarket',
+    'link_url_found_on_page' => 'Source',
+    'link_title' => 'Link-Text',
+    'link_is_ignored' => 'Is ignored',
+    'link_response_status' => 'Response Status',
+    'link_created_at' => 'Created at',
+    'link_updated_at' => 'Updated at',
+    'done_button_label' => 'Resolved',
+    'done_button_success' => 'Link has been removed from the List.',
 ];

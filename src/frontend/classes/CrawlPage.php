@@ -165,7 +165,7 @@ class CrawlPage extends BaseObject
                 $path = null;
                 
                 if (isset($url['path'])) {
-                    $path = $url['path'];
+                    $path = implode("/", array_map("urlencode", explode("/", $url['path'])));
                 }
                 
                 $newBaseUrl = rtrim($base, "/") . "/" . ltrim($path, "/");

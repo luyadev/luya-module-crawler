@@ -35,10 +35,16 @@ class CrawlPageTest extends CrawlerTestCase
         foreach ($page->getLinks() as $link) {
             list($title, $url) = $link;
 
-            Link::add($url, $title, 'localhost');
+            $this->assertTrue(Link::add($url, $title, 'localhost'));
         }
+    }
 
-        
+    public function testLinkUrlEncoding()
+    {
+        $page = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
+        $page->setCrawler(new Crawler(file_get_contents('tests/data/links.html')));
+
+        $this->assertSame('https://luya.io/Merkbl%C3%A4tter-Formulare/Diverse-Listen/Rentenskala-44?bar=foo', $page->getLinks()[7][1]);
     }
     
     public function testLanguage()
