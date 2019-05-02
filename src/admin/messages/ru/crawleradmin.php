@@ -1,12 +1,12 @@
 <?php
 return [
-    'crawler' => 'Поисковой движок',
+    'crawler' => 'Поисковый движок',
     'crawler_indexing' => 'Индексация',
-    'crawler_analytics' => 'Analytics',
-    'crawler_analytics_queries' => 'Search Queries',
-        
+    'crawler_analytics' => 'Аналитика',
+    'crawler_analytics_queries' => 'Поисковые запросы',
+
     //builderindex
-    'crawler_index' => 'Индекс страницы',
+    'crawler_index' => 'Индекс',
     'builderindex_url' => 'Url',
     'builderindex_title' => 'Название',
     'builderindex_language_info' => 'Информация об языке',
@@ -23,9 +23,9 @@ return [
 
     // 1.0.6
 
-    'added_to_index' => 'Added to Index',
-    'last_update' => 'Last Update',
-    'dashboard_title' => 'Latest queries without results',
+    'added_to_index' => 'Добавлено к индексу',
+    'last_update' => 'Последнее обновление',
+    'dashboard_title' => 'Последние запросы без результатов',
 
     // 2.0
 
