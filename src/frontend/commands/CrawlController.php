@@ -16,7 +16,7 @@ use yii\console\widgets\Table;
  * Add verbositiy while crawling:
  *
  * ```sh
- * ./vendor/bin/luya crawler/crawl --verbose
+ * ./vendor/bin/luya crawler/crawl --verbose=1
  * ```
  *
  * @author Basil Suter <basil@nadar.io>
@@ -37,6 +37,14 @@ class CrawlController extends \luya\console\Command
             'useH1' => $this->module->useH1,
         ]);
         
+        foreach ($this->module->indexer as $className) {
+            foreach ($className::indexLinks() as $url => $title) {
+                $container->addToIndex($url, $title, $className);
+            }
+        }
+
+        $container->start();
+
         $timeElapsed = round((microtime(true) - $start) / 60, 2);
         
         $table = new Table();

@@ -3,7 +3,7 @@
 namespace luya\crawler\frontend\classes;
 
 use Yii;
-use Exception;
+use luya\Exception;
 use yii\base\InvalidConfigException;
 use luya\crawler\models\Builderindex;
 use luya\crawler\models\Index;
@@ -69,10 +69,9 @@ class CrawlContainer extends BaseObject
     public $verbose = false;
 
     /**
-     * @var array|boolean Define an array of extension where the links should automatically not follow in order to save memory.
-     * If you like to disable this feature (small pages) you can set `false`.
+     * @var array Define an array of extension where the links should automatically not follow in order to save memory.
      */
-    public $doNotFollowExtensions = false;
+    public $doNotFollowExtensions = [];
     
     /**
      * @var boolean By default the title tag will be used for the page name, if `$useH1` is enabled the title for the page will be replaced by the h1 tag if found, oterwise
@@ -146,6 +145,8 @@ class CrawlContainer extends BaseObject
      */
     public function init()
     {
+        parent::init();
+
         if ($this->baseUrl === null) {
             throw new InvalidConfigException("argument 'baseUrl' can not be null.");
         }
@@ -164,10 +165,18 @@ class CrawlContainer extends BaseObject
         $this->verbosePrint('filterRegex', $this->filterRegex);
         $this->verbosePrint('doNotFollowExtensions', $this->doNotFollowExtensions);
         
-        Yii::$app->db->createCommand()->truncateTable('crawler_builder_index')->execute();
-        
+        Yii::$app->db->createCommand()->truncateTable(Builderindex::tableName())->execute();
+
         $this->verbosePrint('truncate of table crawerl_builder_index', 'yes');
-        // init base url
+    }
+
+    /**
+     * Start the crawler process.
+     *
+     * @since 2.0.0
+     */
+    public function start()
+    {
         $this->urlStatus($this->baseUrl);
         $this->find();
     }
@@ -199,7 +208,7 @@ class CrawlContainer extends BaseObject
                     $this->addProcessed($item['url']);
                 }
             } else {
-                $this->verbosePrint('url is in processed array, and will therfore skipped.', $item['url']);
+                $this->verbosePrint('url is in processed array and will therfore skipped.', $item['url']);
             }
         }
 
@@ -351,12 +360,11 @@ class CrawlContainer extends BaseObject
         $this->verbosePrint('memory usage peak', memory_get_peak_usage());
         
         $model = Builderindex::findUrl($this->encodeUrl($url));
-        $time = time();
         if (!$model) {
             $this->verbosePrint('found in builder index', 'no');
             // add the url to the index
             if ($this->filterUrlIsValid($url)) {
-                Builderindex::addToIndex($url, $this->getCrawler($url)->getTitle(), 'unknown');
+                $this->addToIndex($url, $this->getCrawler($url)->getTitle(), 'unknown');
     
                 // update the urls content
                 $model = Builderindex::findUrl($url);
@@ -381,7 +389,7 @@ class CrawlContainer extends BaseObject
                     }
                     if ($this->matchBaseUrl($link[1])) {
                         if ($this->filterUrlIsValid($link[1])) {
-                            Builderindex::addToIndex($link[1], $link[0], $url);
+                            $this->addToIndex($link[1], $link[0], $url);
                         }
                     }
                 }
@@ -411,7 +419,7 @@ class CrawlContainer extends BaseObject
                         }
                         if ($this->matchBaseUrl($link[1])) {
                             if ($this->filterUrlIsValid($link[1])) {
-                                Builderindex::addToIndex($link[1], $link[0], $url);
+                                $this->addToIndex($link[1], $link[0], $url);
                             }
                         }
                     }
@@ -419,12 +427,17 @@ class CrawlContainer extends BaseObject
             }
         }
         
-        if (empty($model->content)) {
+        if ($model && empty($model->content)) {
             $this->verbosePrint("Remove empty content model after crawling all links.");
             $model->delete();
         }
         unset($model);
         
         return true;
+    }
+
+    public function addToIndex($url, $title, $source = 'unknown')
+    {
+        return Builderindex::addToIndex($url, $title, $source);
     }
 }

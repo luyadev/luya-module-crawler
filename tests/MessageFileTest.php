@@ -1,6 +1,6 @@
 <?php
 
-namespace crawlerests;
+namespace luya\crawler\tests;
 
 use luya\testsuite\traits\MessageFileCompareTrait;
 

@@ -2,13 +2,13 @@
 
 namespace luya\crawler\frontend\classes;
 
-use luya\helpers\StringHelper;
-use yii\base\InvalidConfigException;
-use yii\base\BaseObject;
 use Symfony\Component\DomCrawler\Crawler;
 use Goutte\Client;
 use yii\helpers\VarDumper;
+use yii\base\InvalidConfigException;
+use yii\base\BaseObject;
 use luya\helpers\Html;
+use luya\helpers\StringHelper;
 use luya\crawler\frontend\Module;
 
 /**
@@ -80,6 +80,7 @@ class CrawlPage extends BaseObject
             try {
                 $this->client = new Client();
                 $this->client->setServerParameters(['HTTP_USER_AGENT' => Module::CRAWLER_USER_AGENT]);
+                $this->client->
                 $this->_crawler = $this->client->request('GET', $this->pageUrl);
                 $this->verbosePrint("[GENERATE REQUEST TO]", $this->pageUrl);
                 if ($this->client->getInternalResponse()->getStatus() !== 200) {

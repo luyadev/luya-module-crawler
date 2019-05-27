@@ -8,10 +8,10 @@ class m160524_134433_searchindex extends Migration
     {
         $this->createTable('crawler_searchdata', [
             'id' => 'pk',
-            'query' => 'varchar(120) NOT NULL',
-            'results' => 'int(11) default 0',
-            'timestamp' => 'int(11) NOT NULL',
-            'language' => 'varchar(12)',
+            'query' => $this->string(120)->notNull(),
+            'results' => $this->integer()->defaultValue(0),
+            'timestamp' => $this->integer()->notNull(),
+            'language' => $this->string(12),
         ]);
     }
 

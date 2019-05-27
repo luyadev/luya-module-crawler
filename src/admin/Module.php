@@ -16,7 +16,6 @@ final class Module extends \luya\admin\base\Module
      * @inheritdoc
      */
     public $apis = [
-        'api-crawler-builderindex' => 'luya\crawler\admin\apis\BuilderindexController',
         'api-crawler-index' => 'luya\crawler\admin\apis\IndexController',
         'api-crawler-searchdata' => 'luya\crawler\admin\apis\SearchdataController',
         'api-crawler-link' => 'luya\crawler\admin\apis\LinkController',

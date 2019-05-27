@@ -1,8 +1,8 @@
 <?php
 
-namespace crawlerests\frontend\classes;
+namespace luya\crawler\tests\frontend\classes;
 
-use crawlerests\CrawlerTestCase;
+use luya\crawler\tests\CrawlerTestCase;
 use luya\crawler\frontend\classes\CrawlContainer;
 
 class CrawlContainerTest extends CrawlerTestCase
@@ -11,13 +11,13 @@ class CrawlContainerTest extends CrawlerTestCase
     {
         $this->expectException('yii\base\InvalidConfigException');
         $container = new CrawlContainer();
+        $container->start();
     }
     
-    public function testInvalidBaseUrlCall()
+    public function testInvalidBaseUrlCallLog()
     {
         $container = new CrawlContainer(['baseUrl' => 'http://localhost/unknown/url']);
         $d = $container->getReport();
-        
         $this->assertSame(1, count($d));
     }
 }

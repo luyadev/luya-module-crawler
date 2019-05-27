@@ -1,8 +1,8 @@
 <?php
 
-namespace crawlerests\widgets;
+namespace luya\crawler\tests\widgets;
 
-use crawlerests\CrawlerTestCase;
+use luya\crawler\tests\CrawlerTestCase;
 use luya\crawler\widgets\DidYouMeanWidget;
 use yii\data\ArrayDataProvider;
 use luya\testsuite\fixtures\ActiveRecordFixture;

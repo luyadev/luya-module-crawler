@@ -2,29 +2,22 @@
 
 namespace luya\crawler\tests;
 
-use luya\testsuite\cases\WebApplicationTestCase;
+use luya\testsuite\cases\ConsoleApplicationTestCase;
 
-/**
- * Crawler TestCase
- * @author Basil Suter <basil@nadar.io>
- */
-class CrawlerTestCase extends WebApplicationTestCase
+class ConsoleCrawlerTestCase extends ConsoleApplicationTestCase
 {
     use TableSetupTrait;
 
     public function getConfigArray()
     {
         return [
-           'id' => 'mytestapp',
+           'id' => 'mytestappcli',
            'basePath' => dirname(__DIR__),
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
                     'dsn' => 'sqlite::memory:',
                     'charset' => 'utf8',
-                ],
-                'request' => [
-                    'forceWebRequest' => true,
                 ],
             ],
             'modules' => [

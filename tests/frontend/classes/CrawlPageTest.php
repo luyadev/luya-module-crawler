@@ -1,10 +1,10 @@
 <?php
 
-namespace crawlerests\frontend\classes;
+namespace luya\crawler\tests\frontend\classes;
 
 use luya\crawler\frontend\classes\CrawlPage;
 use Symfony\Component\DomCrawler\Crawler;
-use crawlerests\CrawlerTestCase;
+use luya\crawler\tests\CrawlerTestCase;
 use luya\crawler\models\Link;
 use luya\testsuite\fixtures\NgRestModelFixture;
 
@@ -14,6 +14,7 @@ class CrawlPageTest extends CrawlerTestCase
     
     public function afterSetup()
     {
+        parent::afterSetup();
         $this->object = new CrawlPage(['baseUrl' => 'http://localhost', 'pageUrl' => 'http://localhost', 'verbose' => false, 'useH1' => false]);
         $this->object->setCrawler(new Crawler(file_get_contents('tests/data/luyaio.html')));
     }

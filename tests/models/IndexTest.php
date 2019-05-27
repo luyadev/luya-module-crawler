@@ -1,10 +1,10 @@
 <?php
 
-namespace crawlerests\models;
+namespace luya\crawler\tests\models;
 
 use luya\crawler\models\Index;
-use crawlerests\CrawlerTestCase;
-use crawlerests\data\fixtures\IndexFixture;
+use luya\crawler\tests\CrawlerTestCase;
+use luya\crawler\tests\data\fixtures\IndexFixture;
 
 class IndexTest extends CrawlerTestCase
 {

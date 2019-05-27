@@ -84,6 +84,17 @@ final class Module extends \luya\base\Module
      * @var integer Number of pages
      */
     public $searchResultPageSize = 25;
+
+    /**
+     * @var array An array with classes implementing the {{CrawlIndexInterface}}. Example
+     * ```php
+     * 'index' => [
+     *     'app/models/MyModel',
+     * ],
+     * ```
+     * @since 2.0.0
+     */
+    public $indexer = [];
     
     /**
      * @inheritdoc

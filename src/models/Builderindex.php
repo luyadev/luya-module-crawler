@@ -5,6 +5,7 @@ namespace luya\crawler\models;
 use luya\crawler\admin\Module;
 use luya\helpers\StringHelper;
 use luya\admin\ngrest\base\NgRestModel;
+use yii\db\ActiveRecord;
 
 /**
  * Temporary Builder Index Model.
@@ -14,22 +15,22 @@ use luya\admin\ngrest\base\NgRestModel;
  *
  * @property int $id
  * @property string $url
- * @property string $title
  * @property string $content
- * @property string $description
- * @property string $language_info
- * @property string $url_found_on_page
- * @property string $group
+ * @property string $title
  * @property int $last_indexed
+ * @property string $language_info
  * @property int $crawled
  * @property int $status_code
  * @property string $content_hash
  * @property int $is_dublication
+ * @property string $url_found_on_page
+ * @property string $group
+ * @property string $description
  *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
-class Builderindex extends NgRestModel
+class Builderindex extends ActiveRecord
 {
     public function init()
     {
@@ -47,63 +48,30 @@ class Builderindex extends NgRestModel
         $this->is_dublication = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->exists();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'crawler_builder_index';
     }
 
-    public function scenarios()
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
     {
         return [
-            'restcreate' => ['url', 'content', 'title', 'language_info', 'url_found_on_page', 'group'],
-            'restupdate' => ['url', 'content', 'title', 'language_info', 'url_found_on_page', 'group'],
-            'default' => ['url', 'content', 'title', 'language_info', 'content_hash', 'is_dublication', 'url_found_on_page', 'group', 'description'],
+            [['url'], 'required'],
+            [['content', 'description'], 'string'],
+            [['last_indexed', 'crawled', 'status_code', 'is_dublication'], 'integer'],
+            [['url', 'title'], 'string', 'max' => 200],
+            [['language_info', 'content_hash'], 'string', 'max' => 80],
+            [['url_found_on_page'], 'string', 'max' => 255],
+            [['group'], 'string', 'max' => 120],
+            [['url'], 'unique'],
         ];
     }
-
-    public function attributeLabels()
-    {
-        return [
-            'url' => Module::t('builderindex_url'),
-            'title' => Module::t('builderindex_title'),
-            'language_info' => Module::t('builderindex_language_info'),
-            'content' => Module::t('builderindex_content'),
-            'url_found_on_page' => Module::t('builderindex_url_found'),
-        ];
-    }
-    
-    /* ngrest model properties */
-    
-    public function genericSearchFields()
-    {
-        return ['url', 'content', 'title', 'language_info'];
-    }
-    
-    public static function ngRestApiEndpoint()
-    {
-        return 'api-crawler-builderindex';
-    }
-    
-    public function ngRestAttributeTypes()
-    {
-        return [
-            'url' => 'text',
-            'title' => 'text',
-            'language_info' => 'text',
-            'url_found_on_page' => 'text',
-            'content' => 'textarea',
-        ];
-    }
-    
-    public function ngRestConfig($config)
-    {
-        $this->ngRestConfigDefine($config, 'list', ['url', 'title', 'language_info', 'url_found_on_page']);
-        $this->ngRestConfigDefine($config, ['create', 'update'], ['url', 'title', 'language_info', 'url_found_on_page', 'content']);
-    
-        return $config;
-    }
-
-    /* custom functions */
 
     /**
      * Whether an url is inexed or not (false = not in database or not yet crawler).
@@ -151,6 +119,6 @@ class Builderindex extends NgRestModel
         $model->url_found_on_page = $urlFoundOnPage;
         $model->crawled = false;
 
-        return $model->save(false);
+        return $model->save();
     }
 }

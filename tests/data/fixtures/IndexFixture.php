@@ -1,6 +1,6 @@
 <?php
 
-namespace crawlerests\data\fixtures;
+namespace luya\crawler\tests\data\fixtures;
 
 use yii\test\ActiveFixture;
 use luya\testsuite\fixtures\NgRestModelFixture;

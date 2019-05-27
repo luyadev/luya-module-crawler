@@ -5,7 +5,8 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 2.0 (in progress)
 
-- [#20](https://github.com/luyadev/luya-module-crawler/issues/20) Added new link status list.
++ [#1](https://github.com/luyadev/luya-module-crawler/issues/1) Add indexer interface with property to provide class which implement the interface.
++ [#20](https://github.com/luyadev/luya-module-crawler/issues/20) Added new link status list.
 
 ## 1.0.6.2 (4. March 2019)
 
