@@ -32,7 +32,7 @@ class DefaultController extends \luya\web\Controller
      *
      * @return string
      */
-    public function actionIndex($query = null, $page = null, $group = null)
+    public function actionIndex($query = null, $page = null, $group = null, $resolveId = null)
     {
         $language = Yii::$app->composition->getKey('langShortCode');
         
@@ -56,7 +56,7 @@ class DefaultController extends \luya\web\Controller
                 ],
                 'sort' => false,
             ]);
-            
+
             $searchData = new Searchdata();
             $searchData->detachBehavior('LogBehavior');
             $searchData->attributes = [
@@ -64,6 +64,7 @@ class DefaultController extends \luya\web\Controller
                 'results' => $provider->totalCount,
                 'timestamp' => time(),
                 'language' => $language,
+                'resolved_by_didyoumean_searchdata_id' => $resolveId,
             ];
             $searchData->save();
         }
@@ -72,6 +73,7 @@ class DefaultController extends \luya\web\Controller
             'query' => Html::encode($query),
             'provider' => $provider,
             'language' => $language,
+            'searchModel' => $searchData,
         ]);
     }
 }

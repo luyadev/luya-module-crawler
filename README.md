@@ -71,6 +71,7 @@ use luya\crawler\widgets\DidYouMeanWidget;
 /* @var $language string */
 /* @var $this \luya\web\View */
 /* @var $provider \yii\data\ActiveDataProvider */
+/* @var $searchModel \luya\crawler\models\Searchdata */
 ?>
 
 <form class="searchpage__searched-form" action="<?= Url::toRoute(['/crawler/default/index']); ?>" method="get">
@@ -79,7 +80,7 @@ use luya\crawler\widgets\DidYouMeanWidget;
 </form>
 
 <h2><?= $provider->totalCount; ?> Results</h2>
-<?= DidYouMeanWidget::widget(['query' => $query, 'language' => $language, 'dataProvider' => $provider]); ?>
+<?= DidYouMeanWidget::widget(['searchModel' => $searchModel]); ?>
 <?php foreach($provider->models as $item): /* @var $item \luya\crawler\models\Index */ ?>
     <h3><?= $item->title; ?></h3>
     <p><?= $item->preview($query); ?></p>

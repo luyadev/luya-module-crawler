@@ -351,22 +351,42 @@ class Index extends NgRestModel
         return Html::encode($query);
     }
 
-    public static function didYouMean($query, $languageInfo)
+    /**
+     * Returns the Searchdata ActiveQuery which is clsoes to the current query.
+     *
+     * @param string $query
+     * @param string $languageInfo
+     * @param integer $ignoreDistance
+     * @return Searchdata
+     */
+    public static function didYouMean($query, $languageInfo, $ignoreDistance = 6)
     {
-        $index = Searchdata::find()->select(['query'])->where([
-            'and',
-            ['=', 'language', $languageInfo],
-            ['>', 'results', 0]
-        ])->distinct()->column();
+        $batch = Searchdata::find()
+            ->select(['query', 'id'])
+            ->where([
+                'and',
+                ['=', 'language', $languageInfo],
+                ['>', 'results', 0]
+            ])
+            ->orderBy(['id' => SORT_ASC]) // makes sure always the first id is taken
+            ->distinct()
+            ->batch();
 
         $shortest = -1;
         
         $closest = false;
-        foreach ($index as $word) {
-            $lev = levenshtein($query, $word);
-            if ($lev <= $shortest || $shortest < 0) {
-                $closest = $word;
-                $shortest = $lev;
+        foreach ($batch as $index) {
+            foreach ($index as $word) {
+                $lev = levenshtein($query, $word->query);
+
+                if ($lev >= $ignoreDistance) {
+                    continue;
+                }
+
+                if ($lev <= $shortest || $shortest < 0) {
+                    $closest = $word;
+                    $shortest = $lev;
+                }
             }
         }
 

@@ -8,11 +8,23 @@ use luya\helpers\Html;
 use yii\base\InvalidConfigException;
 use luya\crawler\frontend\Module;
 use yii\data\DataProviderInterface;
+use luya\crawler\models\Searchdata;
 
 /**
  * Did you mean?
  * 
  * Returns a did you mean klickable link based on search input data.
+ * 
+ * Use the search model to link data between search and did you mean suggestion:
+ * 
+ * ```php
+ * DidYouMeanWidget::widget([
+ *     'searchModel' => $searchModel,
+ *     'dataProvider' => $provider,
+ * ]);
+ * ```
+ * 
+ * Or without search model
  * 
  * ```php
  * DidYouMeanWidget::widget([
@@ -58,9 +70,25 @@ class DidYouMeanWidget extends Widget
     {
         parent::init();
 
-        if (!$this->language || !$this->_dataProvider) {
-            throw new InvalidConfigException("The query, language and dataProvider properties can not be null.");
+        if (!$this->language || $this->resultsCount === null) {
+            throw new InvalidConfigException("The language and resultsCount properties can not be null. Either provider those property or set searchModel.");
         }
+    }
+
+    private $_searchModel;
+
+    /**
+     * User search model to store informations.
+     *
+     * @param Searchdata $search
+     * @since 2.0.0
+     */
+    public function setSearchModel(Searchdata $search)
+    {
+        $this->_searchModel = $search;
+        $this->language = $search->language;
+        $this->query = $search->query;
+        $this->resultsCount = $search->results;
     }
 
     private $_dataProvider;
@@ -73,21 +101,29 @@ class DidYouMeanWidget extends Widget
     public function setDataProvider(DataProviderInterface $provider)
     {
         $this->_dataProvider = $provider;
+        $this->resultsCount = $provider->getTotalCount();
     }
+
+    protected $resultsCount = null;
 
     /**
      * {@inheritDoc}
      */
     public function run()
     {
-        if (empty($this->query) || $this->_dataProvider->totalCount > 0) {
+        if (empty($this->query) || $this->resultsCount > 0) {
             return;
         }
 
         $didYouMean = Index::didYouMean($this->query, $this->language);
 
         if ($didYouMean) {
-            $content = Html::a(Module::t("Did you mean <b>{word}</b>?", ['word' => $didYouMean]), [$this->route, 'query' => $didYouMean], $this->linkOptions);
+            $didYouMean->updateCounters(['didyoumean_suggestion_count' => 1]);
+            $params = [$this->route, 'query' => $didYouMean->query];
+            if ($this->_searchModel) {
+                $params['resolveId'] = $this->_searchModel->id;
+            }
+            $content = Html::a(Module::t("Did you mean <b>{word}</b>?", ['word' => $didYouMean->query]), $params, $this->linkOptions);
             return Html::tag('p', $content, $this->tagOptions);
         }
     }

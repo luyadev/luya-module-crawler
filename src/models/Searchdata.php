@@ -17,6 +17,8 @@ use luya\admin\aws\DetailViewActiveWindow;
  * @property integer $results
  * @property integer $timestamp
  * @property string $language
+ * @property integer $didyoumean_suggestion_count
+ * @property integer $resolved_by_didyoumean_searchdata_id
  *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
@@ -60,7 +62,7 @@ class Searchdata extends NgRestModel
     {
         return [
             [['query', 'timestamp'], 'required'],
-            [['results', 'timestamp'], 'integer'],
+            [['results', 'timestamp', 'didyoumean_suggestion_count', 'resolved_by_didyoumean_searchdata_id'], 'integer'],
             [['query'], 'string', 'max' => 120],
             [['language'], 'string', 'max' => 12],
         ];
