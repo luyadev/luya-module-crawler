@@ -111,4 +111,9 @@ class Searchdata extends NgRestModel
             ]],
         ];
     }
+
+    public function getResolveSearchdata()
+    {
+        return $this->hasOne(self::class, ['id' => 'resolved_by_didyoumean_searchdata_id']);
+    }
 }

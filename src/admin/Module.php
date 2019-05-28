@@ -40,8 +40,9 @@ final class Module extends \luya\admin\base\Module
         ->group('crawler_index')
             ->itemApi('crawler_index', 'crawleradmin/index/index', 'list', 'api-crawler-index')
         ->group('crawler_analytics')
-            ->itemApi('Link', 'crawleradmin/link/index', 'label', 'api-crawler-link')
-            ->itemApi('crawler_analytics_queries', 'crawleradmin/searchdata/index', 'label', 'api-crawler-searchdata');
+            ->itemApi('crawler_menu_links', 'crawleradmin/link/index', 'link', 'api-crawler-link')
+            ->itemApi('crawler_analytics_queries', 'crawleradmin/searchdata/index', 'search', 'api-crawler-searchdata')
+            ->itemRoute('crawler_menu_stats', 'crawleradmin/stats/index', 'pie_chart');
     }
     
     /**

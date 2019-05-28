@@ -84,10 +84,6 @@ class CrawlContainer extends BaseObject
      */
     public $startTime;
     
-    private $_crawlers = [];
-    
-    private $_log = [];
-    
     private $_proccessed = [];
     
     protected function addProcessed($link)
@@ -100,6 +96,8 @@ class CrawlContainer extends BaseObject
         return in_array($link, $this->_proccessed);
     }
     
+    private $_log = [];
+
     public function addLog($cat, $url, $message = null)
     {
         /**
@@ -123,6 +121,8 @@ class CrawlContainer extends BaseObject
             echo '+ ' . $key . ' =========> ' . $value . PHP_EOL;
         }
     }
+
+    private $_crawlers = [];
 
     /**
      * Get the crawl page object based on its ulr.
@@ -364,32 +364,30 @@ class CrawlContainer extends BaseObject
             $this->verbosePrint('found in builder index', 'no');
             // add the url to the index
             if ($this->filterUrlIsValid($url)) {
-                $this->addToIndex($url, $this->getCrawler($url)->getTitle(), 'unknown');
-    
-                // update the urls content
-                $model = Builderindex::findUrl($url);
-                $model->content = $this->getCrawler($url)->getContent();
-                $model->group = $this->getCrawler($url)->getGroup();
-                $model->title = $this->getCrawler($url)->getTitle();
-                $model->description = $this->getCrawler($url)->getMetaDescription();
-                $model->crawled = true;
-                $model->status_code = 1;
-                $model->last_indexed = time();
-                $model->language_info = $this->getCrawler($url)->getLanguageInfo();
-                $model->save(false);
+                $model = Builderindex::addToIndex($url, $this->getCrawler($url)->getTitle(), 'unknown');
+
+                if ($model) {
+                    $model->content = $this->getCrawler($url)->getContent();
+                    $model->group = $this->getCrawler($url)->getGroup();
+                    $model->title = $this->getCrawler($url)->getTitle();
+                    $model->description = $this->getCrawler($url)->getMetaDescription();
+                    $model->crawled = 1;
+                    $model->status_code = 1;
+                    $model->last_indexed = time();
+                    $model->language_info = $this->getCrawler($url)->getLanguageInfo();
+                    $model->save(false);
+                }
     
                 // add the pages links to the index
                 foreach ($this->getCrawler($url)->getLinks() as $link) {
-
                     Link::add($link[1], $link[0], $url);
-
                     $this->verbosePrint('link iteration for new page' , $link);
                     if ($this->isProcessed($link[1])) {
                         continue;
                     }
                     if ($this->matchBaseUrl($link[1])) {
                         if ($this->filterUrlIsValid($link[1])) {
-                            $this->addToIndex($link[1], $link[0], $url);
+                            Builderindex::addToIndex($link[1], $link[0], $url);
                         }
                     }
                 }
@@ -402,7 +400,7 @@ class CrawlContainer extends BaseObject
                 if (!$model->crawled) {
                     $model->content = $this->getCrawler($url)->getContent();
                     $model->group = $this->getCrawler($url)->getGroup();
-                    $model->crawled = true;
+                    $model->crawled = 1;
                     $model->status_code = 1;
                     $model->last_indexed = time();
                     $model->title = $this->getCrawler($url)->getTitle();
@@ -419,7 +417,7 @@ class CrawlContainer extends BaseObject
                         }
                         if ($this->matchBaseUrl($link[1])) {
                             if ($this->filterUrlIsValid($link[1])) {
-                                $this->addToIndex($link[1], $link[0], $url);
+                                Builderindex::addToIndex($link[1], $link[0], $url);
                             }
                         }
                     }
@@ -434,10 +432,5 @@ class CrawlContainer extends BaseObject
         unset($model);
         
         return true;
-    }
-
-    public function addToIndex($url, $title, $source = 'unknown')
-    {
-        return Builderindex::addToIndex($url, $title, $source);
     }
 }

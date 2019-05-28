@@ -80,7 +80,6 @@ class CrawlPage extends BaseObject
             try {
                 $this->client = new Client();
                 $this->client->setServerParameters(['HTTP_USER_AGENT' => Module::CRAWLER_USER_AGENT]);
-                $this->client->
                 $this->_crawler = $this->client->request('GET', $this->pageUrl);
                 $this->verbosePrint("[GENERATE REQUEST TO]", $this->pageUrl);
                 if ($this->client->getInternalResponse()->getStatus() !== 200) {

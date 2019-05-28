@@ -103,22 +103,20 @@ class Builderindex extends ActiveRecord
      * @param string $url
      * @param string $title
      * @param string $urlFoundOnPage
-     * @return boolean
+     * @return self|boolean Returns the model on success, otherwise
      */
     public static function addToIndex($url, $title = null, $urlFoundOnPage = null)
     {
-        $model = self::find()->where(['url' => $url])->exists();
-
-        if ($model) {
-            return false;
-        }
-
         $model = new self();
         $model->url = $url;
         $model->title = StringHelper::truncate($title, 197);
         $model->url_found_on_page = $urlFoundOnPage;
-        $model->crawled = false;
+        $model->crawled = 0;
 
-        return $model->save();
+        if ($model->save()) {
+            return $model;
+        }
+
+        return false;
     }
 }
