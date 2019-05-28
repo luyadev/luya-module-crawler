@@ -42,7 +42,7 @@ final class Module extends \luya\admin\base\Module
         ->group('crawler_analytics')
             ->itemApi('crawler_menu_links', 'crawleradmin/link/index', 'link', 'api-crawler-link')
             ->itemApi('crawler_analytics_queries', 'crawleradmin/searchdata/index', 'search', 'api-crawler-searchdata')
-            ->itemRoute('crawler_menu_stats', 'crawleradmin/stats/index', 'pie_chart');
+            ->itemRoute('crawler_menu_stats', 'crawleradmin/stats/index', 'bar_chart');
     }
     
     /**

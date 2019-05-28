@@ -44,7 +44,7 @@ return [
     'stats_to' => 'To',
     'stats_searches_title' => 'Searches',
     'stats_no_results_title' => 'Queries without Results',
-    'stats_most_suggestions_title' => 'Most suggested Queries',
+    'stats_most_suggestions_title' => 'Most frequently suggested Queries',
     'stats_no_data' => 'No data available',
     'legend_total' => 'Total',
     'legend_results' => 'No Results',
