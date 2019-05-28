@@ -7,13 +7,14 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use luya\admin\base\Controller;
-use luya\helpers\Json;
 use luya\crawler\models\Searchdata;
 use luya\crawler\admin\Module;
 
 class StatsController extends Controller
 {
     public $disablePermissionCheck = true;
+
+    public $enableCsrfValidation = false;
 
     public $apiResponseActions = ['data'];
 
