@@ -14,6 +14,7 @@ class m190527_114611_index_suggestions extends Migration
     {
         $this->addColumn('crawler_searchdata', 'didyoumean_suggestion_count', $this->integer()->defaultValue(0));
         $this->addColumn('crawler_searchdata', 'resolved_by_didyoumean_searchdata_id', $this->integer());
+        $this->createIndex('language_results_query', 'crawler_searchdata', ['language', 'results', 'query']);
     }
 
     /**
@@ -21,6 +22,8 @@ class m190527_114611_index_suggestions extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('crawler_link');
+        $this->dropColumn('crawler_searchdata', 'didyoumean_suggestion_count');
+        $this->dropColumn('crawler_searchdata', 'resolved_by_didyoumean_searchdata_id');
+        $this->dropIndex('language_results_query', 'crawler_searchdata');
     }
 }

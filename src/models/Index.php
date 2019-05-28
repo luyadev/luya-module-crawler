@@ -362,14 +362,13 @@ class Index extends NgRestModel
     public static function didYouMean($query, $languageInfo, $ignoreDistance = 6)
     {
         $batch = Searchdata::find()
-            ->select(['query', 'id'])
+            ->select(['query', 'id' => 'min(id)'])
             ->where([
                 'and',
                 ['=', 'language', $languageInfo],
                 ['>', 'results', 0]
             ])
-            ->orderBy(['id' => SORT_ASC]) // makes sure always the first id is taken
-            ->distinct()
+            ->groupBy(['query'])
             ->batch();
 
         $shortest = -1;

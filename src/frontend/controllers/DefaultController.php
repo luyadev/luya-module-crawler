@@ -64,9 +64,17 @@ class DefaultController extends \luya\web\Controller
                 'results' => $provider->totalCount,
                 'timestamp' => time(),
                 'language' => $language,
-                'resolved_by_didyoumean_searchdata_id' => $resolveId,
             ];
             $searchData->save();
+
+            // if a resolve id is available
+            if ($resolveId) {
+                $emptyQuery = Searchdata::findOne($resolveId);
+                if ($emptyQuery && empty($emptyQuery->resolved_by_didyoumean_searchdata_id)) {
+                    $emptyQuery->resolved_by_didyoumean_searchdata_id = $searchData->id;
+                    $emptyQuery->update();
+                }
+            }
         }
         
         return $this->render('index', [
