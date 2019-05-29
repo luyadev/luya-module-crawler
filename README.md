@@ -12,6 +12,8 @@
 
 An easy to use full-website page crawler to make provide search results on your page. The crawler module gather all information about the sites on the configured domain and stores the index in the database. From there you can now create search queries to provide search results. There are also helper methods which provide intelligent search results by splitting the input into multiple search queries (used by default).
 
+![LUYA Crawler Search Stats](https://raw.githubusercontent.com/luyadev/luya-module-crawler/master/crawler-stats.png)
+
 ## Installation
 
 Install the module via composer:
