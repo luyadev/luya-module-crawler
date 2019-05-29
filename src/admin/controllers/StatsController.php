@@ -28,7 +28,7 @@ class StatsController extends Controller
         $start = Yii::$app->request->getBodyParam('from', strtotime("-1 week 00:00"));
         $end = Yii::$app->request->getBodyParam('to', time());
 
-        list ($daysRange, $series) = $this->generateSeriesData($start, $end);
+        list($daysRange, $series) = $this->generateSeriesData($start, $end);
 
         $noResults = Searchdata::find()
             ->where(['between', 'timestamp', $start, $end])
@@ -57,7 +57,6 @@ class StatsController extends Controller
 
     private function generateSeriesData($start, $end)
     {
-        
         $interval = new DateInterval('P1D');
         $daterange = new DatePeriod((new Datetime())->setTimestamp($start), $interval, (new Datetime())->setTimestamp($end));
         $daysRange = [];

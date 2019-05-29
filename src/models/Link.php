@@ -12,8 +12,8 @@ use luya\crawler\admin\Module;
 
 /**
  * Link.
- * 
- * File has been created with `crud/create` command. 
+ *
+ * File has been created with `crud/create` command.
  *
  * @property integer $id
  * @property string $url
@@ -144,9 +144,9 @@ class Link extends NgRestModel
 
     /**
      * Get the response status for the given link.
-     * 
+     *
      * @param string $link
-     * @return integer 
+     * @return integer
      */
     public static function responseStatus($url)
     {
@@ -163,7 +163,7 @@ class Link extends NgRestModel
 
     /**
      * Short hand to add new page which checks if the link also exists on the given page.
-     * 
+     *
      * @param $url string
      * @param $title string
      * @param $urlOnPage string
@@ -179,7 +179,7 @@ class Link extends NgRestModel
             $model->title = $title;
             $model->url = $url;
             $model->url_found_on_page = $urlOnPage;
-        }        
+        }
 
         return $model->save();
     }

@@ -131,7 +131,7 @@ class CrawlPage extends BaseObject
      *
      * @return array An array with two elements
      * 0 = Value inside the href tag
-     * 1 = The Url 
+     * 1 = The Url
      */
     public function getLinks()
     {

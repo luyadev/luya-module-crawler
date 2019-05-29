@@ -12,20 +12,20 @@ use luya\crawler\models\Searchdata;
 
 /**
  * Did you mean?
- * 
+ *
  * Returns a did you mean klickable link based on search input data.
- * 
+ *
  * Use the search model to link data between search and did you mean suggestion:
- * 
+ *
  * ```php
  * DidYouMeanWidget::widget([
  *     'searchModel' => $searchModel,
  *     'dataProvider' => $provider,
  * ]);
  * ```
- * 
+ *
  * Or without search model
- * 
+ *
  * ```php
  * DidYouMeanWidget::widget([
  *     'query' => $query,
@@ -33,7 +33,7 @@ use luya\crawler\models\Searchdata;
  *     'dataProvider' => $provider,
  * ]);
  * ```
- * 
+ *
  * @since 1.0.5
  */
 class DidYouMeanWidget extends Widget

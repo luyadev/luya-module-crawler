@@ -15,7 +15,6 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
      */
     public function testIndexerInterface()
     {
-
         $module = new Module('frontendcrawler');
         $module->baseUrl = 'http://localhost';
         $module->indexer = [
@@ -30,7 +29,6 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         try {
             $ctrl->runAction('index');
         } catch (\Exception $e) {
-
         }
 
         $this->assertSame('0', Builderindex::find()->asArray()->count());

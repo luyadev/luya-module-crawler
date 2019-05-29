@@ -86,7 +86,7 @@ class Builderindex extends ActiveRecord
 
     /**
      * Find a crawler index entry based on the url.
-     * 
+     *
      * @param string $url
      * @return \luya\crawler\models\Builderindex|boolean
      */

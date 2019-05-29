@@ -1,6 +1,7 @@
 <?php
 use luya\admin\helpers\Angular;
 use luya\crawler\admin\Module;
+
 ?>
 <script>
 zaa.bootstrap.register('InlineController', ['$scope', '$http', function($scope, $http) {

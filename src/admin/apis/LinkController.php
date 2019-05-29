@@ -4,8 +4,8 @@ namespace luya\crawler\admin\apis;
 
 /**
  * Link Controller.
- * 
- * File has been created with `crud/create` command. 
+ *
+ * File has been created with `crud/create` command.
  */
 class LinkController extends \luya\admin\ngrest\base\Api
 {

@@ -2,7 +2,6 @@
 
 namespace luya\crawler\tests;
 
-
 use luya\testsuite\fixtures\NgRestModelFixture;
 use luya\crawler\models\Searchdata;
 use luya\crawler\tests\data\fixtures\IndexFixture;
@@ -10,7 +9,6 @@ use luya\crawler\models\Builderindex;
 
 trait TableSetupTrait
 {
-
     public $searchDataFixture;
 
     public $indexFixture;

@@ -183,7 +183,7 @@ class CrawlContainer extends BaseObject
     
     /**
      * Checks whether the base url response a status 200 code.
-     * 
+     *
      * @return boolean
      * @since 1.0.2
      */
@@ -381,7 +381,7 @@ class CrawlContainer extends BaseObject
                 // add the pages links to the index
                 foreach ($this->getCrawler($url)->getLinks() as $link) {
                     Link::add($link[1], $link[0], $url);
-                    $this->verbosePrint('link iteration for new page' , $link);
+                    $this->verbosePrint('link iteration for new page', $link);
                     if ($this->isProcessed($link[1])) {
                         continue;
                     }

@@ -260,10 +260,10 @@ class Index extends NgRestModel
 
     /**
      * Find a position for a given index item and keyword.
-     * 
+     *
      * 1. Generate the index
      * 2. If multiple words, ensure the word also existing on the current index otherwise unset.
-     * 
+     *
      * @param array $results
      * @param array $index The index
      */
@@ -317,9 +317,9 @@ class Index extends NgRestModel
     
     /**
      * Get the page importance value for a given item and keyword.
-     * 
+     *
      * The bigger the value, the more relevante is this page for the given keyword.
-     * 
+     *
      * @param array $item
      * @param [type] $keyword
      * @return void

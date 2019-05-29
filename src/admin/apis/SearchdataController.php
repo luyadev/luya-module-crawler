@@ -5,7 +5,6 @@ namespace luya\crawler\admin\apis;
 use yii\data\ActiveDataProvider;
 use luya\crawler\models\Searchdata;
 
-
 /**
  * Search API.
  *

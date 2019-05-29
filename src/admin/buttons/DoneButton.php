@@ -7,13 +7,12 @@ use luya\admin\ngrest\base\NgRestModel;
 use luya\crawler\models\Link;
 use luya\crawler\admin\Module;
 
-
 class DoneButton extends ActiveButton
 {
     public function getDefaultLabel()
     {
         return Module::t('done_button_label');
-    }  
+    }
 
     public function getDefaultIcon()
     {
