@@ -9,6 +9,7 @@ use yii\base\InvalidConfigException;
 use luya\crawler\frontend\Module;
 use yii\data\DataProviderInterface;
 use luya\crawler\models\Searchdata;
+use luya\helpers\ObjectHelper;
 
 /**
  * Did you mean?
@@ -63,28 +64,23 @@ class DidYouMeanWidget extends Widget
      */
     public $linkOptions = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function init()
-    {
-        parent::init();
-
-        if (!$this->language || $this->resultsCount === null) {
-            throw new InvalidConfigException("The language and resultsCount properties can not be null. Either provider those property or set searchModel.");
-        }
-    }
-
     private $_searchModel;
 
     /**
      * User search model to store informations.
      *
-     * @param Searchdata $search
+     * @param Searchdata|null $search The search model object or an empty value.
      * @since 2.0.0
      */
-    public function setSearchModel(Searchdata $search)
+    public function setSearchModel($search)
     {
+        if (empty($search)) {
+            return;
+        }
+
+        // ensure object instance if not empty
+        ObjectHelper::isInstanceOf($search, 'luya\crawler\models\Searchdata');
+
         $this->_searchModel = $search;
         $this->language = $search->language;
         $this->query = $search->query;
@@ -111,6 +107,7 @@ class DidYouMeanWidget extends Widget
      */
     public function run()
     {
+        // invalid params are provided so just return nothing as we need depencies to predict the search word.
         if (empty($this->query) || $this->resultsCount > 0) {
             return;
         }

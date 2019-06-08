@@ -70,4 +70,10 @@ class DidYouMeanWidgetTest extends CrawlerTestCase
         $this->assertFalse(Index::didYouMean('index', 'en'));
         $r = Index::didYouMean('john doa', 'en');
     }
+
+    public function testEmptyDidYouMean()
+    {
+        $this->assertSame('', DidYouMeanWidget::widget());
+        $this->assertSame('', DidYouMeanWidget::widget(['searchModel' => null]));
+    }
 }
