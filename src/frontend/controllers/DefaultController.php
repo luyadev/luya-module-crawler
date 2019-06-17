@@ -35,7 +35,7 @@ class DefaultController extends \luya\web\Controller
     public function actionIndex($query = null, $page = null, $group = null, $resolveId = null)
     {
         $language = Yii::$app->composition->getKey('langShortCode');
-        
+        $searchData = null;
         if (empty($query)) {
             $provider = new ArrayDataProvider([
                 'allModels' => [],
