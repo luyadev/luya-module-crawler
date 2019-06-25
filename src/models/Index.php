@@ -217,11 +217,13 @@ class Index extends NgRestModel
     }
     
     /**
-     * Generate relevance array for given querty and langauge info.
+     * Search the index by the query and language and return a relevance based result.
      *
-     * @param [type] $query
-     * @param [type] $languageInfo
-     * @return void
+     * The result is order by 1.) relevance and 2.) title
+     *
+     * @param string $query The query to search for.
+     * @param string $languageInfo The language info like `de` or `en` if null the language is not taken into account.
+     * @return array An array with keys: id, url, title, content and relevance
      */
     public static function generateRelevanceArray($query, $languageInfo)
     {
@@ -264,8 +266,9 @@ class Index extends NgRestModel
      * 1. Generate the index
      * 2. If multiple words, ensure the word also existing on the current index otherwise unset.
      *
-     * @param array $results
-     * @param array $index The index
+     * @param string $keyword The keyword to index by
+     * @param array $results An array with results to search against keyword.
+     * @param array $index The index passed by reference array which contains the actuall index.
      */
     private static function indexer($keyword, array $results, &$index)
     {
@@ -297,8 +300,8 @@ class Index extends NgRestModel
     /**
      * Get best word distance for a given words array.
      *
-     * @param array $words
-     * @param string $keyword
+     * @param array $words An array with words.
+     * @param string $keyword The keyword to search for.
      * @return integer
      */
     private static function getBestWordDistance(array $words, $keyword)
@@ -320,23 +323,28 @@ class Index extends NgRestModel
      *
      * The bigger the value, the more relevante is this page for the given keyword.
      *
-     * @param array $item
-     * @param [type] $keyword
-     * @return void
+     * @param array $item The item to generate the relevance for keys must contain: title, content, url
+     * @param string $keyword The keyword to generate relevance for
+     * @return integer A numeric value. The higher the more relevant.
      */
     private static function calculatePageRelevanceValue(array $item, $keyword)
     {
+        // lower keyword
         $keyword = mb_strtolower($keyword);
+        // extract relevant url part
         $url = mb_strtolower(parse_url($item['url'], PHP_URL_PATH));
+        // get the position of the word inside the url
         $posInUrl = self::getBestWordDistance(explode("/", $url), $keyword);
+        // get the position of the word inside the title
         $posInTitle = self::getBestWordDistance(explode(" ", mb_strtolower($item['title'])), $keyword);
+        // count the query word inside the content
         $partialWordCount = substr_count(mb_strtolower($item['content']), $keyword);
+        // count the exact query word inside the content
         $exactWordCount = preg_match_all('/\b'. preg_quote($keyword, '/') .'\b/', mb_strtolower($item['content']));
-
-
+        // reduce the factor of word and exact word count as its less important the other factors.
         $partialWordCount = $partialWordCount / 5;
         $exactWordCount = $exactWordCount / 5;
-
+        // return the sum of the relevance
         return $posInUrl + $posInTitle + $partialWordCount + $exactWordCount;
     }
     
