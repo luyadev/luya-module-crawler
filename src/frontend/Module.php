@@ -88,7 +88,7 @@ final class Module extends \luya\base\Module
     /**
      * @var array An array with classes implementing the {{CrawlIndexInterface}}. Example
      * ```php
-     * 'index' => [
+     * 'indexer' => [
      *     'app/models/MyModel',
      * ],
      * ```
