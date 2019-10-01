@@ -4,7 +4,7 @@ return [
     'crawler_indexing' => 'Indexando',
     'crawler_analytics' => 'Analytics',
     'crawler_analytics_queries' => 'Search Queries',
-        
+
     //builderindex
     'crawler_index' => 'Índice da página',
     'builderindex_url' => 'Url',
@@ -23,30 +23,30 @@ return [
 
     // 1.0.6
 
-    'added_to_index' => 'Added to Index',
-    'last_update' => 'Last Update',
-    'dashboard_title' => 'Latest queries without results',
+    'added_to_index' => 'Adicionado ao índice',
+    'last_update' => 'Última Atualização',
+    'dashboard_title' => 'Últimas consultas sem resultados',
 
     // 2.0
 
-    'link_url' => 'Link-Tarket',
-    'link_url_found_on_page' => 'Source',
-    'link_title' => 'Link-Text',
-    'link_is_ignored' => 'Is ignored',
-    'link_response_status' => 'Response Status',
-    'link_created_at' => 'Created at',
-    'link_updated_at' => 'Updated at',
-    'done_button_label' => 'Resolved',
-    'done_button_success' => 'Link has been removed from the List.',
+    'link_url' => 'Link-Alvo',
+    'link_url_found_on_page' => 'Fonte',
+    'link_title' => 'Link-Texto',
+    'link_is_ignored' => 'Foi ignorado',
+    'link_response_status' => 'Status da Resposta',
+    'link_created_at' => 'Criado em',
+    'link_updated_at' => 'Atualizado em',
+    'done_button_label' => 'Resolvido',
+    'done_button_success' => 'O Link foi removido da Lista.',
     'crawler_menu_links' => 'Links',
-    'crawler_menu_stats' => 'Statistics',
-    'stats_from' => 'From',
-    'stats_to' => 'To',
-    'stats_searches_title' => 'Searches',
-    'stats_no_results_title' => 'Queries without Results',
-    'stats_most_suggestions_title' => 'Most frequently suggested Queries',
-    'stats_no_data' => 'No data available',
+    'crawler_menu_stats' => 'Estatística',
+    'stats_from' => 'De',
+    'stats_to' => 'Para',
+    'stats_searches_title' => 'Buscas',
+    'stats_no_results_title' => 'Consultas sem Resultados',
+    'stats_most_suggestions_title' => 'Consultas sugeridas com mais frequência',
+    'stats_no_data' => 'Dados indisponíveis',
     'legend_total' => 'Total',
-    'legend_results' => 'No Results',
-    'legend_no_results' => 'With Results',
+    'legend_results' => 'Sem Resultados',
+    'legend_no_results' => 'Com Resultados',
 ];
