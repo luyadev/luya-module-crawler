@@ -16,6 +16,8 @@ matrix:
         - php: nightly
   
 sudo: false
+services:
+  - mysql
 
 install:
   - travis_retry composer self-update && composer --version
