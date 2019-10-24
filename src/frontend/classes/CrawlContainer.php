@@ -118,7 +118,11 @@ class CrawlContainer extends BaseObject
         if ($this->verbose) {
             $value = is_array($value) ? print_r($value, true) : $value;
             
-            echo '+ ' . $key . ' =========> ' . $value . PHP_EOL;
+            echo '+ ' . $key;
+            if ($value) {
+                echo ': ' . $value;
+            }
+            echo PHP_EOL;
         }
     }
 
