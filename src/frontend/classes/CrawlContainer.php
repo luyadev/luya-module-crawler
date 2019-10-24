@@ -266,6 +266,7 @@ class CrawlContainer extends BaseObject
                     $update->save(false);
                 }
                 unset($index[$url]);
+                unset($update);
             } else {
                 $this->addLog('new', $url, $page['title']);
                 $insert = new Index();
@@ -273,8 +274,11 @@ class CrawlContainer extends BaseObject
                 $insert->added_to_index = time();
                 $insert->last_update = time();
                 $insert->save(false);
+                unset($insert);
             }
         }
+
+        gc_collect_cycles();
 
         $this->verbosePrint("Delete pages from the index which are not existing anymore.");
         // delete not unseted urls from index

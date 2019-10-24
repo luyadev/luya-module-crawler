@@ -5,6 +5,7 @@ namespace luya\crawler\tests\frontend\classes;
 use luya\crawler\tests\CrawlerTestCase;
 use luya\crawler\frontend\classes\CrawlContainer;
 use luya\crawler\models\Builderindex;
+use luya\crawler\models\Index;
 use luya\crawler\models\Link;
 use luya\testsuite\fixtures\NgRestModelFixture;
 
@@ -24,6 +25,9 @@ class CrawlContainerTest extends CrawlerTestCase
         $this->assertSame(1, count($d));
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testStartWithFinish()
     {
         $fixture = new NgRestModelFixture([
@@ -37,7 +41,32 @@ class CrawlContainerTest extends CrawlerTestCase
                     'language_info' => 'en',
                     'crawled' => 1,
                     'is_dublication' => false,
-                ]
+                ],
+                2 => [
+                    'url' => 'empty',
+                    'content' => '',
+                    'title' => '',
+                    'last_indexed' => 'last_indexed',
+                    'language_info' => 'en',
+                    'crawled' => 1,
+                    'is_dublication' => false,
+                ],
+                
+            ]
+        ]);
+
+        $content = new NgRestModelFixture([
+            'modelClass' => Index::class,
+            'fixtureData' => [
+                1 => [
+                    'content' => null,
+                    'title' => '',
+                ],
+                2 => [
+                    'url' => 'empty',
+                    'content' => null,
+                    'title' => '',
+                ],
             ]
         ]);
 
@@ -51,6 +80,7 @@ class CrawlContainerTest extends CrawlerTestCase
         $this->assertNull($r);
 
         $log = $container->getReport();
-        $this->assertSame(11, count($log));
+
+        $this->assertSame(14, count($log));
     }
 }
