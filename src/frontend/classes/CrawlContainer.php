@@ -118,7 +118,11 @@ class CrawlContainer extends BaseObject
         if ($this->verbose) {
             $value = is_array($value) ? print_r($value, true) : $value;
             
-            echo '+ ' . $key . ' =========> ' . $value . PHP_EOL;
+            echo '+ ' . $key;
+            if ($value) {
+                echo ': ' . $value;
+            }
+            echo PHP_EOL;
         }
     }
 
@@ -216,16 +220,28 @@ class CrawlContainer extends BaseObject
             $this->verbosePrint("run another find process");
             $this->find();
         } else {
-            $this->verbosePrint("no not crawled page has been found, proceed with finish function.");
+            $this->verbosePrint("All pages has been crawled, proceed with finish() function.");
             $this->finish();
         }
     }
 
+    /**
+     * Get the error log report
+     *
+     * @return array
+     */
     public function getReport()
     {
         return $this->_log;
     }
 
+    /**
+     * Finish the crawler process.
+     * 
+     * + Write builder index into index
+     * + remove old pages
+     * + run link actions.
+     */
     public function finish()
     {
         $builder = Builderindex::find()->where(['is_dublication' => false])->indexBy('url')->asArray()->all();
@@ -235,6 +251,7 @@ class CrawlContainer extends BaseObject
             throw new Exception('The crawler have not found any results. Wrong base url? Or set a rule which tracks all urls? Try to enable verbose output.');
         }
 
+        $this->verbosePrint("syncronize the builder index into the real page index.");
         foreach ($builder as $url => $page) {
             if (isset($index[$url])) { // page exists in index
                 if ($index[$url]['content'] == $page['content']) {
@@ -249,6 +266,7 @@ class CrawlContainer extends BaseObject
                     $update->save(false);
                 }
                 unset($index[$url]);
+                unset($update);
             } else {
                 $this->addLog('new', $url, $page['title']);
                 $insert = new Index();
@@ -256,23 +274,31 @@ class CrawlContainer extends BaseObject
                 $insert->added_to_index = time();
                 $insert->last_update = time();
                 $insert->save(false);
+                unset($insert);
             }
         }
 
+        gc_collect_cycles();
+
+        $this->verbosePrint("Delete pages from the index which are not existing anymore.");
         // delete not unseted urls from index
         foreach ($index as $deleteUrl => $deletePage) {
             $this->addLog('delete', $deleteUrl, $deletePage['title']);
-            $model = Index::findOne($deletePage['id']);
-            $model->delete(false);
+            Index::deleteAll(['id' => $deletePage['id']]);
         }
 
         // delete empty content empty title
-        foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->all() as $page) {
-            $this->addLog('delete_issue', $page->url, $page->title);
-            $page->delete(false);
+        $this->verbosePrint("Delete pages with empty content.");
+        foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->batch() as $batch) {
+            foreach ($batch as $page) {
+                $this->addLog('delete_issue', $page->url, $page->title);
+                $page->delete(false);
+            }
         }
 
+        $this->verbosePrint("Start cleanup the Link index");
         Link::cleanup($this->startTime);
+        $this->verbosePrint("Update the link status");
         Link::updateLinkStatus();
     }
 

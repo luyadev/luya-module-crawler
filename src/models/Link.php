@@ -200,9 +200,11 @@ class Link extends NgRestModel
      */
     public static function updateLinkStatus()
     {
-        foreach (self::find()->select(['url'])->asArray()->distinct()->all() as $link) {
-            $status = self::responseStatus($link['url']);
-            self::updateAll(['response_status' => $status], ['url' => $link['url']]);
+        foreach (self::find()->select(['url'])->asArray()->distinct()->batch() as $batch) {
+            foreach ($batch as $link) {
+                $status = self::responseStatus($link['url']);
+                self::updateAll(['response_status' => $status], ['url' => $link['url']]);
+            }
         }
     }
 }
