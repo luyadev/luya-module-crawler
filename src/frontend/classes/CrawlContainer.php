@@ -221,11 +221,23 @@ class CrawlContainer extends BaseObject
         }
     }
 
+    /**
+     * Get the error log report
+     *
+     * @return array
+     */
     public function getReport()
     {
         return $this->_log;
     }
 
+    /**
+     * Finish the crawler process.
+     * 
+     * + Write builder index into index
+     * + remove old pages
+     * + run link actions.
+     */
     public function finish()
     {
         $builder = Builderindex::find()->where(['is_dublication' => false])->indexBy('url')->asArray()->all();
@@ -264,15 +276,16 @@ class CrawlContainer extends BaseObject
         // delete not unseted urls from index
         foreach ($index as $deleteUrl => $deletePage) {
             $this->addLog('delete', $deleteUrl, $deletePage['title']);
-            $model = Index::findOne($deletePage['id']);
-            $model->delete(false);
+            Index::deleteAll(['id' => $deletePage['id']]);
         }
 
         // delete empty content empty title
         $this->verbosePrint("Delete pages with empty content.");
-        foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->all() as $page) {
-            $this->addLog('delete_issue', $page->url, $page->title);
-            $page->delete(false);
+        foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->batch() as $batch) {
+            foreach ($batch as $page) {
+                $this->addLog('delete_issue', $page->url, $page->title);
+                $page->delete(false);
+            }
         }
 
         $this->verbosePrint("Start cleanup the Link index");
