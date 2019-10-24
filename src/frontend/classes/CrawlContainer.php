@@ -216,7 +216,7 @@ class CrawlContainer extends BaseObject
             $this->verbosePrint("run another find process");
             $this->find();
         } else {
-            $this->verbosePrint("no not crawled page has been found, proceed with finish function.");
+            $this->verbosePrint("All pages has been crawled, proceed with finish() function.");
             $this->finish();
         }
     }
@@ -235,6 +235,7 @@ class CrawlContainer extends BaseObject
             throw new Exception('The crawler have not found any results. Wrong base url? Or set a rule which tracks all urls? Try to enable verbose output.');
         }
 
+        $this->verbosePrint("syncronize the builder index into the real page index.");
         foreach ($builder as $url => $page) {
             if (isset($index[$url])) { // page exists in index
                 if ($index[$url]['content'] == $page['content']) {
@@ -259,6 +260,7 @@ class CrawlContainer extends BaseObject
             }
         }
 
+        $this->verbosePrint("Delete pages from the index which are not existing anymore.");
         // delete not unseted urls from index
         foreach ($index as $deleteUrl => $deletePage) {
             $this->addLog('delete', $deleteUrl, $deletePage['title']);
@@ -267,12 +269,15 @@ class CrawlContainer extends BaseObject
         }
 
         // delete empty content empty title
+        $this->verbosePrint("Delete pages with empty content.");
         foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->all() as $page) {
             $this->addLog('delete_issue', $page->url, $page->title);
             $page->delete(false);
         }
 
+        $this->verbosePrint("Start cleanup the Link index");
         Link::cleanup($this->startTime);
+        $this->verbosePrint("Update the link status");
         Link::updateLinkStatus();
     }
 
