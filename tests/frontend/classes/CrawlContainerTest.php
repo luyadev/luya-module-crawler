@@ -72,7 +72,19 @@ class CrawlContainerTest extends CrawlerTestCase
 
         $link = new NgRestModelFixture([
             'modelClass' => Link::class,
+            'fixtureData' => [
+                1 => [
+                    'url' => 'url.html',
+                    'url_found_on_page' => 'ref.html',
+                    'title' => 'Title of Page',
+                    'response_status' => 200,
+                    'created_at' => time(),
+                    'updated_at' => time(),
+                    'is_ignored' => 0,
+                ]
+            ]
         ]);
+        
 
         $container = new CrawlContainer(['baseUrl' => 'https://notfound']);
         $container->verbose = 1;
