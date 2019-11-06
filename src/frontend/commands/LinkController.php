@@ -20,9 +20,7 @@ class LinkController extends Command
      */
     public function actionIndex()
     {
-        $this->verbosePrint("Start cleanup the Link index");
-        Link::cleanup(time());
-        $this->verbosePrint("Update the link status");
+        $this->verbosePrint("Check the status of all links.");
         Link::updateLinkStatus();
 
         return $this->outputSuccess("Run finished.");
