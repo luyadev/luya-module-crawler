@@ -2,6 +2,7 @@
 
 namespace luya\crawler\frontend\commands;
 
+use Yii;
 use luya\console\Command;
 use luya\crawler\models\Builderindex;
 use luya\crawler\models\Link;
