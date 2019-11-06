@@ -152,12 +152,14 @@ class Link extends NgRestModel
     {
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, 3);
+        $curl->setOpt(CURLOPT_COOKIESESSION, false);
+        $curl->setOpt(CURLOPT_CONNECT_ONLY, true);
         $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
         $curl->get($url);
-        $status =  $curl->http_status_code;
+        $status = $curl->http_status_code;
         $curl->close();
         unset($curl);
-
+        gc_collect_cycles();
         return $status;
     }
 
