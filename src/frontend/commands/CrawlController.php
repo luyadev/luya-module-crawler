@@ -3,6 +3,7 @@
 namespace luya\crawler\frontend\commands;
 
 use luya\crawler\frontend\classes\CrawlContainer;
+use luya\crawler\models\Link;
 use luya\helpers\FileHelper;
 use yii\console\widgets\Table;
 
