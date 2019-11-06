@@ -336,7 +336,7 @@ class CrawlContainer extends BaseObject
      */
     protected function addLinkCheckUrl($url, $title, $foundOnUrl)
     {
-        if ($this->filterExtensionFile($url)) {
+        if (!$this->filterExtensionFile($url)) {
             // skip cause its a file
             return;
         }
@@ -355,7 +355,7 @@ class CrawlContainer extends BaseObject
      * Check if a path is file path or not (check by extension).
      * 
      * @param string $file
-     * @return boolean Returns true if its a file otherwise false
+     * @return boolean Returns true if its a NOT a file, returns false if its a file.
      */
     public function filterExtensionFile($file)
     {
