@@ -4,6 +4,7 @@ namespace luya\crawler\frontend\commands;
 
 use luya\console\Command;
 use luya\crawler\models\Link;
+use yii\console\widgets\Table;
 
 /**
  * Check brocken links.
@@ -21,8 +22,11 @@ class LinkController extends Command
     public function actionIndex()
     {
         $this->verbosePrint("Check the status of all links.");
-        Link::updateLinkStatus();
+        $log = Link::updateLinkStatus();
 
+        $table = new Table();
+        $table->setHeaders(['url', 'status']);
+        $table->setRows($log);
         return $this->outputSuccess("Run finished.");
     }
 }

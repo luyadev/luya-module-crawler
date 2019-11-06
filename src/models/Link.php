@@ -152,8 +152,6 @@ class Link extends NgRestModel
     {
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, 3);
-        $curl->setOpt(CURLOPT_COOKIESESSION, false);
-        $curl->setOpt(CURLOPT_CONNECT_ONLY, true);
         $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
         $curl->get($url);
         $status = $curl->http_status_code;
@@ -199,14 +197,19 @@ class Link extends NgRestModel
 
     /**
      * Update the status for all links on the given url page.
+     * 
+     * @return array An array with link as the key and value is the status code.
      */
     public static function updateLinkStatus()
     {
+        $log = [];
         foreach (self::find()->select(['url'])->asArray()->distinct()->batch() as $batch) {
             foreach ($batch as $link) {
                 $status = self::responseStatus($link['url']);
-                self::updateAll(['response_status' => $status], ['url' => $link['url']]);
+                $log[] = [$link['url'], $status];
+                self::updateAll(['response_status' => $status, 'updated_at' => time()], ['url' => $link['url']]);
             }
         }
+        return $log;
     }
 }
