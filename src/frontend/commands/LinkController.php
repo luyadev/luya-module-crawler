@@ -22,7 +22,18 @@ class LinkController extends Command
     public function actionIndex()
     {
         $this->verbosePrint("Check the status of all links.");
-        $log = Link::updateLinkStatus();
+
+        $log = [];
+        foreach (Link::getAllUrlsBatch() as $batch) {
+            foreach ($batch as $link) {
+                $this->verbosePrint("start check", $link['url']);
+                $status = Link::responseStatus($link['url']);
+                $this->verbosePrint($status, $link['url']);
+
+                $log[] = [$link['url'], $status];
+                Link::updateUrlStatus($link['url'], $status);
+            }
+        }
 
         $table = new Table();
         $table->setHeaders(['url', 'status']);

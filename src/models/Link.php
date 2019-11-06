@@ -9,6 +9,7 @@ use Curl\Curl;
 use luya\crawler\frontend\Module as FrontendModule;
 use luya\crawler\admin\buttons\DoneButton;
 use luya\crawler\admin\Module;
+use yii\db\BatchQueryResult;
 
 /**
  * Link.
@@ -203,13 +204,35 @@ class Link extends NgRestModel
     public static function updateLinkStatus()
     {
         $log = [];
-        foreach (self::find()->select(['url'])->asArray()->distinct()->batch() as $batch) {
+        foreach (self::getAllUrlsBatch() as $batch) {
             foreach ($batch as $link) {
                 $status = self::responseStatus($link['url']);
                 $log[] = [$link['url'], $status];
-                self::updateAll(['response_status' => $status, 'updated_at' => time()], ['url' => $link['url']]);
+                self::updateUrlStatus($link['url'], $status);
             }
         }
         return $log;
+    }
+
+    /**
+     * Get the batch with all urls
+     *
+     * @return BatchQueryResult
+     */
+    public static function getAllUrlsBatch()
+    {
+        return self::find()->select(['url'])->asArray()->distinct()->batch();
+    }
+
+    /**
+     * Update the status of a given url
+     *
+     * @param string $url
+     * @param integer $status
+     * @return int the number of rows updated
+     */
+    public static function updateUrlStatus($url, $status)
+    {
+        self::updateAll(['response_status' => $status, 'updated_at' => time()], ['url' => $url]);
     }
 }
