@@ -31,6 +31,13 @@ class CrawlController extends \luya\console\Command
      */
     public $linkCheck = true;
 
+    public function options($actionID)
+    {
+        $options = parent::options($actionID);
+        $options['linkCheck'];
+        return $options;
+    }
+
     public function actionIndex()
     {
         // sart time measuremnt
