@@ -12,6 +12,7 @@ use yii\base\BaseObject;
 use luya\helpers\Html;
 use GuzzleHttp\Client;
 use luya\crawler\models\Link;
+use luya\helpers\StringHelper;
 
 /**
  * Crawler Container.
@@ -78,6 +79,12 @@ class CrawlContainer extends BaseObject
      * only the title tag is used for titles.
      */
     public $useH1 = false;
+
+    /**
+     * @var boolean Whether the link checker should add internal urls or not. If enabled this might be very slow on large pages. Also the link check process will take long.
+     * If disable only external links will be checked.
+     */
+    public $linkCheckIndexInternalUrls = true;
 
     /**
      * @var integer The time when the crawler starts
@@ -295,11 +302,6 @@ class CrawlContainer extends BaseObject
                 $page->delete(false);
             }
         }
-
-        $this->verbosePrint("Start cleanup the Link index");
-        Link::cleanup($this->startTime);
-        $this->verbosePrint("Update the link status");
-        Link::updateLinkStatus();
     }
 
     public function matchBaseUrl($url)
@@ -311,11 +313,49 @@ class CrawlContainer extends BaseObject
         
         return true;
     }
+
+    /**
+     * Whether is an internal URL or not.
+     *
+     * @param string $url The url to match against the crawlers base Url.
+     * @return boolean If true its an internal url, otherwise its an external
+     * @since 2.0.3
+     */
+    public function isInternalUrl($url)
+    {
+        return StringHelper::contains(Url::domain($this->baseUrl), $url);
+    }
+
+    /**
+     * Add a link to the link check system under certain circumstances
+     *
+     * @param string $url
+     * @param string $title
+     * @param string $foundOnUrl
+     * @since 2.0.3
+     */
+    protected function addLinkCheckUrl($url, $title, $foundOnUrl)
+    {
+        if ($this->filterExtensionFile($url)) {
+            // skip cause its a file
+            return;
+        }
+
+        // if link check index internal is enabled, add to index anyhow
+        if ($this->linkCheckIndexInternalUrls) {
+            Link::add($url, $title, $foundOnUrl);
+
+        // if internal should be skiped check whether the current url is internal or not
+        } elseif (!$this->isInternalUrl($url)) {
+            Link::add($url, $title, $foundOnUrl);
+        }
+    }
     
     /**
-     *
-     * @param unknown $file
-     * @return boolean true = valid; false = invalid does not match
+     * Check if a path is file path or not (check by extension).
+     * 
+     * @param string $file
+     * @return boolean Returns true if its a file otherwise false
      */
     public function filterExtensionFile($file)
     {
@@ -406,7 +446,7 @@ class CrawlContainer extends BaseObject
     
                 // add the pages links to the index
                 foreach ($this->getCrawler($url)->getLinks() as $link) {
-                    Link::add($link[1], $link[0], $url);
+                    $this->addLinkCheckUrl($link[1], $link[0], $url);
                     $this->verbosePrint('link iteration for new page', $link);
                     if ($this->isProcessed($link[1])) {
                         continue;
@@ -435,7 +475,7 @@ class CrawlContainer extends BaseObject
                     $model->save(false);
                     
                     foreach ($this->getCrawler($url)->getLinks() as $link) {
-                        Link::add($link[1], $link[0], $url);
+                        $this->addLinkCheckUrl($link[1], $link[0], $url);
                         $this->verbosePrint('link iteration for existing page', $link[1]);
                         if ($this->isProcessed($link[1])) {
                             $this->verbosePrint('link is already processed.', $link[1]);

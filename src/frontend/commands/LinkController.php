@@ -3,6 +3,7 @@
 namespace luya\crawler\frontend\commands;
 
 use luya\console\Command;
+use luya\crawler\models\Builderindex;
 use luya\crawler\models\Link;
 use yii\console\widgets\Table;
 
@@ -21,6 +22,12 @@ class LinkController extends Command
      */
     public function actionIndex()
     {
+        // remove all links which are older then the oldest crawler_builder last_index timestamp
+        $min = Builderindex::find()->min('last_indexed');
+        $this->verbosePrint("Remove links older then " . Yii::$app->formatter->asDate($min));
+
+        Link::cleanup($min);
+
         $this->verbosePrint("Check the status of all links.");
 
         $log = [];

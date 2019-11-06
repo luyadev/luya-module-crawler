@@ -24,6 +24,12 @@ use yii\console\widgets\Table;
  */
 class CrawlController extends \luya\console\Command
 {
+    /**
+     * @var boolean Whether the collected links should be checked after finished crawler process
+     * @since 2.0.3
+     */
+    public $linkCheck = true;
+
     public function actionIndex()
     {
         // sart time measuremnt
@@ -44,6 +50,18 @@ class CrawlController extends \luya\console\Command
         }
 
         $container->start();
+
+        if ($this->linkCheck) {
+            Link::cleanup($container->startTime);
+            foreach (Link::getAllUrlsBatch() as $batch) {
+                foreach ($batch as $link) {
+                    $this->verbosePrint("start check", $link['url']);
+                    $status = Link::responseStatus($link['url']);
+                    $this->verbosePrint($status, $link['url']);
+                    Link::updateUrlStatus($link['url'], $status);
+                }
+            }
+        }
 
         $timeElapsed = round((microtime(true) - $start) / 60, 2);
         
