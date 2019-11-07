@@ -34,7 +34,7 @@ class CrawlController extends \luya\console\Command
     public function options($actionID)
     {
         $options = parent::options($actionID);
-        $options['linkCheck'];
+        $options[] = 'linkCheck';
         return $options;
     }
 
