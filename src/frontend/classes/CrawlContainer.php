@@ -294,6 +294,8 @@ class CrawlContainer extends BaseObject
             Index::deleteAll(['id' => $deletePage['id']]);
         }
 
+        gc_collect_cycles();
+        
         // delete empty content empty title
         $this->verbosePrint("Delete pages with empty content.");
         foreach (Index::find()->where(['=', 'content', ''])->orWhere(['=', 'title', ''])->batch() as $batch) {

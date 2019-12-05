@@ -31,6 +31,9 @@ class CrawlController extends \luya\console\Command
      */
     public $linkCheck = true;
 
+    /**
+     * {@inheritDoc}
+     */
     public function options($actionID)
     {
         $options = parent::options($actionID);
@@ -38,12 +41,20 @@ class CrawlController extends \luya\console\Command
         return $options;
     }
 
+    /**
+     * Start the crawler command.
+     *
+     * @return integer
+     */
     public function actionIndex()
     {
+        $this->verbosePrint(var_export($this->linkCheck), 'option link check');
+
         // sart time measuremnt
         $start = microtime(true);
         
         $container = new CrawlContainer([
+            'linkCheckIndexInternalUrls' => $this->linkCheck,
             'baseUrl' => $this->module->baseUrl,
             'filterRegex' => $this->module->filterRegex,
             'verbose' => $this->verbose,
@@ -59,7 +70,10 @@ class CrawlController extends \luya\console\Command
 
         $container->start();
 
+        $this->verbosePrint(var_export($this->linkCheck), 'link check');
+
         if ($this->linkCheck) {
+            $this->verbosePrint("Start link check");
             Link::cleanup($container->startTime);
             foreach (Link::getAllUrlsBatch() as $batch) {
                 foreach ($batch as $link) {
@@ -70,6 +84,8 @@ class CrawlController extends \luya\console\Command
                 }
             }
         }
+
+        $this->verbosePrint("start table output");
 
         $timeElapsed = round((microtime(true) - $start) / 60, 2);
         
