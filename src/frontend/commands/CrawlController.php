@@ -29,7 +29,13 @@ class CrawlController extends \luya\console\Command
      * @var boolean Whether the collected links should be checked after finished crawler process
      * @since 2.0.3
      */
-    public $linkCheck = true;
+    public $linkcheck = true;
+
+    /**
+     * @var boolean Whether a table based summary should be rendered.
+     * @since 2.0.3
+     */
+    public $summary = true;
 
     /**
      * {@inheritDoc}
@@ -37,7 +43,8 @@ class CrawlController extends \luya\console\Command
     public function options($actionID)
     {
         $options = parent::options($actionID);
-        $options[] = 'linkCheck';
+        $options[] = 'linkcheck';
+        $options[] = 'summary';
         return $options;
     }
 
@@ -48,13 +55,14 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
-        $this->verbosePrint(var_export($this->linkCheck), 'option link check');
+        $this->verbosePrint(var_export($this->linkcheck, true), 'option link check');
+        $this->verbosePrint(var_export($this->summary, true), 'option summary print');
 
         // sart time measuremnt
         $start = microtime(true);
         
         $container = new CrawlContainer([
-            'linkCheckIndexInternalUrls' => $this->linkCheck,
+            'linkCheckIndexInternalUrls' => $this->linkcheck,
             'baseUrl' => $this->module->baseUrl,
             'filterRegex' => $this->module->filterRegex,
             'verbose' => $this->verbose,
@@ -70,9 +78,7 @@ class CrawlController extends \luya\console\Command
 
         $container->start();
 
-        $this->verbosePrint(var_export($this->linkCheck), 'link check');
-
-        if ($this->linkCheck) {
+        if ($this->linkcheck) {
             $this->verbosePrint("Start link check");
             Link::cleanup($container->startTime);
             foreach (Link::getAllUrlsBatch() as $batch) {
@@ -89,12 +95,14 @@ class CrawlController extends \luya\console\Command
 
         $timeElapsed = round((microtime(true) - $start) / 60, 2);
         
-        $table = new Table();
-        $table->setHeaders(['status', 'url', 'message']);
-        $table->setRows($container->getReport());
-        $this->output($table->run());
-        $this->outputInfo('memory usage: ' . FileHelper::humanReadableFilesize(memory_get_usage()));
-        $this->outputInfo('memory peak usage: ' . FileHelper::humanReadableFilesize(memory_get_peak_usage()));
+        if ($this->summary) {
+            $table = new Table();
+            $table->setHeaders(['status', 'url', 'message']);
+            $table->setRows($container->getReport());
+            $this->output($table->run());
+            $this->outputInfo('memory usage: ' . FileHelper::humanReadableFilesize(memory_get_usage()));
+            $this->outputInfo('memory peak usage: ' . FileHelper::humanReadableFilesize(memory_get_peak_usage()));
+        }
         
         return $this->outputSuccess('Crawler finished in ' . $timeElapsed . ' min.');
     }
