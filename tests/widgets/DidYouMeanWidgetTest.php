@@ -9,6 +9,17 @@ use luya\crawler\models\Index;
 
 class DidYouMeanWidgetTest extends CrawlerTestCase
 {
+    public function testLength()
+    {
+        $string256 = 'XVH7jCOxgZg229KRxNKxtI7xIOjOKBjQH9Vlu8e3GvAThVFf4TMapqlHHV5Qn32uikOMblKdIcru2mYWHPSyCShdDarRpkR20Bo2ubE2uUI7f3IFt2JPjCHzt5PzkUBuyWTdlmoE148zS3VYbfqi2dE7otM4oBebaXDksFJYyIi0hghr1AQYkAQYpfiKbhRhBaycluL9vH8LyegbVq38Bpnkgry9sJxh9loxQcm7rgw7eoZeHNbR0LFf0O16xI8t';
+
+        $this->assertFalse(Index::didYouMean($string256, 'de'));
+
+        $string255 = 'VH7jCOxgZg229KRxNKxtI7xIOjOKBjQH9Vlu8e3GvAThVFf4TMapqlHHV5Qn32uikOMblKdIcru2mYWHPSyCShdDarRpkR20Bo2ubE2uUI7f3IFt2JPjCHzt5PzkUBuyWTdlmoE148zS3VYbfqi2dE7otM4oBebaXDksFJYyIi0hghr1AQYkAQYpfiKbhRhBaycluL9vH8LyegbVq38Bpnkgry9sJxh9loxQcm7rgw7eoZeHNbR0LFf0O16xI8t';
+
+        $this->assertFalse(Index::didYouMean($string255, 'de'));
+    }
+
     public function testRunNoIndex()
     {
         $provider = new ArrayDataProvider([

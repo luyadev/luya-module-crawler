@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 2.0.4 (5. January 2019)
+
++ [#28](https://github.com/luyadev/luya-module-crawler/pull/28) Ensure levenshtein input string does not exceed 255 chars.
+
 ## 2.0.3 (5. December 2019)
 
 + [#26](https://github.com/luyadev/luya-module-crawler/pull/26) Improve handling with lot of data, add more verbosity, add unit tests.

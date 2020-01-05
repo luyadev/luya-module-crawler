@@ -369,6 +369,11 @@ class Index extends NgRestModel
      */
     public static function didYouMean($query, $languageInfo, $ignoreDistance = 6)
     {
+        // levenshtein can only handle a max length of 255 chars
+        if (strlen($query) > 255) {
+            return false;
+        }
+
         $batch = Searchdata::find()
             ->select(['query', 'id' => 'min(id)'])
             ->where([
