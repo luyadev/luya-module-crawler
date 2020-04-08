@@ -188,14 +188,14 @@ class Index extends NgRestModel
      *
      * @param string $query
      * @param string $languageInfo
-     * @param string $returnQuery
+     * @param string $group An optional group where condition
      * @return \yii\db\ActiveQuery
      */
-    public static function activeQuerySearch($query, $languageInfo)
+    public static function activeQuerySearch($query, $languageInfo, $group = null)
     {
         $query = static::encodeQuery($query);
         
-        $index = self::generateRelevanceArray($query, $languageInfo);
+        $index = self::generateRelevanceArray($query, $languageInfo, $group);
 
         $ids = [];
         $order = [];
@@ -225,7 +225,7 @@ class Index extends NgRestModel
      * @param string $languageInfo The language info like `de` or `en` if null the language is not taken into account.
      * @return array An array with keys: id, url, title, content and relevance
      */
-    public static function generateRelevanceArray($query, $languageInfo)
+    public static function generateRelevanceArray($query, $languageInfo, $group = null)
     {
         $parts = array_filter(explode(" ", $query));
         
@@ -242,6 +242,9 @@ class Index extends NgRestModel
                 ]);
             if (!empty($languageInfo)) {
                 $q->andWhere(['language_info' => $languageInfo]);
+            }
+            if (!empty($group)) {
+                $q->andWhere(['group' => $group]);
             }
             $data = $q->asArray()->indexBy('id')->all();
         
