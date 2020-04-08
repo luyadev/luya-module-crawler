@@ -41,11 +41,7 @@ class DefaultController extends \luya\web\Controller
                 'allModels' => [],
             ]);
         } else {
-            $activeQuery = Index::activeQuerySearch($query, $language);
-            
-            if (!empty($group)) {
-                $activeQuery->andWhere(['group' => $group]);
-            }
+            $activeQuery = Index::activeQuerySearch($query, $language, $group);
             
             $provider = new ActiveDataProvider([
                 'query' => $activeQuery,
