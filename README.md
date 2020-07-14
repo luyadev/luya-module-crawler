@@ -8,7 +8,7 @@
 [![Latest Stable Version](https://poser.pugx.org/luyadev/luya-module-crawler/v/stable)](https://packagist.org/packages/luyadev/luya-module-crawler)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/fbf752bd8ed584de427b/test_coverage)](https://codeclimate.com/github/luyadev/luya-module-crawler/test_coverage)
 [![Total Downloads](https://poser.pugx.org/luyadev/luya-module-crawler/downloads)](https://packagist.org/packages/luyadev/luya-module-crawler)
-[![Slack Support](https://img.shields.io/badge/Slack-luyadev-yellowgreen.svg)](https://slack.luya.io/)
+![Tests](https://github.com/luyadev/luya-module-crawler/workflows/Tests/badge.svg)
 
 An easy to use full-website page crawler to make provide search results on your page. The crawler module gather all information about the sites on the configured domain and stores the index in the database. From there you can now create search queries to provide search results. There are also helper methods which provide intelligent search results by splitting the input into multiple search queries (used by default).
 
