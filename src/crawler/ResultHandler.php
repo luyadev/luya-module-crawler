@@ -12,6 +12,11 @@ class ResultHandler implements HandlerInterface
     {
         $index = Builderindex::findOne(['url' => $result->url->getNormalized()]);
 
+        if (!$index) {
+            $index = new Builderindex();
+            $index->url = $result->url->getNormalized();
+        }
+
         $index->content = $result->content;
         $index->title = $result->title;
         $index->description = $result->description;
@@ -19,7 +24,6 @@ class ResultHandler implements HandlerInterface
         $index->url_found_on_page = $result->refererUrl->getNormalized();
 
         $index->save();
-
         unset($index);
     }
 }
