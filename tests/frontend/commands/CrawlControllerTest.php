@@ -27,8 +27,8 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         $ctrl->interactive = 0;
         $ctrl->runAction('index');
 
-        $this->assertSame('20', Builderindex::find()->asArray()->count());
-        $this->assertSame('14', Index::find()->asArray()->count());
+        $this->assertSame('6', Builderindex::find()->asArray()->count());
+        $this->assertSame('6', Index::find()->asArray()->count());
     }
 }
 
