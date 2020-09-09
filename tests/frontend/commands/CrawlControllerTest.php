@@ -7,6 +7,7 @@ use luya\crawler\frontend\Module;
 use luya\crawler\CrawlIndexInterface;
 use luya\crawler\frontend\commands\CrawlController;
 use luya\crawler\models\Builderindex;
+use luya\crawler\models\Index;
 
 class CrawlControllerTest extends ConsoleCrawlerTestCase
 {
@@ -16,7 +17,7 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
     public function testIndexerInterface()
     {
         $module = new Module('frontendcrawler');
-        $module->baseUrl = 'http://localhost';
+        $module->baseUrl = 'https://luya.io';
         $module->indexer = [
             MyTestIndexer::class,
         ];
@@ -31,7 +32,8 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertSame('0', Builderindex::find()->asArray()->count());
+        $this->assertSame('8', Builderindex::find()->asArray()->count());
+        $this->assertSame('8', Index::find()->asArray()->count());
     }
 }
 

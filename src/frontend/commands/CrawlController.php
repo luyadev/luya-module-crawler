@@ -2,12 +2,12 @@
 
 namespace luya\crawler\frontend\commands;
 
+use luya\crawler\crawler\DatabaseStorage;
 use luya\crawler\crawler\ResultHandler;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Parsers\HtmlParser;
 use Nadar\Crawler\Parsers\PdfParser;
 use Nadar\Crawler\Runners\LoopRunner;
-use Nadar\Crawler\Storage\ArrayStorage;
 
 /**
  * Crawler console Command.
@@ -57,7 +57,7 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
-        $crawler = new Crawler($this->module->baseUrl, new ArrayStorage, new LoopRunner);
+        $crawler = new Crawler($this->module->baseUrl, new DatabaseStorage, new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
         $crawler->addParser(new PdfParser);
         $crawler->addParser(new HtmlParser);
