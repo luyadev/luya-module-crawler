@@ -10,7 +10,7 @@ class m150727_104346_crawler_index extends Migration
             'id' => $this->primaryKey(),
             'url' => $this->string(200)->notNull()->unique(),
             'title' => $this->string(200),
-            'content' => $this->text(),
+            'content' => $this->getDb()->getSchema()->createColumnSchemaBuilder('longtext'),
             'description' => $this->text(),
             'language_info' => $this->string(80),
             'url_found_on_page' => $this->string(255),
