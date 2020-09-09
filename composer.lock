@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nadar/crawler.git",
-                "reference": "e4445992529f0c12f606135335bfae6c1fb44cb7"
+                "reference": "dade63df371318ed9aa03f112228b7262f4e3de6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nadar/crawler/zipball/e4445992529f0c12f606135335bfae6c1fb44cb7",
-                "reference": "e4445992529f0c12f606135335bfae6c1fb44cb7",
+                "url": "https://api.github.com/repos/nadar/crawler/zipball/dade63df371318ed9aa03f112228b7262f4e3de6",
+                "reference": "dade63df371318ed9aa03f112228b7262f4e3de6",
                 "shasum": ""
             },
             "require": {
@@ -43,7 +43,13 @@
                     "email": "git@nadar.io"
                 }
             ],
-            "time": "2020-09-09T13:51:14+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/nadar",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-09T14:13:37+00:00"
         },
         {
             "name": "nadar/stemming",
