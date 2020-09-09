@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 3.0
 
-+ Refactor using https://github.com/nadar/crawler
++ Refactor using https://github.com/nadar/crawler. See [Upgrade](UPGRADE.md)
 
 ## 2.0.5 (8. April 2020)
 
