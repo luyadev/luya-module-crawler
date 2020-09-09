@@ -12,11 +12,13 @@ class DatabaseStorage extends ArrayStorage
 {
     public function onSetup(Crawler $crawler)
     {
+        parent::onSetup($crawler);
         Builderindex::deleteAll();
     }
 
     public function onEnd(Crawler $crawler)
     {
+        parent::onEnd($crawler);
         Index::deleteAll();
 
         foreach (Builderindex::find()->batch() as $batch) {
