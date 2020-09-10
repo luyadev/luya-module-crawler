@@ -135,7 +135,11 @@ class Index extends NgRestModel
         $q->orWhere(['like', 'description', $query]);
         $q->orWhere(['like', 'title', $query]);
         if (!empty($languageInfo)) {
-            $q->andWhere(['language_info' => $languageInfo]);
+            $q->andWhere([
+                'or',
+                ['=', 'language_info', $languageInfo],
+                ['is', 'language_info', new Expression('null')]
+            ]);
         }
         $result = $q->all();
     
@@ -241,7 +245,11 @@ class Index extends NgRestModel
                     ['like', 'title', $word],
                 ]);
             if (!empty($languageInfo)) {
-                $q->andWhere(['language_info' => $languageInfo]);
+                $q->andWhere([
+                    'or',
+                    ['=', 'language_info', $languageInfo],
+                    ['is', 'language_info', new Expression('null')]
+                ]);
             }
             if (!empty($group)) {
                 $q->andWhere(['group' => $group]);
