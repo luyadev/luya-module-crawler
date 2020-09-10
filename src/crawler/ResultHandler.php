@@ -3,6 +3,8 @@
 namespace luya\crawler\crawler;
 
 use luya\crawler\models\Builderindex;
+use luya\crawler\models\Index;
+use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
 
@@ -25,5 +27,30 @@ class ResultHandler implements HandlerInterface
 
         $index->save();
         unset($index);
+    }
+
+    public function onSetup(Crawler $crawler)
+    {
+        Builderindex::deleteAll();
+    }
+
+    public function onEnd(Crawler $crawler)
+    {
+        Index::deleteAll();
+
+        foreach (Builderindex::find()->batch() as $batch) {
+            foreach ($batch as $builderIndex) {
+                $index = new Index();
+                $index->url = $builderIndex->url;
+                $index->title = $builderIndex->title;
+                $index->description = $builderIndex->description;
+                $index->content = $builderIndex->content;
+                $index->save();
+
+                unset($index, $builderIndex);
+            }
+        }
+
+        unset($batch);
     }
 }

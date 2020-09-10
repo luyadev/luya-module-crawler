@@ -9,6 +9,8 @@ use Nadar\Crawler\Handlers\DebugHandler;
 use Nadar\Crawler\Parsers\HtmlParser;
 use Nadar\Crawler\Parsers\PdfParser;
 use Nadar\Crawler\Runners\LoopRunner;
+use Nadar\Crawler\Storage\FileStorage;
+use Yii;
 
 /**
  * Crawler console Command.
@@ -58,7 +60,7 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
-        $crawler = new Crawler($this->module->baseUrl, new DatabaseStorage, new LoopRunner);
+        $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias('@runtime/crawler')), new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
 
         if ($this->verbose) {
