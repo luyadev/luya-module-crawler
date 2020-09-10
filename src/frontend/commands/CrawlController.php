@@ -75,9 +75,5 @@ class CrawlController extends \luya\console\Command
         $crawler->addHandler(new ResultHandler);
         $crawler->setup();
         $crawler->run();
-
-        if ($this->verbose) {
-            $debug->summary();
-        }
     }
 }
