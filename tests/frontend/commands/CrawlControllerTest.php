@@ -22,10 +22,16 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
             MyTestIndexer::class,
         ];
 
+        $folder = dirname(__FILE__) . '/../../data/runtime';
+
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777, true);
+        }
+
         $ctrl = new CrawlController('crawler', $module);
         $ctrl->verbose = 0;
         $ctrl->interactive = 0;
-        $ctrl->runtimeFolder = dirname(__FILE__) . '/../../data/runtime';
+        $ctrl->runtimeFolder = $folder;
         $ctrl->runAction('index');
 
         $this->assertSame('6', Builderindex::find()->asArray()->count());
