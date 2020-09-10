@@ -30,7 +30,7 @@ use Yii;
  */
 class CrawlController extends \luya\console\Command
 {
-    public $runtimeFolder = '@runtime/crawler';
+    public $runtimeFolder = '@runtime';
 
     /**
      * @var boolean Whether the collected links should be checked after finished crawler process
