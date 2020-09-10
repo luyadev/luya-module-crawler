@@ -24,6 +24,7 @@ class ResultHandler implements HandlerInterface
         $index->description = $result->description;
         $index->language_info = $result->language;
         $index->url_found_on_page = $result->refererUrl->getNormalized();
+        $index->group = $result->group;
 
         $index->save();
         unset($index);
@@ -45,6 +46,11 @@ class ResultHandler implements HandlerInterface
                 $index->title = $builderIndex->title;
                 $index->description = $builderIndex->description;
                 $index->content = $builderIndex->content;
+                $index->language_info = $builderIndex->language_info;
+                $index->added_to_index = time();
+                $index->last_update = time();
+                $index->url_found_on_page = $builderIndex->url_found_on_page;
+                $index->group = $builderIndex->group;
                 $index->save();
 
                 unset($index, $builderIndex);
