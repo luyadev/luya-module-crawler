@@ -30,6 +30,8 @@ use Yii;
  */
 class CrawlController extends \luya\console\Command
 {
+    public $runtimeFolder = '@runtime/crawler';
+
     /**
      * @var boolean Whether the collected links should be checked after finished crawler process
      * @since 2.0.3
@@ -60,7 +62,7 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
-        $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias('@runtime/crawler')), new LoopRunner);
+        $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias($this->runtimeFolder)), new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
 
         if ($this->verbose) {
