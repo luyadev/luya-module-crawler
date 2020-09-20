@@ -4,6 +4,7 @@ namespace luya\crawler\frontend\commands;
 
 use luya\crawler\crawler\DatabaseStorage;
 use luya\crawler\crawler\ResultHandler;
+use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Handlers\DebugHandler;
 use Nadar\Crawler\Parsers\HtmlParser;
@@ -62,6 +63,8 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
+        $startTime = time();
+
         $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias($this->runtimeFolder)), new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
 
@@ -75,5 +78,15 @@ class CrawlController extends \luya\console\Command
         $crawler->addHandler(new ResultHandler);
         $crawler->setup();
         $crawler->run();
+        
+        if ($this->linkcheck) {	          
+            Link::cleanup($startTime);	
+            foreach (Link::getAllUrlsBatch() as $batch) {	
+                foreach ($batch as $link) {	
+                    $status = Link::responseStatus($link['url']);	
+                    Link::updateUrlStatus($link['url'], $status);	
+                }	
+            }	
+        }
     }
 }

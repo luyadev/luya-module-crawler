@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nadar/crawler.git",
-                "reference": "291092add536055fab9690a5a1a7d9d2502a82ab"
+                "reference": "20ea95f15958f219fad03592427693dd71efacb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nadar/crawler/zipball/291092add536055fab9690a5a1a7d9d2502a82ab",
-                "reference": "291092add536055fab9690a5a1a7d9d2502a82ab",
+                "url": "https://api.github.com/repos/nadar/crawler/zipball/20ea95f15958f219fad03592427693dd71efacb3",
+                "reference": "20ea95f15958f219fad03592427693dd71efacb3",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-10T09:19:15+00:00"
+            "time": "2020-09-20T12:56:57+00:00"
         },
         {
             "name": "nadar/stemming",
@@ -173,7 +173,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -923,16 +923,16 @@
         },
         {
             "name": "luyadev/luya-module-cms",
-            "version": "3.3.6",
+            "version": "3.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luyadev/luya-module-cms.git",
-                "reference": "be6cc102b9a5b29cb5e751ac40537acff158f274"
+                "reference": "de8e0d3ca781c1e4e2d9b72d032bb91c29743fea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luyadev/luya-module-cms/zipball/be6cc102b9a5b29cb5e751ac40537acff158f274",
-                "reference": "be6cc102b9a5b29cb5e751ac40537acff158f274",
+                "url": "https://api.github.com/repos/luyadev/luya-module-cms/zipball/de8e0d3ca781c1e4e2d9b72d032bb91c29743fea",
+                "reference": "de8e0d3ca781c1e4e2d9b72d032bb91c29743fea",
                 "shasum": ""
             },
             "require-dev": {
@@ -983,7 +983,7 @@
                 "yii2",
                 "yii2-cms"
             ],
-            "time": "2020-08-06T15:24:26+00:00"
+            "time": "2020-09-15T15:20:29+00:00"
         },
         {
             "name": "luyadev/luya-testsuite",

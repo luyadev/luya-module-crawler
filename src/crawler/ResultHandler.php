@@ -4,6 +4,7 @@ namespace luya\crawler\crawler;
 
 use luya\crawler\models\Builderindex;
 use luya\crawler\models\Index;
+use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
@@ -28,6 +29,12 @@ class ResultHandler implements HandlerInterface
 
         $index->save();
         unset($index);
+        
+        foreach ($result->parserResult->links as $link) {
+            // @TODO remove unknown title... replace with acutall link
+            Link::add($link, 'unknown', $result->url->getNormalized());
+        }
+
     }
 
     public function onSetup(Crawler $crawler)
