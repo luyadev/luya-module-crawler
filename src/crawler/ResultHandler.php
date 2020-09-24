@@ -2,6 +2,7 @@
 
 namespace luya\crawler\crawler;
 
+use luya\crawler\frontend\commands\CrawlController;
 use luya\crawler\models\Builderindex;
 use luya\crawler\models\Index;
 use luya\crawler\models\Link;
@@ -11,6 +12,13 @@ use Nadar\Crawler\Result;
 
 class ResultHandler implements HandlerInterface
 {
+    protected $controller;
+
+    public function __construct(CrawlController $controller)
+    {
+        $this->controller = $controller;    
+    }
+
     public function afterRun(Result $result)
     {
         $index = Builderindex::findOne(['url' => $result->url->getNormalized()]);
@@ -30,11 +38,11 @@ class ResultHandler implements HandlerInterface
         $index->save();
         unset($index);
         
-        foreach ($result->parserResult->links as $link) {
-            // @TODO remove unknown title... replace with acutall link
-            Link::add($link, 'unknown', $result->url->getNormalized());
+        if ($this->controller->linkcheck) {
+            foreach ($result->parserResult->links as $url => $value) {
+                Link::add($url, $value, $result->url->getNormalized());
+            }
         }
-
     }
 
     public function onSetup(Crawler $crawler)
@@ -44,25 +52,34 @@ class ResultHandler implements HandlerInterface
 
     public function onEnd(Crawler $crawler)
     {
-        Index::deleteAll();
+        $keepIndexIds = [];
 
         foreach (Builderindex::find()->batch() as $batch) {
             foreach ($batch as $builderIndex) {
-                $index = new Index();
+
+                $index = Index::findOne(['url' => $builderIndex->url]);
+
+                if (!$index) {
+                    $index = new Index();
+                    $index->added_to_index = time();
+                }
+
                 $index->url = $builderIndex->url;
                 $index->title = $builderIndex->title;
                 $index->description = $builderIndex->description;
                 $index->content = $builderIndex->content;
                 $index->language_info = $builderIndex->language_info;
-                $index->added_to_index = time();
                 $index->last_update = time();
                 $index->url_found_on_page = $builderIndex->url_found_on_page;
                 $index->group = $builderIndex->group;
                 $index->save();
 
+                $keepIndexIds[] = $index->id;
                 unset($index, $builderIndex);
             }
         }
+
+        Index::deleteAll(['not in', 'id', $keepIndexIds]);
 
         unset($batch);
     }

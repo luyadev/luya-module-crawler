@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nadar/crawler.git",
-                "reference": "20ea95f15958f219fad03592427693dd71efacb3"
+                "reference": "a46891c292d83d6d9c83272a2a4c5658f0a7c9de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nadar/crawler/zipball/20ea95f15958f219fad03592427693dd71efacb3",
-                "reference": "20ea95f15958f219fad03592427693dd71efacb3",
+                "url": "https://api.github.com/repos/nadar/crawler/zipball/a46891c292d83d6d9c83272a2a4c5658f0a7c9de",
+                "reference": "a46891c292d83d6d9c83272a2a4c5658f0a7c9de",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-20T12:56:57+00:00"
+            "time": "2020-09-24T15:27:06+00:00"
         },
         {
             "name": "nadar/stemming",
@@ -152,7 +152,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -495,16 +495,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.9",
+            "version": "8.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "674b79ae3362409d08e550cb196d982485a76225"
+                "reference": "befffd590d1e2333bbb6d712541ccccf5fc08f1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/674b79ae3362409d08e550cb196d982485a76225",
-                "reference": "674b79ae3362409d08e550cb196d982485a76225",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/befffd590d1e2333bbb6d712541ccccf5fc08f1f",
+                "reference": "befffd590d1e2333bbb6d712541ccccf5fc08f1f",
                 "shasum": ""
             },
             "require": {
@@ -559,7 +559,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2020-08-31T09:51:44+00:00"
+            "time": "2020-09-22T07:23:22+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -778,16 +778,16 @@
         },
         {
             "name": "luyadev/luya-core",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luyadev/luya-core.git",
-                "reference": "112b225e58e5f15012309fcdcda12a49dce6a4f5"
+                "reference": "b6aadae17b4aacfc9618658740957fdea79aaa8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luyadev/luya-core/zipball/112b225e58e5f15012309fcdcda12a49dce6a4f5",
-                "reference": "112b225e58e5f15012309fcdcda12a49dce6a4f5",
+                "url": "https://api.github.com/repos/luyadev/luya-core/zipball/b6aadae17b4aacfc9618658740957fdea79aaa8c",
+                "reference": "b6aadae17b4aacfc9618658740957fdea79aaa8c",
                 "shasum": ""
             },
             "require": {
@@ -832,7 +832,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2020-08-26T09:03:03+00:00"
+            "time": "2020-09-23T14:45:00+00:00"
         },
         {
             "name": "luyadev/luya-module-admin",

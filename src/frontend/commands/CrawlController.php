@@ -75,7 +75,7 @@ class CrawlController extends \luya\console\Command
 
         $crawler->addParser(new PdfParser);
         $crawler->addParser(new HtmlParser);
-        $crawler->addHandler(new ResultHandler);
+        $crawler->addHandler(new ResultHandler($this));
         $crawler->setup();
         $crawler->run();
         

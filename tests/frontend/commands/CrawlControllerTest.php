@@ -8,6 +8,8 @@ use luya\crawler\CrawlIndexInterface;
 use luya\crawler\frontend\commands\CrawlController;
 use luya\crawler\models\Builderindex;
 use luya\crawler\models\Index;
+use luya\crawler\models\Link;
+use luya\testsuite\fixtures\NgRestModelFixture;
 
 class CrawlControllerTest extends ConsoleCrawlerTestCase
 {
@@ -16,6 +18,7 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
      */
     public function testIndexerInterface()
     {
+        new NgRestModelFixture(['modelClass' => Link::class]);
         $module = new Module('frontendcrawler');
         $module->baseUrl = 'https://luya.io';
         $module->indexer = [
