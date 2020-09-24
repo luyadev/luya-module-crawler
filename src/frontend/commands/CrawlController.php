@@ -7,10 +7,12 @@ use luya\crawler\crawler\ResultHandler;
 use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Handlers\DebugHandler;
+use Nadar\Crawler\Job;
 use Nadar\Crawler\Parsers\HtmlParser;
 use Nadar\Crawler\Parsers\PdfParser;
 use Nadar\Crawler\Runners\LoopRunner;
 use Nadar\Crawler\Storage\FileStorage;
+use Nadar\Crawler\Url;
 use Yii;
 
 /**
@@ -77,6 +79,13 @@ class CrawlController extends \luya\console\Command
         $crawler->addParser(new HtmlParser);
         $crawler->addHandler(new ResultHandler($this));
         $crawler->setup();
+
+        foreach ($this->module->indexer as $className) {	
+            foreach ($className::indexLinks() as $url => $title) {	
+                $crawler->push(new Job(new Url($url), $crawler->baseUrl));
+            }	
+        }
+
         $crawler->run();
         
         if ($this->linkcheck) {	          

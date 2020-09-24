@@ -32,7 +32,7 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         }
 
         $ctrl = new CrawlController('crawler', $module);
-        $ctrl->verbose = 0;
+        $ctrl->verbose = 1;
         $ctrl->interactive = 0;
         $ctrl->runtimeFolder = $folder;
         $ctrl->runAction('index');
