@@ -97,5 +97,7 @@ class CrawlController extends \luya\console\Command
                 }	
             }	
         }
+
+        return $this->outputSuccess("Crawler finished.");
     }
 }
