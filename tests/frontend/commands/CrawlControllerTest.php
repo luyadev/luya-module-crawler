@@ -7,6 +7,9 @@ use luya\crawler\frontend\Module;
 use luya\crawler\CrawlIndexInterface;
 use luya\crawler\frontend\commands\CrawlController;
 use luya\crawler\models\Builderindex;
+use luya\crawler\models\Index;
+use luya\crawler\models\Link;
+use luya\testsuite\fixtures\NgRestModelFixture;
 
 class CrawlControllerTest extends ConsoleCrawlerTestCase
 {
@@ -15,23 +18,27 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
      */
     public function testIndexerInterface()
     {
+        new NgRestModelFixture(['modelClass' => Link::class]);
         $module = new Module('frontendcrawler');
-        $module->baseUrl = 'http://localhost';
+        $module->baseUrl = 'https://luya.io';
         $module->indexer = [
             MyTestIndexer::class,
         ];
 
-        $ctrl = new CrawlController('crawler', $module);
-        $ctrl->verbose = 0;
-        $ctrl->interactive = 0;
+        $folder = dirname(__FILE__) . '/../../data/runtime';
 
-
-        try {
-            $ctrl->runAction('index');
-        } catch (\Exception $e) {
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777, true);
         }
 
-        $this->assertSame('0', Builderindex::find()->asArray()->count());
+        $ctrl = new CrawlController('crawler', $module);
+        $ctrl->verbose = 1;
+        $ctrl->interactive = 0;
+        $ctrl->runtimeFolder = $folder;
+        $ctrl->runAction('index');
+
+        $this->assertSame('6', Builderindex::find()->asArray()->count());
+        $this->assertSame('6', Index::find()->asArray()->count());
     }
 }
 

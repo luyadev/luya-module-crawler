@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.0
+
++ Refactor using https://github.com/nadar/crawler. See [Upgrade](UPGRADE.md)
+
 ## 2.0.5 (8. April 2020)
 
 + [#29](https://github.com/luyadev/luya-module-crawler/pull/29) Improve performance, create new indexes, improve when working with group conditions.

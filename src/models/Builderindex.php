@@ -32,22 +32,6 @@ use yii\db\ActiveRecord;
  */
 class Builderindex extends ActiveRecord
 {
-    public function init()
-    {
-        parent::init();
-        $this->on(self::EVENT_BEFORE_INSERT, [$this, 'preparePageVariables']);
-        $this->on(self::EVENT_BEFORE_UPDATE, [$this, 'preparePageVariables']);
-    }
-    
-    /**
-     * Prepare the page variables like contant hash and if its dulication by content.
-     */
-    public function preparePageVariables()
-    {
-        $this->content_hash = md5($this->content);
-        $this->is_dublication = self::find()->where(['content_hash' => $this->content_hash])->andWhere(['!=', 'url', $this->url])->exists();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,52 +55,5 @@ class Builderindex extends ActiveRecord
             [['group'], 'string', 'max' => 120],
             [['url'], 'unique'],
         ];
-    }
-
-    /**
-     * Whether an url is inexed or not (false = not in database or not yet crawler).
-     *
-     * @param string $url
-     * @return boolean
-     */
-    public static function isIndexed($url)
-    {
-        return self::find()->where(['url' => $url])->select(['crawled'])->scalar();
-    }
-
-    /**
-     * Find a crawler index entry based on the url.
-     *
-     * @param string $url
-     * @return \luya\crawler\models\Builderindex|boolean
-     */
-    public static function findUrl($url)
-    {
-        return self::find()->where(['url' => $url])->limit(1)->one();
-    }
-
-    /**
-     * Add a given page to the index with status: uncrawled.
-     *
-     * If there url exists already in the index, false is returned.
-     *
-     * @param string $url
-     * @param string $title
-     * @param string $urlFoundOnPage
-     * @return self|boolean Returns the model on success, otherwise
-     */
-    public static function addToIndex($url, $title = null, $urlFoundOnPage = null)
-    {
-        $model = new self();
-        $model->url = $url;
-        $model->title = StringHelper::truncate($title, 197);
-        $model->url_found_on_page = $urlFoundOnPage;
-        $model->crawled = 0;
-
-        if ($model->save()) {
-            return $model;
-        }
-
-        return false;
     }
 }

@@ -2,10 +2,18 @@
 
 namespace luya\crawler\frontend\commands;
 
-use luya\crawler\frontend\classes\CrawlContainer;
+use luya\crawler\crawler\DatabaseStorage;
+use luya\crawler\crawler\ResultHandler;
 use luya\crawler\models\Link;
-use luya\helpers\FileHelper;
-use yii\console\widgets\Table;
+use Nadar\Crawler\Crawler;
+use Nadar\Crawler\Handlers\DebugHandler;
+use Nadar\Crawler\Job;
+use Nadar\Crawler\Parsers\HtmlParser;
+use Nadar\Crawler\Parsers\PdfParser;
+use Nadar\Crawler\Runners\LoopRunner;
+use Nadar\Crawler\Storage\FileStorage;
+use Nadar\Crawler\Url;
+use Yii;
 
 /**
  * Crawler console Command.
@@ -25,6 +33,8 @@ use yii\console\widgets\Table;
  */
 class CrawlController extends \luya\console\Command
 {
+    public $runtimeFolder = '@runtime';
+
     /**
      * @var boolean Whether the collected links should be checked after finished crawler process
      * @since 2.0.3
@@ -55,55 +65,39 @@ class CrawlController extends \luya\console\Command
      */
     public function actionIndex()
     {
-        $this->verbosePrint(var_export($this->linkcheck, true), 'option link check');
-        $this->verbosePrint(var_export($this->summary, true), 'option summary print');
+        $startTime = time();
 
-        // sart time measuremnt
-        $start = microtime(true);
-        
-        $container = new CrawlContainer([
-            'linkCheckIndexInternalUrls' => $this->linkcheck,
-            'baseUrl' => $this->module->baseUrl,
-            'filterRegex' => $this->module->filterRegex,
-            'verbose' => $this->verbose,
-            'doNotFollowExtensions' => $this->module->doNotFollowExtensions,
-            'useH1' => $this->module->useH1,
-        ]);
-        
-        foreach ($this->module->indexer as $className) {
-            foreach ($className::indexLinks() as $url => $title) {
-                $container->addToIndex($url, $title, $className);
-            }
+        $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias($this->runtimeFolder)), new LoopRunner);
+        $crawler->urlFilterRules = $this->module->filterRegex;
+
+        if ($this->verbose) {
+            $debug = new DebugHandler;
+            $crawler->addHandler($debug);
         }
 
-        $container->start();
+        $crawler->addParser(new PdfParser);
+        $crawler->addParser(new HtmlParser);
+        $crawler->addHandler(new ResultHandler($this));
+        $crawler->setup();
 
-        if ($this->linkcheck) {
-            $this->verbosePrint("Start link check");
-            Link::cleanup($container->startTime);
-            foreach (Link::getAllUrlsBatch() as $batch) {
-                foreach ($batch as $link) {
-                    $this->verbosePrint("start check", $link['url']);
-                    $status = Link::responseStatus($link['url']);
-                    $this->verbosePrint($status, $link['url']);
-                    Link::updateUrlStatus($link['url'], $status);
-                }
-            }
+        foreach ($this->module->indexer as $className) {	
+            foreach ($className::indexLinks() as $url => $title) {	
+                $crawler->push(new Job(new Url($url), $crawler->baseUrl));
+            }	
         }
 
-        $this->verbosePrint("start table output");
-
-        $timeElapsed = round((microtime(true) - $start) / 60, 2);
+        $crawler->run();
         
-        if ($this->summary) {
-            $table = new Table();
-            $table->setHeaders(['status', 'url', 'message']);
-            $table->setRows($container->getReport());
-            $this->output($table->run());
-            $this->outputInfo('memory usage: ' . FileHelper::humanReadableFilesize(memory_get_usage()));
-            $this->outputInfo('memory peak usage: ' . FileHelper::humanReadableFilesize(memory_get_peak_usage()));
+        if ($this->linkcheck) {	          
+            Link::cleanup($startTime);	
+            foreach (Link::getAllUrlsBatch() as $batch) {	
+                foreach ($batch as $link) {	
+                    $status = Link::responseStatus($link['url']);	
+                    Link::updateUrlStatus($link['url'], $status);	
+                }	
+            }	
         }
-        
-        return $this->outputSuccess('Crawler finished in ' . $timeElapsed . ' min.');
+
+        return $this->outputSuccess("Crawler finished.");
     }
 }
