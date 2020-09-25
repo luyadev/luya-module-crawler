@@ -16,12 +16,12 @@
 		"issues" : "https://github.com/luyadev/luya/issues"
 	},
 	"require" : {
-		"nadar/crawler" : "dev-master",
+		"nadar/crawler" : "^1.0",
 		"nadar/stemming" : "^1.0",
 		"smalot/pdfparser": "^0.16.2"
 	},
 	"require-dev" : {
-		"luyadev/luya-testsuite" : "~1.0.0"
+		"luyadev/luya-testsuite" : "^1.0"
 	},
 	"autoload" : {
 		"psr-4" : {
