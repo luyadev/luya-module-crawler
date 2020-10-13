@@ -82,6 +82,11 @@ use luya\crawler\widgets\DidYouMeanWidget;
 </form>
 
 <h2><?= $provider->totalCount; ?> Results</h2>
+
+<?php if ($query && $provider->totalCount == 0): ?>
+    <div>No results found for &laquo;<?= $query; ?>&raquo;.</div>
+<?php endif; ?>
+
 <?= DidYouMeanWidget::widget(['searchModel' => $searchModel]); ?>
 <?php foreach($provider->models as $item): /* @var $item \luya\crawler\models\Index */ ?>
     <h3><?= $item->title; ?></h3>
