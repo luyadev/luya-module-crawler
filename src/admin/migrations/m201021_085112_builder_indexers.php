@@ -23,8 +23,8 @@ class m201021_085112_builder_indexers extends Migration
         $this->createIndex('checksum', 'crawler_builder_runtime_checksum', ['checksum']);
 
         $this->createTable('crawler_builder_runtime_queue', [
-            'url' => $this->string(),
-            'referrer_url' => $this->string(),
+            'url' => $this->text(),
+            'referrer_url' => $this->text(),
         ]);
     }
 
