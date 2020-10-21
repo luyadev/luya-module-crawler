@@ -5,6 +5,8 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 3.0
 
+> This release contains new migrations and requires to run the migrate command after updating. Check the [UPGRADE document](UPGRADE.md) to read more about breaking changes.
+
 + Refactor using https://github.com/nadar/crawler. See [Upgrade](UPGRADE.md)
 
 ## 2.0.5 (8. April 2020)

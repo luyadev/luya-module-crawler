@@ -16,8 +16,6 @@ class m201021_085112_builder_indexers extends Migration
             'url' => $this->text()->notNull(),
         ]);
 
-        $this->createIndex('url', 'crawler_builder_runtime_url', ['url']);
-
         $this->createTable('crawler_builder_runtime_checksum', [
             'checksum' => $this->string(64)->notNull(),
         ]);

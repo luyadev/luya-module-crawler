@@ -4,6 +4,7 @@ This document will help you upgrading from a LUYA admin module version into anot
 
 ## from 2.0 to 3.0
 
++ Run the migrate command, as new migrations are available.
 + classes `src/frontend/classes/CrawlPage.php` and `src/frontend/classes/CrawlContainer.php` has been removed.
 
 ## from 1.0 to 2.0
