@@ -35,8 +35,6 @@ use yii\helpers\Console;
  */
 class CrawlController extends \luya\console\Command
 {
-    public $runtimeFolder = '@runtime';
-
     /**
      * @var boolean Whether the collected links should be checked after finished crawler process
      * @since 2.0.3
@@ -44,10 +42,10 @@ class CrawlController extends \luya\console\Command
     public $linkcheck = true;
 
     /**
-     * @var boolean Whether a table based summary should be rendered.
-     * @since 2.0.3
+     * @var boolean Whether PDFs should be indexed or not. When enabled this may highly increase the memory consumption of the crawler process.
+     * @since 3.0
      */
-    public $summary = true;
+    public $pdfs = true;
 
     /**
      * {@inheritDoc}
@@ -56,7 +54,7 @@ class CrawlController extends \luya\console\Command
     {
         $options = parent::options($actionID);
         $options[] = 'linkcheck';
-        $options[] = 'summary';
+        $options[] = 'pdfs';
         return $options;
     }
 
@@ -77,7 +75,9 @@ class CrawlController extends \luya\console\Command
             $crawler->addHandler($debug);
         }
 
-        $crawler->addParser(new PdfParser);
+        if ($this->pdfs) {
+            $crawler->addParser(new PdfParser);
+        }
         $crawler->addParser(new HtmlParser);
         $crawler->addHandler(new ResultHandler($this));
         $crawler->setup();

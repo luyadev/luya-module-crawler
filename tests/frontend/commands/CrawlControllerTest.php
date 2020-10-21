@@ -34,7 +34,6 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         $ctrl = new CrawlController('crawler', $module);
         $ctrl->verbose = 1;
         $ctrl->interactive = 0;
-        $ctrl->runtimeFolder = $folder;
         $ctrl->runAction('index');
 
         $this->assertSame('6', Builderindex::find()->asArray()->count());

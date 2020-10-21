@@ -22,6 +22,9 @@ final class Module extends \luya\admin\base\Module
 
     ];
     
+    /**
+     * {@inheritDoc}
+     */
     public $dashboardObjects = [
         [
             'class' => 'luya\admin\dashboard\ListDashboardObject',
