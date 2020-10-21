@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "nadar/crawler",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nadar/crawler.git",
-                "reference": "5b52010c66250d9ca8acde12814666d38cc0f930"
+                "reference": "95001c8ca5fb1760a293c606655358fd0ad57901"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nadar/crawler/zipball/5b52010c66250d9ca8acde12814666d38cc0f930",
-                "reference": "5b52010c66250d9ca8acde12814666d38cc0f930",
+                "url": "https://api.github.com/repos/nadar/crawler/zipball/95001c8ca5fb1760a293c606655358fd0ad57901",
+                "reference": "95001c8ca5fb1760a293c606655358fd0ad57901",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-21T10:41:37+00:00"
+            "time": "2020-10-21T12:52:11+00:00"
         },
         {
             "name": "nadar/stemming",

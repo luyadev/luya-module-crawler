@@ -173,7 +173,7 @@ class Link extends NgRestModel
     public static function add($url, $title, $urlOnPage)
     {
         $urlObject = new Url($url);
-        //$urlObject->encode = true;
+        $urlObject->encode = true;
 
         if (!$urlObject->isValid()) {
             return false;
