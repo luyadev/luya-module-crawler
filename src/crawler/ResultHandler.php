@@ -9,6 +9,7 @@ use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
+use yii\helpers\Console;
 
 class ResultHandler implements HandlerInterface
 {
@@ -54,9 +55,15 @@ class ResultHandler implements HandlerInterface
     {
         $keepIndexIds = [];
 
+        $this->controller->verbosePrint('Start synchronize the builder index with the final index.');
+        
+        $total = (int) Builderindex::find()->count();
+        $i = 0;
+        if ($this->controller->verbose) {
+            Console::startProgress(0, $total, 'sync pages: ', false);    
+        }
         foreach (Builderindex::find()->batch() as $batch) {
             foreach ($batch as $builderIndex) {
-
                 $index = Index::findOne(['url' => $builderIndex->url]);
 
                 if (!$index) {
@@ -76,10 +83,19 @@ class ResultHandler implements HandlerInterface
 
                 $keepIndexIds[] = $index->id;
                 unset($index, $builderIndex);
+                $i++;
+
+                if ($this->controller->verbose) {
+                    Console::updateProgress($i, $total);
+                }
             }
         }
 
         Index::deleteAll(['not in', 'id', $keepIndexIds]);
+
+        if ($this->controller->verbose) {
+            Console::endProgress("done." . PHP_EOL);
+        }
 
         unset($batch);
     }
