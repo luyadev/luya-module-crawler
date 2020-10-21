@@ -13,7 +13,7 @@ class m201021_085112_builder_indexers extends Migration
     public function safeUp()
     {
         $this->createTable('crawler_builder_runtime_url', [
-            'url' => $this->string()->notNull(),
+            'url' => $this->text()->notNull(),
         ]);
 
         $this->createIndex('url', 'crawler_builder_runtime_url', ['url']);
