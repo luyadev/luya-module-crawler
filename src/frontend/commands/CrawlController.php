@@ -15,6 +15,7 @@ use Nadar\Crawler\Runners\LoopRunner;
 use Nadar\Crawler\Storage\FileStorage;
 use Nadar\Crawler\Url;
 use Yii;
+use yii\helpers\Console;
 
 /**
  * Crawler console Command.
@@ -89,14 +90,28 @@ class CrawlController extends \luya\console\Command
 
         $crawler->run();
         
-        if ($this->linkcheck) {	          
+        if ($this->linkcheck) {
+            $this->verbosePrint("Start crawled links check.");
             Link::cleanup($startTime);	
+            $total = Link::find()->select(['url'])->distinct()->count();
+            $i = 0;
+            if ($this->verbose) {
+                Console::startProgress(0, $total, 'check links: ', false);    
+            }
             foreach (Link::getAllUrlsBatch() as $batch) {	
                 foreach ($batch as $link) {	
+                    $i++;
                     $status = Link::responseStatus($link['url']);	
                     Link::updateUrlStatus($link['url'], $status);	
+                    if ($this->verbose) {
+                        Console::updateProgress($i, $total);
+                    }
                 }	
-            }	
+            }
+            
+            if ($this->verbose) {
+                Console::endProgress("done." . PHP_EOL);
+            }
         }
 
         return $this->outputSuccess("Crawler finished.");
