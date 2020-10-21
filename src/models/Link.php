@@ -9,6 +9,7 @@ use Curl\Curl;
 use luya\crawler\frontend\Module as FrontendModule;
 use luya\crawler\admin\buttons\DoneButton;
 use luya\crawler\admin\Module;
+use Nadar\Crawler\Url;
 use yii\db\BatchQueryResult;
 
 /**
@@ -151,10 +152,13 @@ class Link extends NgRestModel
      */
     public static function responseStatus($url)
     {
+        $urlObject = new Url($url);
+        $urlObject->encode = true;
+
         $curl = new Curl();
-        $curl->setOpt(CURLOPT_TIMEOUT, 3);
+        $curl->setOpt(CURLOPT_TIMEOUT, 5);
         $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
-        $curl->get($url);
+        $curl->get($urlObject->getNormalized());
         $status = $curl->http_status_code;
         $curl->close();
         unset($curl);

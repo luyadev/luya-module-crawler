@@ -16,7 +16,7 @@
 		"issues" : "https://github.com/luyadev/luya/issues"
 	},
 	"require" : {
-		"nadar/crawler" : "^1.0",
+		"nadar/crawler" : "^1.1",
 		"nadar/stemming" : "^1.0",
 		"smalot/pdfparser": "^0.16.2"
 	},
