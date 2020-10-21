@@ -3,11 +3,13 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 3.0
+## 3.0 (21. October 2020)
 
 > This release contains new migrations and requires to run the migrate command after updating. Check the [UPGRADE document](UPGRADE.md) to read more about breaking changes.
 
-+ Refactor using https://github.com/nadar/crawler. See [Upgrade](UPGRADE.md)
++ Crawl mechanism refactoring using https://github.com/nadar/crawler. 
++ Dropped unused module properties and crawler classes, see [Upgrade](UPGRADE.md)
++ Indexing of PDFs is now by default activated.
 
 ## 2.0.5 (8. April 2020)
 
