@@ -82,30 +82,30 @@ class CrawlController extends \luya\console\Command
         $crawler->addHandler(new ResultHandler($this));
         $crawler->setup();
 
-        foreach ($this->module->indexer as $className) {	
-            foreach ($className::indexLinks() as $url => $title) {	
+        foreach ($this->module->indexer as $className) {
+            foreach ($className::indexLinks() as $url => $title) {
                 $crawler->push(new Job(new Url($url), $crawler->baseUrl));
-            }	
+            }
         }
 
         $crawler->run();
         
         if ($this->linkcheck) {
-            Link::cleanup($startTime);	
+            Link::cleanup($startTime);
             $total = Link::find()->select(['url'])->distinct()->count();
             $i = 0;
             if ($this->verbose) {
-                Console::startProgress(0, $total, 'check links: ', false);    
+                Console::startProgress(0, $total, 'check links: ', false);
             }
-            foreach (Link::getAllUrlsBatch() as $batch) {	
-                foreach ($batch as $link) {	
+            foreach (Link::getAllUrlsBatch() as $batch) {
+                foreach ($batch as $link) {
                     $i++;
-                    $status = Link::responseStatus($link['url']);	
-                    Link::updateUrlStatus($link['url'], $status);	
+                    $status = Link::responseStatus($link['url']);
+                    Link::updateUrlStatus($link['url'], $status);
                     if ($this->verbose) {
                         Console::updateProgress($i, $total);
                     }
-                }	
+                }
             }
             
             if ($this->verbose) {

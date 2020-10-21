@@ -10,7 +10,7 @@ use yii\console\widgets\Table;
 
 /**
  * Check brocken links.
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 2.0.3
  */
@@ -18,7 +18,7 @@ class LinkController extends Command
 {
     /**
      * Run the clean up and update link status methods.
-     * 
+     *
      * @return integer
      */
     public function actionIndex()

@@ -11,15 +11,34 @@ use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
 use yii\helpers\Console;
 
+/**
+ * Handle the Crawler Results
+ *
+ * Add new pages to the index and sync the production index from builder index on finish.
+ *
+ * @author Basil Suter <git@nadar.io>
+ * @since 3.0.0
+ */
 class ResultHandler implements HandlerInterface
 {
+    /**
+     * @var CrawlController
+     */
     protected $controller;
 
+    /**
+     * Constructor
+     *
+     * @param CrawlController $controller
+     */
     public function __construct(CrawlController $controller)
     {
-        $this->controller = $controller;    
+        $this->controller = $controller;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function afterRun(Result $result)
     {
         $index = Builderindex::findOne(['url' => $result->url->getNormalized()]);
@@ -46,11 +65,17 @@ class ResultHandler implements HandlerInterface
         }
     }
 
+    /**
+    * {@inheritDoc}
+    */
     public function onSetup(Crawler $crawler)
     {
         Builderindex::deleteAll();
     }
 
+    /**
+    * {@inheritDoc}
+    */
     public function onEnd(Crawler $crawler)
     {
         $keepIndexIds = [];
@@ -58,7 +83,7 @@ class ResultHandler implements HandlerInterface
         $total = (int) Builderindex::find()->count();
         $i = 0;
         if ($this->controller->verbose) {
-            Console::startProgress(0, $total, 'synchronize index: ', false);    
+            Console::startProgress(0, $total, 'synchronize index: ', false);
         }
         foreach (Builderindex::find()->batch() as $batch) {
             foreach ($batch as $builderIndex) {

@@ -208,7 +208,7 @@ class Link extends NgRestModel
 
     /**
      * Update the status for all links on the given url page.
-     * 
+     *
      * @return array An array with link as the key and value is the status code.
      */
     public static function updateLinkStatus()
