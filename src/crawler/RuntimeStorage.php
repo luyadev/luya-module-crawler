@@ -2,6 +2,7 @@
 
 namespace luya\crawler\crawler;
 
+use luya\helpers\ArrayHelper;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\StorageInterface;
 use Nadar\Crawler\QueueItem;
@@ -66,11 +67,16 @@ class RuntimeStorage implements StorageInterface
 
         $items = $query->all();
 
+        
         array_walk($items, function(&$item) {
             $item = new QueueItem($item['url'], $item['referrer_url']);
         });
 
-        Yii::$app->db->createCommand()->delete($this->queueTable, ['in', 'url', $query->select(['url'])])->execute();
+        $urls = ArrayHelper::getColumn($items, 'url');
+
+        Yii::$app->db->createCommand()->delete($this->queueTable, ['in', 'url', $urls])->execute();
+
+        unset($urls);
 
         return $items;
     }
