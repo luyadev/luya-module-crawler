@@ -54,13 +54,11 @@ class ResultHandler implements HandlerInterface
     public function onEnd(Crawler $crawler)
     {
         $keepIndexIds = [];
-
-        $this->controller->verbosePrint('Start synchronize the builder index with the final index.');
         
         $total = (int) Builderindex::find()->count();
         $i = 0;
         if ($this->controller->verbose) {
-            Console::startProgress(0, $total, 'sync pages: ', false);    
+            Console::startProgress(0, $total, 'synchronize index: ', false);    
         }
         foreach (Builderindex::find()->batch() as $batch) {
             foreach ($batch as $builderIndex) {

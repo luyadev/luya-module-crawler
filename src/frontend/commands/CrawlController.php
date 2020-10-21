@@ -91,7 +91,6 @@ class CrawlController extends \luya\console\Command
         $crawler->run();
         
         if ($this->linkcheck) {
-            $this->verbosePrint("Start crawled links check.");
             Link::cleanup($startTime);	
             $total = Link::find()->select(['url'])->distinct()->count();
             $i = 0;
