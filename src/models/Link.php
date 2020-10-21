@@ -92,9 +92,9 @@ class Link extends NgRestModel
     public function ngRestAttributeTypes()
     {
         return [
-            'url' => 'url',
+            'url' => ['url', 'encoding' => false],
             'title' => 'text',
-            'url_found_on_page' => ['text', 'hideInList' => true],
+            'url_found_on_page' => ['text', 'hideInList' => true, 'encoding' => false],
             'response_status' => 'number',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
@@ -152,13 +152,10 @@ class Link extends NgRestModel
      */
     public static function responseStatus($url)
     {
-        $urlObject = new Url($url);
-        $urlObject->encode = true;
-
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, 5);
         $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
-        $curl->get($urlObject->getNormalized());
+        $curl->get($url);
         $status = $curl->http_status_code;
         $curl->close();
         unset($curl);
@@ -175,6 +172,15 @@ class Link extends NgRestModel
      */
     public static function add($url, $title, $urlOnPage)
     {
+        $urlObject = new Url($url);
+        //$urlObject->encode = true;
+
+        if (!$urlObject->isValid()) {
+            return false;
+        }
+
+        $url = $urlObject->getNormalized();
+
         $model = self::find()->where(['url' => $url, 'url_found_on_page' => $urlOnPage])->one();
 
         if ($model) {
