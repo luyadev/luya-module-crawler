@@ -4,6 +4,7 @@ namespace luya\crawler\frontend\commands;
 
 use luya\crawler\crawler\DatabaseStorage;
 use luya\crawler\crawler\ResultHandler;
+use luya\crawler\crawler\RuntimeStorage;
 use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Handlers\DebugHandler;
@@ -67,7 +68,7 @@ class CrawlController extends \luya\console\Command
     {
         $startTime = time();
 
-        $crawler = new Crawler($this->module->baseUrl, new FileStorage(Yii::getAlias($this->runtimeFolder)), new LoopRunner);
+        $crawler = new Crawler($this->module->baseUrl, new RuntimeStorage, new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
 
         if ($this->verbose) {

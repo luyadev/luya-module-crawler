@@ -6,6 +6,7 @@ use luya\testsuite\fixtures\NgRestModelFixture;
 use luya\crawler\models\Searchdata;
 use luya\crawler\tests\data\fixtures\IndexFixture;
 use luya\crawler\models\Builderindex;
+use luya\testsuite\fixtures\ActiveRecordFixture;
 
 trait TableSetupTrait
 {
@@ -36,6 +37,28 @@ trait TableSetupTrait
 
         $this->builderindexFixture = new NgRestModelFixture([
             'modelClass' => Builderindex::class,
+        ]);
+
+        new ActiveRecordFixture([
+            'tableName' => 'crawler_builder_runtime_url',
+            'schema' => [
+                'url' => 'text',
+            ]
+        ]);
+
+        new ActiveRecordFixture([
+            'tableName' => 'crawler_builder_runtime_checksum',
+            'schema' => [
+                'checksum' => 'text',
+            ]
+        ]);
+
+        new ActiveRecordFixture([
+            'tableName' => 'crawler_builder_runtime_queue',
+            'schema' => [
+                'url' => 'text',
+                'referrer_url' => 'text',
+            ]
         ]);
     }
 
