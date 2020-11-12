@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 3.1 (12. November 2020)
 
-+ [#]() Add concurrent configuration options for crawl command.
++ [#36](https://github.com/luyadev/luya-module-crawler/pull/36) Add concurrent requests configuration option for crawl command.
 
 ## 3.0 (21. October 2020)
 

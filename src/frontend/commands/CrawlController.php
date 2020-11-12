@@ -54,7 +54,7 @@ class CrawlController extends \luya\console\Command
     public $pdfs = true;
 
     /**
-     *  @var integer The number of async curl requests, higher values may increase memory usage.
+     *  @var integer The number of async curl requests the crawler can make, higher values may increase memory usage.
      */
     public $concurrent = 15;
 
