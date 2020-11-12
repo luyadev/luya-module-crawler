@@ -29,7 +29,13 @@ use yii\helpers\Console;
  * ```sh
  * ./vendor/bin/luya crawler/crawl --verbose=1
  * ```
- *
+ * 
+ * Limit concurrency and disable pdfs.
+ * 
+ * ```
+ * ./vendor/bin/luya crawler/crawl --pdfs=0 concurrent=5
+ * ```
+ * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
@@ -48,6 +54,11 @@ class CrawlController extends \luya\console\Command
     public $pdfs = true;
 
     /**
+     *  @var integer The number of async curl requests the crawler can make, higher values may increase memory usage.
+     */
+    public $concurrent = 15;
+
+    /**
      * {@inheritDoc}
      */
     public function options($actionID)
@@ -55,6 +66,7 @@ class CrawlController extends \luya\console\Command
         $options = parent::options($actionID);
         $options[] = 'linkcheck';
         $options[] = 'pdfs';
+        $options[] = 'concurrent';
         return $options;
     }
 
@@ -69,6 +81,7 @@ class CrawlController extends \luya\console\Command
 
         $crawler = new Crawler($this->module->baseUrl, new RuntimeStorage, new LoopRunner);
         $crawler->urlFilterRules = $this->module->filterRegex;
+        $crawler->concurrentJobs = $this->concurrent;
 
         if ($this->verbose) {
             $debug = new DebugHandler;
