@@ -53,6 +53,18 @@ To execute the command (and run the crawler proccess) use the crawler command `c
 
 > In order to provide current crawl results you should create a cronjob which crawls the page each night: `cd httpdocs/current && ./vendor/bin/luya crawler/crawl`
 
+### Crawler Arguments
+
+All crawler arguments for `crawler/crawl`, an example would be `crawler/crawl --pdfs=0 --concurrent=5 --linkcheck=0`:
+
+|name|description|default
+|----|-----------|-------
+|linkcheck|Whether all links should be checked after the crawler has indexed your site|true
+|pdfs|Whether PDFs should be indexed by the crawler or not|true
+|concurrent|The amount of conccurent page crawles|15
+
+## Stats
+
 You can also get statistic results enabling a cronjob executing each week:
  
 ```
