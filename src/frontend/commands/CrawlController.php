@@ -2,7 +2,6 @@
 
 namespace luya\crawler\frontend\commands;
 
-use luya\crawler\crawler\DatabaseStorage;
 use luya\crawler\crawler\ResultHandler;
 use luya\crawler\crawler\RuntimeStorage;
 use luya\crawler\models\Link;
@@ -12,9 +11,7 @@ use Nadar\Crawler\Job;
 use Nadar\Crawler\Parsers\HtmlParser;
 use Nadar\Crawler\Parsers\PdfParser;
 use Nadar\Crawler\Runners\LoopRunner;
-use Nadar\Crawler\Storage\FileStorage;
 use Nadar\Crawler\Url;
-use Yii;
 use yii\helpers\Console;
 
 /**
@@ -97,7 +94,8 @@ class CrawlController extends \luya\console\Command
 
         foreach ($this->module->indexer as $className) {
             foreach ($className::indexLinks() as $url => $title) {
-                $crawler->push(new Job(new Url($url), $crawler->baseUrl));
+                $url = new Url($url);
+                $crawler->push(new Job($url, $crawler->baseUrl));
             }
         }
 

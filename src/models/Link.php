@@ -152,14 +152,37 @@ class Link extends NgRestModel
      */
     public static function responseStatus($url)
     {
+        /*
         $curl = new Curl();
         $curl->setOpt(CURLOPT_TIMEOUT, 5);
+        //$curl->setOpt(CURLOPT_FOLLOWLOCATION, 1);
         $curl->setUserAgent(FrontendModule::CRAWLER_USER_AGENT);
         $curl->get($url);
         $status = $curl->http_status_code;
         $curl->close();
         unset($curl);
         gc_collect_cycles();
+        return $status;
+        */
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        // This changes the request method to HEAD
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,5); // connect timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // curl timeout
+
+        $exec = curl_exec($ch);
+        
+        if ($exec) {
+            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+        } else {
+            $status = -1;
+        }
+
+        curl_close($ch);
         return $status;
     }
 
@@ -174,6 +197,11 @@ class Link extends NgRestModel
     {
         $urlObject = new Url($url);
         $urlObject->encode = true;
+
+        // if the url is rerlative, it might be an url on the same site, therfore merge with base url
+        if ($urlObject->isRelative()) {
+            $urlObject->merge(new Url($urlOnPage));
+        }
 
         if (!$urlObject->isValid()) {
             return false;

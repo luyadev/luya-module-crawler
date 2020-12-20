@@ -16,12 +16,12 @@
 		"issues" : "https://github.com/luyadev/luya/issues"
 	},
 	"require" : {
-		"nadar/crawler" : "^1.1",
+		"nadar/crawler" : "^1.3",
 		"nadar/stemming" : "^1.0",
 		"smalot/pdfparser": "^0.16.2"
 	},
 	"require-dev" : {
-		"luyadev/luya-testsuite" : "^1.0"
+		"luyadev/luya-testsuite" : "^2.0"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -33,15 +33,6 @@
             "luya\\crawler\\tests\\" : "tests/"
         }
     },
-	"extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
-    },
-    "config": {
-        "platform": {"php": "7.0"}  
-    },
-    
     "repositories": [
         {
             "type": "composer",

@@ -47,7 +47,7 @@ class MyTestIndexer implements CrawlIndexInterface
     public static function indexLinks()
     {
         return [
-            'http://localhost/path' => 'LUYA Website',
+            'http://thisurlshouldreallynotexistotherwisetheindexiswrong.com' => 'LUYA Website',
         ];
     }
 }

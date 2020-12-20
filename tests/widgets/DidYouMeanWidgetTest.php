@@ -49,7 +49,7 @@ class DidYouMeanWidgetTest extends CrawlerTestCase
             'language' => 'en',
         ]);
 
-        $this->assertContains('Did you mean <b>john doe</b>', $widget);
+        $this->assertStringContainsString('Did you mean <b>john doe</b>', $widget);
     }
 
     public function testRunWithSearchModel()
@@ -72,7 +72,7 @@ class DidYouMeanWidgetTest extends CrawlerTestCase
             'searchModel' => $model,
         ]);
 
-        $this->assertContains('resolveId=3', $widget);
+        $this->assertStringContainsString('resolveId=3', $widget);
     }
 
     public function testDidYouMeanWithSearchData()
