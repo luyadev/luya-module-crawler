@@ -1,3 +1,4 @@
 /vendor
 /luya
 /phpunit.xml
+composer.lock
