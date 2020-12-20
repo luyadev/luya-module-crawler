@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.2 (20. December 2020)
+
++ [#37](https://github.com/luyadev/luya-module-crawler/pull/37) Added link check support for relative paths on the website. Use head method for link check instead of get and follow those links if needed. Added PHP 8 tests.
+
 ## 3.1 (12. November 2020)
 
 + [#36](https://github.com/luyadev/luya-module-crawler/pull/36) Add concurrent requests configuration option for crawl command.
