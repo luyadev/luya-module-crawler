@@ -171,8 +171,8 @@ class Link extends NgRestModel
 
         // This changes the request method to HEAD
         curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,5); // connect timeout
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // curl timeout
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // connect timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // curl timeout
 
         $exec = curl_exec($ch);
         
