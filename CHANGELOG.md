@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 3.2 (20. December 2020)
+## 3.2 (22. December 2020)
 
 + [#37](https://github.com/luyadev/luya-module-crawler/pull/37) Added link check support for relative paths on the website. Use head method for link check instead of get and follow those links if needed. Added PHP 8 tests.
 
