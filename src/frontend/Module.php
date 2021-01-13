@@ -56,8 +56,9 @@ final class Module extends \luya\base\Module
      *
      * ```php
      * 'filterRegex' => [
-     *     '/\.\//i',           // filter all links with a dot inside
-     *     '/agenda\//i',       // filter all pages who contains "agenda/"
+     *     '#.html#i', // filter all links with `.html`
+     *     '#/agenda#i', // filter all links which contain the word with leading slash agenda,
+     *      '#date\=#i, // filter all links with the word date inside. for example when using an agenda which will generate infinite links
      * ],
      * ```
      */
