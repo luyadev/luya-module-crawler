@@ -41,11 +41,13 @@ class ResultHandler implements HandlerInterface
      */
     public function afterRun(Result $result)
     {
-        $index = Builderindex::findOne(['url' => $result->url->getNormalized()]);
+        $url = $result->url->getNormalized();
+        
+        $index = Builderindex::findOne(['url' => $url]);
 
         if (!$index) {
             $index = new Builderindex();
-            $index->url = $result->url->getNormalized();
+            $index->url = $url;
         }
 
         $index->content = $result->content;
@@ -60,7 +62,7 @@ class ResultHandler implements HandlerInterface
         
         if ($this->controller->linkcheck) {
             foreach ($result->parserResult->links as $url => $value) {
-                Link::add($url, $value, $result->url->getNormalized());
+                Link::add($url, $value, $url);
             }
         }
     }

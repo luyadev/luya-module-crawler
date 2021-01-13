@@ -47,7 +47,8 @@ class Builderindex extends ActiveRecord
     {
         return [
             [['url'], 'required'],
-            [['content', 'description'], 'string'],
+            [['description'], 'string'],
+            [['content'], 'string', 'max' => 65535],
             [['last_indexed', 'crawled', 'status_code', 'is_dublication'], 'integer'],
             [['url', 'title'], 'string', 'max' => 200],
             [['language_info', 'content_hash'], 'string', 'max' => 80],

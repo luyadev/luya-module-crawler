@@ -3,15 +3,19 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 3.2 (22. December 2020)
+## 3.2.1 (13. January 2020)
+
++ [#38](https://github.com/luyadev/luya-module-crawler/pull/38) Added max length validator for content in order to fix mysql error `SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'content' at row 1`.
+
+## 3.2.0 (22. December 2020)
 
 + [#37](https://github.com/luyadev/luya-module-crawler/pull/37) Added link check support for relative paths on the website. Use head method for link check instead of get and follow those links if needed. Added PHP 8 tests.
 
-## 3.1 (12. November 2020)
+## 3.1.0 (12. November 2020)
 
 + [#36](https://github.com/luyadev/luya-module-crawler/pull/36) Add concurrent requests configuration option for crawl command.
 
-## 3.0 (21. October 2020)
+## 3.0.0 (21. October 2020)
 
 > This release contains new migrations and requires to run the migrate command after updating. Check the [UPGRADE document](UPGRADE.md) to read more about breaking changes.
 
