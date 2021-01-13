@@ -47,7 +47,8 @@ class Index extends NgRestModel
     {
         return [
             [['url'], 'required'],
-            [['content', 'description'], 'string'],
+            [['description'], 'string'],
+            [['content'], 'string', 'max' => 65535],
             [['added_to_index', 'last_update'], 'integer'],
             [['url', 'title'], 'string', 'max' => 200],
             [['language_info'], 'string', 'max' => 80],
