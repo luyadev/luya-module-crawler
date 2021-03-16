@@ -26,13 +26,13 @@ use yii\helpers\Console;
  * ```sh
  * ./vendor/bin/luya crawler/crawl --verbose=1
  * ```
- * 
+ *
  * Limit concurrency and disable pdfs.
- * 
+ *
  * ```
  * ./vendor/bin/luya crawler/crawl --pdfs=0 concurrent=5
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */

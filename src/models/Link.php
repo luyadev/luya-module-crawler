@@ -177,7 +177,7 @@ class Link extends NgRestModel
         $exec = curl_exec($ch);
         
         if ($exec) {
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         } else {
             $status = -1;
         }
