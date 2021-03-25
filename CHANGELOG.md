@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 3.2.1 (13. January 2020)
+## 3.2.3 (25. March 2021)
+
++ [#39](https://github.com/luyadev/luya-module-crawler/pull/39) Added Bulgarian translations
+
+## 3.2.2 (24. March 2021)
+
++ Added default views for the crawler index action
+
+## 3.2.1 (13. January 2021)
 
 + [#38](https://github.com/luyadev/luya-module-crawler/pull/38) Added max length validator for content in order to fix mysql error `SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'content' at row 1`.
 
