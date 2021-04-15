@@ -89,7 +89,7 @@ final class Module extends \luya\base\Module
      * @inheritdoc
      */
     public $urlRules = [
-        ['pattern' => 'crawler', 'route' => 'crawler/default'],
+        'crawler' => 'crawler/default/index',
     ];
 
     /**
