@@ -20,7 +20,7 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
     {
         new NgRestModelFixture(['modelClass' => Link::class]);
         $module = new Module('frontendcrawler');
-        $module->baseUrl = 'https://luya.io';
+        $module->baseUrl = 'https://example.com/';
         $module->indexer = [
             MyTestIndexer::class,
         ];
@@ -36,8 +36,8 @@ class CrawlControllerTest extends ConsoleCrawlerTestCase
         $ctrl->interactive = 0;
         $ctrl->runAction('index');
 
-        $this->assertSame('5', Builderindex::find()->asArray()->count());
-        $this->assertSame('5', Index::find()->asArray()->count());
+        $this->assertSame('1', Builderindex::find()->asArray()->count());
+        $this->assertSame('1', Index::find()->asArray()->count());
     }
 }
 
