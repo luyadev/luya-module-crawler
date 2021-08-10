@@ -35,6 +35,14 @@ class ResultHandler implements HandlerInterface
     {
         $this->controller = $controller;
     }
+    
+    /**
+    * {@inheritDoc}
+    */
+    public function onSetup(Crawler $crawler)
+    {
+        Builderindex::deleteAll();
+    }
 
     /**
      * {@inheritDoc}
@@ -50,7 +58,12 @@ class ResultHandler implements HandlerInterface
             $index->url = $url;
         }
 
-        $index->content = $result->content;
+        $content = $result->content;
+        if (!empty($result->keywords)) {
+            $content.= ' ' . $result->keywords;
+        }
+
+        $index->content = $content;
         $index->title = $result->title;
         $index->description = $result->description;
         $index->language_info = $result->language;
@@ -58,21 +71,13 @@ class ResultHandler implements HandlerInterface
         $index->group = $result->group;
 
         $index->save();
-        unset($index);
+        unset($index, $content);
         
         if ($this->controller->linkcheck) {
-            foreach ($result->parserResult->links as $url => $value) {
-                Link::add($url, $value, $url);
+            foreach ($result->parserResult->links as $linkUrl => $value) {
+                Link::add($linkUrl, $value, $url);
             }
         }
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public function onSetup(Crawler $crawler)
-    {
-        Builderindex::deleteAll();
     }
 
     /**
