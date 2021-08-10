@@ -62,11 +62,7 @@ class ResultHandler implements HandlerInterface
         if (!empty($result->keywords)) {
             $content.= ' ' . $result->keywords;
         }
-
-        if (!empty($result->description)) {
-            $content.= ' ' . $result->description;
-        }
-
+        
         $index->content = $content;
         $index->title = $result->title;
         $index->description = $result->description;
