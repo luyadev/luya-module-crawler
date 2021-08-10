@@ -3,9 +3,9 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 3.3.0 ()
+## 3.3.0 (10. August 2021)
 
-+ Add keywords to content string in order to make them searchable.
++ [#40](https://github.com/luyadev/luya-module-crawler/pull/40) Add keywords to content string in order to make them searchable.
 
 ## 3.2.4 (15. April 2021)
 
