@@ -1,5 +1,5 @@
 <?php
-[
+return [
     'crawler' => 'Perayap',
     'crawler_indexing' => 'Pengindeksan',
     'crawler_analytics' => 'Analitik',
