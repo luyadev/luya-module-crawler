@@ -2,8 +2,8 @@
 return [
     'crawler' => 'Crawler', // untranslatable
     'crawler_indexing' => 'Indexage',
-    'crawler_analytics' => 'Analytics',
-    'crawler_analytics_queries' => 'Search Queries',
+    'crawler_analytics' => 'Analytique',
+    'crawler_analytics_queries' => 'Termes de recherche',
         
     //builderindex
     'crawler_index' => 'Index des pages',
