@@ -25,11 +25,14 @@ composer require luyadev/luya-module-crawler:^1.0
 After installation via Composer include the module to your configuration file within the modules section.
 
 ```php
-'crawler' => [
-    'class' => 'luya\crawler\frontend\Module',
-    'baseUrl' => 'https://luya.io',
-],
-'crawleradmin' => 'luya\crawler\admin\Module',
+'modules' => [
+    //...
+    'crawler' => [
+        'class' => 'luya\crawler\frontend\Module',
+        'baseUrl' => 'https://luya.io',
+    ],
+    'crawleradmin' => 'luya\crawler\admin\Module',
+]
 ```
 
 > Where `baseUrl` is the domain you want to crawler all information.
