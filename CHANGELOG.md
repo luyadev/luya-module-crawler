@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 3.4.1 (28. April 2022)
 
-+ []() Use transaction to sync index table when crawler finish the process.
++ [#45](https://github.com/luyadev/luya-module-crawler/pull/45) Use transaction to sync index table when crawler finish the process.
 
 ## 3.4.0 (5. April 2022)
 
