@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.4.1 (28. April 2022)
+
++ []() Use transaction to sync index table when crawler finish the process.
+
 ## 3.4.0 (5. April 2022)
 
 + Updated deps to latest version of `smalot/pdfparser` parser which now requires at least version php 7.1. Therefore raise php version requirements for luya module crawler to version 7.1 to (which is outdated for a long time already: https://www.php.net/supported-versions.php)
