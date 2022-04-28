@@ -9,6 +9,7 @@ use luya\crawler\models\Link;
 use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
+use Yii;
 use yii\helpers\Console;
 
 /**
@@ -85,48 +86,57 @@ class ResultHandler implements HandlerInterface
     */
     public function onEnd(Crawler $crawler)
     {
-        $keepIndexIds = [];
-        
-        $total = (int) Builderindex::find()->count();
-        $i = 0;
-        if ($this->controller->verbose) {
-            Console::startProgress(0, $total, 'synchronize index: ', false);
-        }
-        foreach (Builderindex::find()->batch() as $batch) {
-            foreach ($batch as $builderIndex) {
-                $index = Index::findOne(['url' => $builderIndex->url]);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $keepIndexIds = [];
+            
+            $total = (int) Builderindex::find()->count();
+            $i = 0;
+            if ($this->controller->verbose) {
+                Console::startProgress(0, $total, 'synchronize index: ', false);
+            }
+            foreach (Builderindex::find()->batch() as $batch) {
+                foreach ($batch as $builderIndex) {
+                    $index = Index::findOne(['url' => $builderIndex->url]);
 
-                if (!$index) {
-                    $index = new Index();
-                    $index->added_to_index = time();
-                }
+                    if (!$index) {
+                        $index = new Index();
+                        $index->added_to_index = time();
+                    }
 
-                $index->url = $builderIndex->url;
-                $index->title = $builderIndex->title;
-                $index->description = $builderIndex->description;
-                $index->content = $builderIndex->content;
-                $index->language_info = $builderIndex->language_info;
-                $index->last_update = time();
-                $index->url_found_on_page = $builderIndex->url_found_on_page;
-                $index->group = $builderIndex->group;
-                $index->save();
+                    $index->url = $builderIndex->url;
+                    $index->title = $builderIndex->title;
+                    $index->description = $builderIndex->description;
+                    $index->content = $builderIndex->content;
+                    $index->language_info = $builderIndex->language_info;
+                    $index->last_update = time();
+                    $index->url_found_on_page = $builderIndex->url_found_on_page;
+                    $index->group = $builderIndex->group;
+                    $index->save();
 
-                $keepIndexIds[] = $index->id;
-                unset($index, $builderIndex);
-                $i++;
+                    $keepIndexIds[] = $index->id;
+                    unset($index, $builderIndex);
+                    $i++;
 
-                if ($this->controller->verbose) {
-                    Console::updateProgress($i, $total);
+                    if ($this->controller->verbose) {
+                        Console::updateProgress($i, $total);
+                    }
                 }
             }
+
+            Index::deleteAll(['not in', 'id', $keepIndexIds]);
+
+            if ($this->controller->verbose) {
+                Console::endProgress("done." . PHP_EOL);
+            }
+            $transaction->commit();
+            unset($batch);
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
         }
-
-        Index::deleteAll(['not in', 'id', $keepIndexIds]);
-
-        if ($this->controller->verbose) {
-            Console::endProgress("done." . PHP_EOL);
-        }
-
-        unset($batch);
     }
 }
