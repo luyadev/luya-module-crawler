@@ -19,7 +19,7 @@ An easy to use full-website page crawler to make provide search results on your 
 Install the module via composer:
 
 ```sh
-composer require luyadev/luya-module-crawler:^1.0
+composer require luyadev/luya-module-crawler:^3.0
 ```
 
 After installation via Composer include the module to your configuration file within the modules section.
