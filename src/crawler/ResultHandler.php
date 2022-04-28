@@ -10,6 +10,7 @@ use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
 use Yii;
+use yii\console\Exception;
 use yii\helpers\Console;
 
 /**
@@ -89,8 +90,13 @@ class ResultHandler implements HandlerInterface
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $keepIndexIds = [];
-            
+            $currentTotal = (int) Index::find()->count();
             $total = (int) Builderindex::find()->count();
+
+            if (!$this->controller->purging && ($currentTotal > 0 && $total == 0)) {
+                throw new Exception("The old index contained {$currentTotal} while the new index is empty. Possible misconfiguration or error while crawling the website.");
+            }
+
             $i = 0;
             if ($this->controller->verbose) {
                 Console::startProgress(0, $total, 'synchronize index: ', false);

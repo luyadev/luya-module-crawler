@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.5.0 (28. April 2022)
+
++ [#]() Prevent the crawler from purge the full index when the builder index is empty. This can be disabled with the new option `--purging=1`.
+
 ## 3.4.1 (28. April 2022)
 
 + [#45](https://github.com/luyadev/luya-module-crawler/pull/45) Use transaction to sync index table when crawler finish the process.
