@@ -57,8 +57,8 @@ class CrawlController extends \luya\console\Command
 
     /**
      * @var boolean If enabled, the crawler can fully purge the index. This is by default disabled to prevent the issue that when the crawler 
-     * starts to crawler but the target host is not returning content (maybe due to the fact its down or there is an firewall issue) the crawler
-     * will finish with 0 builder index entries and override a fully available index. Therefore this ensures that: if builder index is empty and 
+     * starts to crawler but the target host is not returning content (maybe due to the fact its down or there is a firewall issue) the crawler
+     * will finish with 0 builder index entries and override a fully available index with an empty index. Therefore this ensures that: if builder index is empty and 
      * the index is more then 0, an exception is thrown. `if ($builderIndexCount == 0 && $indexCount > 0) { Exception }`
      * @since 3.5.0
      */

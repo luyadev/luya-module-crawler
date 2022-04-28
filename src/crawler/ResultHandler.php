@@ -94,7 +94,7 @@ class ResultHandler implements HandlerInterface
             $total = (int) Builderindex::find()->count();
 
             if (!$this->controller->purging && ($currentTotal > 0 && $total == 0)) {
-                throw new Exception("The old index contained {$currentTotal} while the new index is empty. Possible misconfiguration or error while crawling the website.");
+                throw new Exception("The old index contained {$currentTotal} while the new index is empty. Possible misconfiguration or error while crawling the website. The force an empty index us --purging=1");
             }
 
             $i = 0;

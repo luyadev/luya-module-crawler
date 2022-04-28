@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 3.5.0 (28. April 2022)
 
-+ [#]() Prevent the crawler from purge the full index when the builder index is empty. This can be disabled with the new option `--purging=1`.
++ [#46](https://github.com/luyadev/luya-module-crawler/pull/46) Prevent the crawler from purge the full index when the builder index is empty. This can be disabled with the new option `--purging=1`.
 
 ## 3.4.1 (28. April 2022)
 
