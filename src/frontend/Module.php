@@ -81,6 +81,9 @@ final class Module extends \luya\base\Module
      *     'app/models/MyModel',
      * ],
      * ```
+     * 
+     * > Keep in mind, that when using URLs with indexer, the will also apply to the $filterRegex rules.
+     * 
      * @since 2.0.0
      */
     public $indexer = [];
