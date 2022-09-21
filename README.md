@@ -30,6 +30,14 @@ After installation via Composer include the module to your configuration file wi
     'crawler' => [
         'class' => 'luya\crawler\frontend\Module',
         'baseUrl' => 'https://luya.io',
+        /*
+        'on beforeProcess' => function() {
+            // optional add or filter data from the BuilderIndex, which will be processed to the Index afterwards
+        },
+        'on afterIndex' => function() {
+            // optional add or filter data from the freshly built Index
+        }
+        */
     ],
     'crawleradmin' => 'luya\crawler\admin\Module',
 ]
@@ -73,7 +81,6 @@ You can also get statistic results enabling a cronjob executing each week:
 ```
 ./vendor/bin/luya crawler/statistic
 ```
-
 
 ## Create search form
 

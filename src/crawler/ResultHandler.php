@@ -10,6 +10,7 @@ use Nadar\Crawler\Crawler;
 use Nadar\Crawler\Interfaces\HandlerInterface;
 use Nadar\Crawler\Result;
 use Yii;
+use yii\base\Event;
 use yii\console\Exception;
 use yii\helpers\Console;
 
@@ -23,6 +24,10 @@ use yii\helpers\Console;
  */
 class ResultHandler implements HandlerInterface
 {
+    const EVENT_BEFORE_PROCESS = 'beforeProcess';
+    
+    const EVENT_AFTER_INDEX = 'afterIndex';
+
     /**
      * @var CrawlController
      */
@@ -97,6 +102,8 @@ class ResultHandler implements HandlerInterface
                 throw new Exception("The old index contained {$currentTotal} while the new index is empty. Possible misconfiguration or error while crawling the website. The force an empty index us --purging=1");
             }
 
+            $this->controller->module->trigger(self::EVENT_BEFORE_PROCESS, new Event());
+
             $i = 0;
             if ($this->controller->verbose) {
                 Console::startProgress(0, $total, 'synchronize index: ', false);
@@ -135,6 +142,9 @@ class ResultHandler implements HandlerInterface
             if ($this->controller->verbose) {
                 Console::endProgress("done." . PHP_EOL);
             }
+
+            $this->controller->module->trigger(self::EVENT_AFTER_INDEX, new Event());
+
             $transaction->commit();
             unset($batch);
         } catch (\Exception $e) {
