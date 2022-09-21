@@ -103,29 +103,47 @@ class CrawlController extends \luya\console\Command
         $crawler->setup();
 
         foreach ($this->module->indexer as $className) {
-            foreach ($className::indexLinks() as $url => $title) {
+            $indexerLinks = $className::indexLinks();
+            if ($this->verbose) {
+                $i = 0;
+                $indexerTotal = count($indexerLinks);
+                Console::startProgress(0, $indexerTotal, "indexer {$className}: ", false);
+            }
+            foreach ($indexerLinks as $url => $title) {
                 $url = new Url($url);
                 $crawler->push(new Job($url, $crawler->baseUrl));
+                if ($this->verbose) {
+                    $i++;
+                    Console::updateProgress($i, $indexerTotal);
+                }
+                unset ($url);
             }
+
+            if ($this->verbose) {
+                Console::endProgress("indexer {$className} done." . PHP_EOL);
+            }
+
+            unset($indexerLinks, $indexerTotal);
         }
 
         $crawler->run();
         
         if ($this->linkcheck) {
             Link::cleanup($startTime);
-            $total = Link::find()->select(['url'])->distinct()->count();
-            $i = 0;
             if ($this->verbose) {
+                $i = 0;
+                $total = Link::find()->select(['url'])->distinct()->count();
                 Console::startProgress(0, $total, 'check links: ', false);
             }
             foreach (Link::getAllUrlsBatch() as $batch) {
                 foreach ($batch as $link) {
-                    $i++;
                     $status = Link::responseStatus($link['url']);
                     Link::updateUrlStatus($link['url'], $status);
                     if ($this->verbose) {
+                        $i++;
                         Console::updateProgress($i, $total);
                     }
+                    unset ($status);
                 }
             }
             
