@@ -31,6 +31,11 @@ After installation via Composer include the module to your configuration file wi
         'class' => 'luya\crawler\frontend\Module',
         'baseUrl' => 'https://luya.io',
         /*
+        'filterRegex' => [
+            '#.html#i', // filter all links with `.html`
+            '#/agenda#i', // filter all links which contain the word with leading slash agenda,
+            '#date\=#i, // filter all links with the word date inside. for example when using an agenda which will generate infinite links
+        ],
         'on beforeProcess' => function() {
             // optional add or filter data from the BuilderIndex, which will be processed to the Index afterwards
         },
