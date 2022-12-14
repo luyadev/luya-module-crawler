@@ -48,7 +48,7 @@ class CrawlController extends \luya\console\Command
      * @var boolean If linkcheck is true, the links will be added to a list. Control whether adding the link to the list should encode or not.
      * @since 3.6.0
      */
-    public $encode = false;
+    public $encode = true;
 
     /**
      * @var boolean Whether PDFs should be indexed or not. When enabled this may highly increase the memory consumption of the crawler process.
