@@ -80,7 +80,7 @@ class ResultHandler implements HandlerInterface
         $index->save();
         unset($index, $content);
         
-        if ($this->controller->linkcheck) {
+        if ($this->controller->linkcheck && !$result->parserResult->ignore) {
             foreach ($result->parserResult->links as $linkUrl => $value) {
                 Link::add($linkUrl, $value, $url, $this->controller->encode);
             }
