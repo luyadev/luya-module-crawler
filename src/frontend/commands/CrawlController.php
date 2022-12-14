@@ -80,6 +80,7 @@ class CrawlController extends \luya\console\Command
         $options[] = 'pdfs';
         $options[] = 'concurrent';
         $options[] = 'purging';
+        $options[] = 'encode';
         return $options;
     }
 
