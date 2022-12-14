@@ -189,14 +189,15 @@ class Link extends NgRestModel
     /**
      * Short hand to add new page which checks if the link also exists on the given page.
      *
-     * @param $url string
-     * @param $title string
-     * @param $urlOnPage string
+     * @param string $url
+     * @param string $title
+     * @param string $urlOnPage
+     * @param boolean $urlEncode
      */
-    public static function add($url, $title, $urlOnPage)
+    public static function add($url, $title, $urlOnPage, $urlEncode = true)
     {
         $urlObject = new Url($url);
-        $urlObject->encode = true;
+        $urlObject->encode = $urlEncode;
 
         // if the url is rerlative, it might be an url on the same site, therfore merge with base url
         if ($urlObject->isRelative()) {

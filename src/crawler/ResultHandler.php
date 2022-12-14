@@ -82,7 +82,7 @@ class ResultHandler implements HandlerInterface
         
         if ($this->controller->linkcheck) {
             foreach ($result->parserResult->links as $linkUrl => $value) {
-                Link::add($linkUrl, $value, $url);
+                Link::add($linkUrl, $value, $url, $this->controller->encode);
             }
         }
     }
