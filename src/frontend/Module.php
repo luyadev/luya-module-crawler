@@ -15,7 +15,7 @@ namespace luya\crawler\frontend;
  * You should run your crawler command by a cronjob to make sure your page will be crawled everynight and the users have a fresh index.
  *
  * @link https://github.com/FriendsOfPHP/Goutte
- * @link http://api.symfony.com/2.7/Symfony/Component/DomCrawler.html
+ * @link https://api.symfony.com/2.7/Symfony/Component/DomCrawler.html
  *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
