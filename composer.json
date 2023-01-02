@@ -4,7 +4,7 @@
 	"type" : "luya-module",
 	"keywords" : ["php", "luya", "module", "crawler", "yii2", "yii", "yii2-pagecrawler", "pagecrawler", "luya-module"],
 	"license": "MIT",
-	"homepage" : "http://luya.io",
+	"homepage" : "https://luya.io",
 	"authors" : [
 		{
 			"name" : "Basil",
