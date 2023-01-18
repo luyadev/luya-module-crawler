@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.7.0 (18. January 2022)
+
++ New `$encode` option for crawl command. If linkcheck is true, the links will be added to a list. Control whether adding the link to the list should encode or not.
+
 ## 3.6.0 (5. October 2022)
 
 + [#48](https://github.com/luyadev/luya-module-crawler/pull/48) Added events `beforeProcess` and `afterIndex` in order to interact with search results from a none crawled source.

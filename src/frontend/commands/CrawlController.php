@@ -46,7 +46,7 @@ class CrawlController extends \luya\console\Command
 
     /**
      * @var boolean If linkcheck is true, the links will be added to a list. Control whether adding the link to the list should encode or not.
-     * @since 3.6.0
+     * @since 3.7.0
      */
     public $encode = true;
 
