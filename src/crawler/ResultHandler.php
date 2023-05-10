@@ -77,7 +77,10 @@ class ResultHandler implements HandlerInterface
         $index->url_found_on_page = $result->refererUrl->getNormalized();
         $index->group = $result->group;
 
-        $index->save();
+        if (!$index->save()) {
+            return $this->controller->outputError($index->getErrors());
+        }
+        
         unset($index, $content);
         
         if ($this->controller->linkcheck && !$result->parserResult->ignore) {
