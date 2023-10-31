@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.7.2 (31. October 2023)
+
++ [#55](https://github.com/luyadev/luya-module-crawler/pull/55) Added indonesia language
+
 ## 3.7.1 (10. Mai 2023)
 
 + Changed max char length for builder and index tables `content` field to 16,777,215. According to migrations even 4,294,967,295 characters would be supported.
